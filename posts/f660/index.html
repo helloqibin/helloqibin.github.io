@@ -1,0 +1,467 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Java 中是如何获取 IP 归属地的 | 满心Hrn</title><meta name="author" content="满心"><meta name="copyright" content="满心"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="apple-mobile-web-app-title" content="Jayhrn"><script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/jquery/3.6.0/jquery.min.js"></script><script src="/js/jay.js"></script><script data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}" src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/pace/1.2.4/pace.min.js"></script><link rel="stylesheet" href="/jayhrn/commentBarrage.css"><link rel="stylesheet" href="/jayhrn/hello-about.css"><meta name="description" content="Java 中是如何获取 IP 属地的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 中是如何获取 IP 归属地的">
+<meta property="og:url" content="https://blog.lovelu.top/posts/f660/index.html">
+<meta property="og:site_name" content="满心Hrn">
+<meta property="og:description" content="Java 中是如何获取 IP 属地的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.lovelu.top/2022/08/ip.jpg">
+<meta property="article:published_time" content="2022-08-10T07:33:40.000Z">
+<meta property="article:modified_time" content="2023-01-03T07:10:08.867Z">
+<meta property="article:author" content="满心">
+<meta property="article:tag" content="转载内容">
+<meta property="article:tag" content="JAVA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.lovelu.top/2022/08/ip.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://blog.lovelu.top/posts/f660/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//sdk.51.la"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.2.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="/jayhrn/jayhrn.css"><link rel="stylesheet" href="https://img.lovelu.top/hexo-blog/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://img.lovelu.top/hexo-blog/css/remixicon.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://img.lovelu.top/hexo-blog/css/font_3570527_wrovfdcjwur.css" media="print" onload="this.media='all'"><link rel="apple-touch-icon" href="https://img.lovelu.top/hexo-blog/img/manxin_logo.jpg"><link rel="bookmark" href="https://img.lovelu.top/hexo-blog/img/manxin_logo.jpg"><link rel="apple-touch-icon-precomposed" sizes="180x180" href="https://img.lovelu.top/hexo-blog/img/manxin_logo.jpg"><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/Swiper/8.0.6/swiper-bundle.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.staticfile.org/fancyapps-ui/4.0.31/fancybox.min.css" media="print" onload="this.media='all'"><script>!function(p){"use strict";!function(t){var s=window,e=document,i=p,c="".concat("https:"===e.location.protocol?"https://":"http://","sdk.51.la/js-sdk-pro.min.js"),n=e.createElement("script"),r=e.getElementsByTagName("script")[0];n.type="text/javascript",n.setAttribute("charset","UTF-8"),n.async=!0,n.src=c,n.id="LA_COLLECT",i.d=n;var o=function(){s.LA.ids.push(i)};s.LA?s.LA.ids&&o():(s.LA=p,s.LA.ids=[],o()),r.parentNode.insertBefore(n,r)}()}({id:"Jnjm5JkByhs5gR1S",ck:"Jnjm5JkByhs5gR1S",autoTrack:true,hashMode:true});
+</script><script>!(function(c,i,e,b){
+  var h=i.createElement("script");
+  var f=i.getElementsByTagName("script")[0];
+  h.type="text/javascript";
+  h.crossorigin=true;
+  h.onload=function(){new c[b]["Monitor"]().init({id:"JuSANupwXcWr6CZn"});};
+  f.parentNode.insertBefore(h,f);h.src=e;})(window,document,"https://img.lovelu.top/hexo-blog/js/js-sdk-perf.min.js","LingQue");</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"K2VH5BX2UQ","apiKey":"a7d907b68bf3f767ad606067b549ffab","indexName":"hexo","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键字快速查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":400},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 满心","link":"链接: ","source":"来源: 满心Hrn","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.staticfile.org/flickr-justified-gallery/2.1.2/fjGallery.min.js',
+      css: 'https://cdn.staticfile.org/flickr-justified-gallery/2.1.2/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java 中是如何获取 IP 归属地的',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2023-01-03 15:10:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start --><link rel="stylesheet" href="https://img.lovelu.top/hexo-blog/css/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://img.lovelu.top/hexo-blog/css/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://img.lovelu.top/hexo-blog/js/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="满心Hrn" type="application/atom+xml">
+</head><body><div id="loading-box" onclick="Jay.hideLoading()"><div class="loading-bg"><img class="loading-img entered loading" src="https://img.lovelu.top/hexo-blog/img/manxin_logo.jpg" data-ll-status="loading" alt="加载背景图片"/></div></div><div id="web_bg" style="zoom: 1;"></div><div id="console" style="zoom: 1;"><div class="close-btn" onclick="Jay.hideConsole()" href="javascript:void(0);"><i class="fas fa-circle-xmark"></i></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments" onclick="Jay.hideConsole()"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title">最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags" onclick="Jay.hideConsole()"><div class="card-content"><div class="author-content-item-tips">标签</div><span class="author-content-item-title">寻找感兴趣的领域</span></div><div class="card-tag-cloud"><a href="/tags/Docker/"><span>Docker</span><sup>3</sup></a><a href="/tags/Linux/"><span>Linux</span><sup>6</sup></a><a href="/tags/Halo/"><span>Halo</span><sup>2</sup></a><a href="/tags/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/"><span>对象存储</span><sup>2</sup></a><a href="/tags/Butterfly/"><span>Butterfly</span><sup>6</sup></a><a href="/tags/Hexo/"><span>Hexo</span><sup>6</sup></a><a href="/tags/%E8%BD%AC%E8%BD%BD%E5%86%85%E5%AE%B9/"><span>转载内容</span><sup>17</sup></a><a href="/tags/JAVA/"><span>JAVA</span><sup>8</sup></a><a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"><span>服务器</span><sup>5</sup></a><a href="/tags/%E5%86%99%E4%BD%9C/"><span>写作</span><sup>2</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/"><span>教程</span><sup>9</sup></a><a href="/tags/Mysql/"><span>Mysql</span><sup>1</sup></a><a href="/tags/%E4%BC%98%E5%8C%96/"><span>优化</span><sup>1</sup></a><a href="/tags/Nginx/"><span>Nginx</span><sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span>数据库</span><sup>1</sup></a><a href="/tags/%E6%BA%90%E7%A0%81/"><span>源码</span><sup>2</sup></a><a href="/tags/windows/"><span>windows</span><sup>2</sup></a><a href="/tags/UNI-APP/"><span>UNI-APP</span><sup>2</sup></a><a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/"><span>小程序</span><sup>2</sup></a><a href="/tags/%E7%BB%84%E4%BB%B6/"><span>组件</span><sup>1</sup></a><a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"><span>通信协议</span><sup>1</sup></a><a href="/tags/%E7%BD%91%E7%AB%99%E7%BB%9F%E8%AE%A1/"><span>网站统计</span><sup>1</sup></a><a href="/tags/%E5%8A%9E%E5%85%AC/"><span>办公</span><sup>3</sup></a><a href="/tags/%E7%BE%8E%E9%A3%9F/"><span>美食</span><sup>1</sup></a><a href="/tags/%E7%BD%91%E9%A1%B5%E5%89%8D%E7%AB%AF/"><span>网页前端</span><sup>2</sup></a><a href="/tags/%E6%96%B0%E5%B9%B4%E7%A5%9D%E6%84%BF/"><span>新年祝愿</span><sup>1</sup></a><a href="/tags/SSH%E5%B7%A5%E5%85%B7/"><span>SSH工具</span><sup>1</sup></a><a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/"><span>浏览器</span><sup>2</sup></a><a href="/tags/%E9%97%B2%E8%81%8A/"><span>闲聊</span><sup>1</sup></a><a href="/tags/%E6%97%A5%E5%B8%B8/"><span>日常</span><sup>1</sup></a><a href="/tags/%E4%BA%91%E7%9B%98/"><span>云盘</span><sup>1</sup></a><a href="/tags/%E6%9E%B6%E6%9E%84/"><span>架构</span><sup>1</sup></a></div></div><div class="console-card history" onclick="Jay.hideConsole()"><div class="item-headline"><i class="fas fa-archive"></i><span>文章</span></div><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span class="card-archive-list-count-unit">篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span class="card-archive-list-count-unit">篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span class="card-archive-list-count-unit">篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/10/"><span class="card-archive-list-date">十月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span class="card-archive-list-count-unit">篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/09/"><span class="card-archive-list-date">九月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span class="card-archive-list-count-unit">篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/08/"><span class="card-archive-list-date">八月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span class="card-archive-list-count-unit">篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">3</span><span class="card-archive-list-count-unit">篇</span></div></a></li></ul></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" onclick="rm.switchDarkMode()" title="显示模式切换" href="javascript:void(0);" rel="external nofollow"><i class="fas fa-moon" style="font-size: 1rem;"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="Jay.hideAsideBtn()" title="单栏和双栏切换"><a class="asideSwitch"><i class="fas fa-arrows-alt-h"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="Jay.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="fas fa-keyboard"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="Jay.musicToggle()" title="音乐开关"><a class="music-switch"><i class="fas fa-music"></i></a></div></div><div class="console-mask" onclick="Jay.hideConsole()" href="javascript:void(0);" rel="external nofollow"></div></div><div id="sidebar" style="zoom: 1;"><div id="menu-mask"></div><div id="sidebar-menus"><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" onclick="rm.switchDarkMode()" title="显示模式切换" href="javascript:void(0);"><i class="fas fa-moon" style="font-size: 1rem;"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">博客</div><div class="back-menu-list"><a class="back-menu-item" href="https://lovelu.top" rel="external nofollow" title="主页" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/zhuye.webp" data-ll-status="loading"/><span class="back-menu-item-text">主页</span></a><a class="back-menu-item" href="https://blog.lovelu.top" title="前往满心博客" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/blog.webp" data-ll-status="loading"/><span class="back-menu-item-text">博客</span></a><a class="back-menu-item" href="https://blog.qibin.xyz" title="前往满心日记本" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/dailary.webp" data-ll-status="loading"/><span class="back-menu-item-text">日记本</span></a><a class="back-menu-item" href="https://7bu.top/" title="前往去不图床" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/qubu.webp" data-ll-status="loading"/><span class="back-menu-item-text">去不图床</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">图标</div><div class="back-menu-list"><a class="back-menu-item" href="https://www.iconfont.cn/" title="前往iconfont" target="_blank"><img class="back-menu-item-icon entered loading" src="https://api.iowen.cn/favicon/www.iconfont.cn/.png" data-ll-status="loading"/><span class="back-menu-item-text">iconfont</span></a><a class="back-menu-item" href="https://fontawesome.com/search?f=brands&amp;o=r" title="前往Awesome" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/some.webp" data-ll-status="loading"/><span class="back-menu-item-text">Awesome</span></a><a class="back-menu-item" href="https://remixicon.com/" title="前往remixicon" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/remix.webp" data-ll-status="loading"/><span class="back-menu-item-text">remixicon</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">主题</div><div class="back-menu-list"><a class="back-menu-item" href="https://butterfly.zhheo.com/" title="美化文档" target="_blank" one-link-mark="yes"><img class="back-menu-item-icon" src="https://img.lovelu.top/skill/meihua.webp"/><span class="back-menu-item-text">美化文档</span></a><a class="back-menu-item" href="https://toscode.gitee.com/helloqibin_admin/hexo-theme-matery.git" title="matery主题" target="_blank" one-link-mark="yes"><img class="back-menu-item-icon" src="https://img.lovelu.top/skill/matery.webp"/><span class="back-menu-item-text">matery</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文库</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-box-archive"></i><span> 文章列表</span></a></li><li><a class="site-page child" href="/category/"><i class="fa-fw fa-solid fa-folder-tree"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa-solid fa-tags"></i><span> 文章标签</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw fa-solid fa-bars-staggered"></i><span> 即刻短文</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fa-solid fa-record-vinyl"></i><span> 音乐欣赏</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fa-solid fa-clapperboard"></i><span> 电影推荐</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fa-solid fa-camera-retro"></i><span> 宝藏相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友联</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fa-solid fa-user-group"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fa-fw fas fa-fish-fins"></i><span> 友链鱼塘</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-message-bot"></i><span> 博客留言</span></a></li><li><a class="site-page child" href="javascript:travelling()"><i class="fa-fw fa-fw fas fa-bus"></i><span> 宝藏博主</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/stars/"><i class="fa-fw fa-solid fa-screwdriver-wrench"></i><span> 网址收藏</span></a></li><li><a class="site-page child" href="/update/"><i class="fa-fw fa-solid fa-cloud-arrow-up"></i><span> 博客更新</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fa-fw fas fa-sailboat"></i><span> 关于本站</span></a></li><li><a class="site-page child" href="/air-conditioner/"><i class="fa-fw fa-solid fa-fan"></i><span> 小空调</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-widget card-tags card-archives card-webinfo card-allinfo"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Docker/"><span>Docker</span><sup>3</sup></a><a href="/tags/Linux/"><span>Linux</span><sup>6</sup></a><a href="/tags/Halo/"><span>Halo</span><sup>2</sup></a><a href="/tags/%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8/"><span>对象存储</span><sup>2</sup></a><a href="/tags/Butterfly/"><span>Butterfly</span><sup>6</sup></a><a href="/tags/Hexo/"><span>Hexo</span><sup>6</sup></a><a href="/tags/%E8%BD%AC%E8%BD%BD%E5%86%85%E5%AE%B9/"><span>转载内容</span><sup>17</sup></a><a href="/tags/JAVA/"><span>JAVA</span><sup>8</sup></a><a href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"><span>服务器</span><sup>5</sup></a><a href="/tags/%E5%86%99%E4%BD%9C/"><span>写作</span><sup>2</sup></a><a href="/tags/%E6%95%99%E7%A8%8B/"><span>教程</span><sup>9</sup></a><a href="/tags/Mysql/"><span>Mysql</span><sup>1</sup></a><a href="/tags/%E4%BC%98%E5%8C%96/"><span>优化</span><sup>1</sup></a><a href="/tags/Nginx/"><span>Nginx</span><sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span>数据库</span><sup>1</sup></a><a href="/tags/%E6%BA%90%E7%A0%81/"><span>源码</span><sup>2</sup></a><a href="/tags/windows/"><span>windows</span><sup>2</sup></a><a href="/tags/UNI-APP/"><span>UNI-APP</span><sup>2</sup></a><a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/"><span>小程序</span><sup>2</sup></a><a href="/tags/%E7%BB%84%E4%BB%B6/"><span>组件</span><sup>1</sup></a><a href="/tags/%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"><span>通信协议</span><sup>1</sup></a><a href="/tags/%E7%BD%91%E7%AB%99%E7%BB%9F%E8%AE%A1/"><span>网站统计</span><sup>1</sup></a><a href="/tags/%E5%8A%9E%E5%85%AC/"><span>办公</span><sup>3</sup></a><a href="/tags/%E7%BE%8E%E9%A3%9F/"><span>美食</span><sup>1</sup></a><a href="/tags/%E7%BD%91%E9%A1%B5%E5%89%8D%E7%AB%AF/"><span>网页前端</span><sup>2</sup></a><a href="/tags/%E6%96%B0%E5%B9%B4%E7%A5%9D%E6%84%BF/"><span>新年祝愿</span><sup>1</sup></a><a href="/tags/SSH%E5%B7%A5%E5%85%B7/"><span>SSH工具</span><sup>1</sup></a><a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/"><span>浏览器</span><sup>2</sup></a><a href="/tags/%E9%97%B2%E8%81%8A/"><span>闲聊</span><sup>1</sup></a><a href="/tags/%E6%97%A5%E5%B8%B8/"><span>日常</span><sup>1</sup></a><a href="/tags/%E4%BA%91%E7%9B%98/"><span>云盘</span><sup>1</sup></a><a href="/tags/%E6%9E%B6%E6%9E%84/"><span>架构</span><sup>1</sup></a></div></div></div></div><div id="keyboard-tips" style="zoom: 1;"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">A</div></div><div class="keyContent"><div class="content">打开中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift</div><div class="key">P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div></div></div><div id="nav-music" onclick="Jay.musicToggle()" style="zoom: 1;"><div id="nav-music-hoverTips">播放音乐</div><meting-js id="3778678" server="netease" type="playlist" mutex="true" preload="none" theme="var(--Jay-main)" data-lrctype="0" order="random"></meting-js></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img.lovelu.top/2022/08/ip.jpg')"><nav id="nav"><div id="nav-group"><div id="blog_name"><div class="back-home-button" tabindex="-1"><i class="back-home-button-icon fa-solid fa-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">博客</div><div class="back-menu-list"><a class="back-menu-item" href="https://lovelu.top" rel="external nofollow" title="主页" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/zhuye.webp" data-ll-status="loading"/><span class="back-menu-item-text">主页</span></a><a class="back-menu-item" href="https://blog.lovelu.top" title="前往满心博客" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/blog.webp" data-ll-status="loading"/><span class="back-menu-item-text">博客</span></a><a class="back-menu-item" href="https://blog.qibin.xyz" title="前往满心日记本" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/dailary.webp" data-ll-status="loading"/><span class="back-menu-item-text">日记本</span></a><a class="back-menu-item" href="https://7bu.top/" title="前往去不图床" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/qubu.webp" data-ll-status="loading"/><span class="back-menu-item-text">去不图床</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">图标</div><div class="back-menu-list"><a class="back-menu-item" href="https://www.iconfont.cn/" title="前往iconfont" target="_blank"><img class="back-menu-item-icon entered loading" src="https://api.iowen.cn/favicon/www.iconfont.cn/.png" data-ll-status="loading"/><span class="back-menu-item-text">iconfont</span></a><a class="back-menu-item" href="https://fontawesome.com/search?f=brands&amp;o=r" title="前往Awesome" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/some.webp" data-ll-status="loading"/><span class="back-menu-item-text">Awesome</span></a><a class="back-menu-item" href="https://remixicon.com/" title="前往remixicon" target="_blank"><img class="back-menu-item-icon entered loading" src="https://img.lovelu.top/skill/remix.webp" data-ll-status="loading"/><span class="back-menu-item-text">remixicon</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">主题</div><div class="back-menu-list"><a class="back-menu-item" href="https://butterfly.zhheo.com/" title="美化文档" target="_blank" one-link-mark="yes"><img class="back-menu-item-icon" src="https://img.lovelu.top/skill/meihua.webp"/><span class="back-menu-item-text">美化文档</span></a><a class="back-menu-item" href="https://toscode.gitee.com/helloqibin_admin/hexo-theme-matery.git" title="matery主题" target="_blank" one-link-mark="yes"><img class="back-menu-item-icon" src="https://img.lovelu.top/skill/matery.webp"/><span class="back-menu-item-text">matery</span></a></div></div></div></div><a id="site-name" href="/" title="返回博客主页"><i class="iconfont icon-HRN"></i></a></div><div id="page-name-mask"><div id="page-name"><a id="page-name-text" onclick="btf.scrollToDest(0,500)">页面没有找到</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文库</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fa-solid fa-box-archive"></i><span> 文章列表</span></a></li><li><a class="site-page child" href="/category/"><i class="fa-fw fa-solid fa-folder-tree"></i><span> 文章分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa-solid fa-tags"></i><span> 文章标签</span></a></li><li><a class="site-page child" href="/essay/"><i class="fa-fw fa-solid fa-bars-staggered"></i><span> 即刻短文</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 分享</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fa-solid fa-record-vinyl"></i><span> 音乐欣赏</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fa-solid fa-clapperboard"></i><span> 电影推荐</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fa-solid fa-camera-retro"></i><span> 宝藏相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友联</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fa-solid fa-user-group"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fa-fw fas fa-fish-fins"></i><span> 友链鱼塘</span></a></li><li><a class="site-page child" href="/comments/"><i class="fa-fw fa-solid fa-message-bot"></i><span> 博客留言</span></a></li><li><a class="site-page child" href="javascript:travelling()"><i class="fa-fw fa-fw fas fa-bus"></i><span> 宝藏博主</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/stars/"><i class="fa-fw fa-solid fa-screwdriver-wrench"></i><span> 网址收藏</span></a></li><li><a class="site-page child" href="/update/"><i class="fa-fw fa-solid fa-cloud-arrow-up"></i><span> 博客更新</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fa-fw fas fa-sailboat"></i><span> 关于本站</span></a></li><li><a class="site-page child" href="/air-conditioner/"><i class="fa-fw fa-solid fa-fan"></i><span> 小空调</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button only-home" id="travellings_button"><a class="site-page" onclick="toRandomFlink()" title="随机前往一个友链" target="_blank" href="javascript:void(0);" rel="external nofollow"><i class="fa-solid fa-train-subway" style="font-size:1rem"></i></a></div><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章"><i class="fa-solid fa-shuffle" style="font-size:1rem"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" title="搜索" href="javascript:void(0);" rel="external nofollow"><i class="fa-solid fa-magnifying-glass" style="font-size:1rem"></i></a></div><div class="nav-button" id="nav-console"><a class="console_switchbutton" onclick="Jay.showConsole()" title="显示中控台" href="javascript:void(0);"><i class="fas fa-bars-progress" style="font-size: 1rem;"></i></a></div><div class="nav-button" id="nav-totop"><a class="totopbtn" onclick="btf.scrollToDest(0,500)" title="回到顶部" href="javascript:void(0);" rel="external nofollow"><i class="fa-solid fa-arrow-up"></i><span id="percent"></span></a></div><div id="toggle-menu"><a class="site-page"><i class="fa-solid fa-bars"></i></a></div></div></div></nav><div class="coverdiv loaded" id="coverdiv"><img class="entered loading" id="post-cover" src="https://img.lovelu.top/2022/08/ip.jpg" alt="cover" data-ll-status="loading"></div><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original" title="本文为转载文章，版权归原作者所有" href="/cc/">转载</a><span class="post-meta-categories"><a class="post-meta-categories" href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">后端开发</a></span><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AC%E8%BD%BD%E5%86%85%E5%AE%B9/">#转载内容</a><a class="post-meta__tags" href="/tags/JAVA/">#JAVA</a></div></div></div></div><h1 class="post-title">Java 中是如何获取 IP 归属地的</h1><div id="post-meta"><div class="meta-secondline"><span class="post-meta-date"><i class="fa-fw post-meta-icon fas fa-calendar"></i><time datetime="2022-08-10T07:33:40.000Z" title="发表于 2022-08-10 15:33:40">2022-08-10</time></span><span class="post-meta-wechat" title="该文章在博客首发"><i class="fa-solid fa-compass post-meta-icon"></i>博客独享</span><span class="post-meta-position" title="作者IP属地为武汉"><i class="fa-solid fa-location-dot post-meta-icon"></i>武汉</span><span class="post-meta-wordcount" title="字数总计"><i class="fa-solid fa-file-word fa-fw post-meta-icon"></i><span class="word-count">1.7k</span></span><span class="post-meta-readtime" title="阅读时长"><i class="fas fa-stopwatch fa-fw post-meta-icon"></i><span>6分钟</span></span><span class="post-meta-pv" data-flag-title="Java 中是如何获取 IP 归属地的" title="阅读量"><i class="fab fa-hotjar fa-fw post-meta-icon"></i><span id="twikoo_visitors"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-commentcount" onclick="Jay.scrollTo('#post-comment');" title="评论数"><i class="fa-solid fa-message fa-fw post-meta-icon"></i><a href="/posts/f660/#post-comment"><span id="twikoo-count"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div class="Jay-tag-link"><a class="tag-Link" target="_blank" href="https://blog.csdn.net/m0_63722685/article/details/125698292">
+        <div class="tag-link-tips">本文为转载文章，以下内容来源于</div>
+        <div class="tag-link-bottom">
+            <div class="tag-link-left" style="background-image: url(https://img.lovelu.top/hexo-blog/img/csdn.ico);"></div>
+            <div class="tag-link-right">
+                <div class="tag-link-title">Java 中是如何获取 IP 属地的</div>
+                <div class="tag-link-sitename">叶秋学长</div>
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+        </div>
+        </a></div>
+<p>大家好，我是<a href="https://blog.lovelu.top">满心</a></p>
+<p>细心的小伙伴可能会发现，抖音新上线了 IP 属地的功能，小伙伴在发表动态、发表评论以及聊天的时候，都会显示自己的 IP 属地信息</p>
+<p><img src="https://img-blog.csdnimg.cn/2fcef88a657848bc9f5c71ee7aabc9c7.jpeg" alt=""></p>
+<blockquote>
+<p>下面，我就来讲讲，Java 中是如何获取 IP 属地的，主要分为以下几步<br>通过 HttpServletRequest 对象，获取用户的 IP 地址<br>通过 IP 地址，获取对应的省份、城市</p>
+</blockquote>
+<p>首先需要写一个 IP 获取的工具类，因为每一次用户的 Request 请求，都会携带上请求的 IP 地址放到请求头中。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IpUtil</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getIpAddr</span><span class="params">(ServerHttpRequest request)</span> &#123;</span><br><span class="line">        <span class="type">HttpHeaders</span> <span class="variable">headers</span> <span class="operator">=</span> request.getHeaders();</span><br><span class="line">        <span class="type">String</span> <span class="variable">ipAddress</span> <span class="operator">=</span> headers.getFirst(<span class="string">&quot;X-Forwarded-For&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (ipAddress == <span class="literal">null</span> || ipAddress.length() == <span class="number">0</span> || <span class="string">&quot;unknown&quot;</span>.equalsIgnoreCase(ipAddress)) &#123;</span><br><span class="line">            ipAddress = headers.getFirst(<span class="string">&quot;Proxy-Client-IP&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (ipAddress == <span class="literal">null</span> || ipAddress.length() == <span class="number">0</span> || <span class="string">&quot;unknown&quot;</span>.equalsIgnoreCase(ipAddress)) &#123;</span><br><span class="line">            ipAddress = headers.getFirst(<span class="string">&quot;WL-Proxy-Client-IP&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (ipAddress == <span class="literal">null</span> || ipAddress.length() == <span class="number">0</span> || <span class="string">&quot;unknown&quot;</span>.equalsIgnoreCase(ipAddress)) &#123;</span><br><span class="line">            ipAddress = request.getRemoteAddress().getAddress().getHostAddress();</span><br><span class="line">            <span class="keyword">if</span> (ipAddress.equals(<span class="string">&quot;127.0.0.1&quot;</span>) || ipAddress.equals(<span class="string">&quot;0:0:0:0:0:0:0:1&quot;</span>)) &#123;</span><br><span class="line">                <span class="comment">// 根据网卡取本机配置的IP</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="type">InetAddress</span> <span class="variable">inet</span> <span class="operator">=</span> InetAddress.getLocalHost();</span><br><span class="line">                    ipAddress = inet.getHostAddress();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (UnknownHostException e) &#123;</span><br><span class="line">                    log.error(<span class="string">&quot;根据网卡获取本机配置的IP异常&quot;</span>, e);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 对于通过多个代理的情况，第一个IP为客户端真实IP，多个IP按照&#x27;,&#x27;分割</span></span><br><span class="line">        <span class="keyword">if</span> (ipAddress != <span class="literal">null</span> &amp;&amp; ipAddress.indexOf(<span class="string">&quot;,&quot;</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            ipAddress = ipAddress.split(<span class="string">&quot;,&quot;</span>)[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ipAddress;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>这里有三个名词，分别是</p>
+<ul>
+<li><p>X-Forwarded-For：<strong>一个 HTTP</strong> 扩展头部，主要是为了让 <strong>Web</strong> 服务器获取访问用户的真实 <strong>IP</strong> 地址。每个 IP 地址，每个值通过逗号+空格分开，最左边是最原始客户端的 <strong>IP</strong> 地址，中间如果有多层代理，每⼀层代理会将连接它的客户端 IP 追加在 <strong>X-Forwarded-For</strong> 右边。</p>
+</li>
+<li><p>X-Real-IP：一般只记录真实发出请求的客户端IP</p>
+</li>
+<li><p>Proxy-Client-IP：这个一般是经过 Apache http 服务器的请求才会有，用 Apache http 做代理时一般会加上 Proxy-Client-IP 请求头</p>
+</li>
+<li><p>WL-Proxy-Client-IP：也是通过 Apache http 服务器，在 weblogic 插件加上的头。</p>
+</li>
+</ul>
+<p><strong>在我们获取到用户的 IP 地址后，那么就可以获取对应的 ip 信息了</strong><br>我在 <strong>Github</strong> 冲浪的时候，发现了 <strong>Ip2region</strong> 项目。</p>
+<p>一个准确率 <strong>99.9%</strong> 的离线 IP 地址定位库，<strong>0.0x</strong> 毫秒级查询，<strong>ip2region.db</strong> 数据库只有数 MB，提供了 java,php,c,python,nodejs,golang,c# 等查询绑定和<strong>Binary，B树</strong>，内存三种查询算法。</p>
+<p><img src="https://img-blog.csdnimg.cn/bdf5d0e3a43c47728a138e67c45b1134.png" alt=""></p>
+<p>数据聚合了一些知名 <strong>ip</strong> 到地名查询提供商的数据，这些是他们官方的的准确率，经测试着实比经典的纯真 <strong>IP</strong> 定位准确一些。<strong>ip2region</strong> 的数据聚合自以下服务商的开放 API 或者数据。</p>
+<ul>
+<li><p>80%, 淘宝IP地址库, <a target="_blank" rel="noopener" href="http://ip.taobao.com/">http://ip.taobao.com/</a></p>
+</li>
+<li><p>≈10%, GeoIP, <a target="_blank" rel="noopener" href="https://geoip.com/">https://geoip.com/</a></p>
+</li>
+<li><p>≈2%, 纯真IP库, <a target="_blank" rel="noopener" href="http://www.cz88.net/">http://www.cz88.net/</a></p>
+</li>
+</ul>
+<blockquote>
+<p>备注：如果上述开放API或者数据都不给开放数据时ip2region将停止数据的更新服务。</p>
+</blockquote>
+<p>每条 ip 数据段都固定了格式：</p>
+<p><code>_城市Id|国家|区域|省份|城市|ISP_</code><br>只有中国的数据精确到了城市，其他国家有部分数据只能定位到国家，后前的选项全部是 0，已经包含了全部你能查到的大大小小的国家</p>
+<p>生成的数据库文件 <strong>ip2region.db</strong> 只有几 <strong>MB</strong>，最小的版本只有 <strong>1.5MB</strong>，随着数据的详细度增加数据库的大小也慢慢增大，目前还没超过 <strong>8MB</strong>。</p>
+<p><strong>内置的三种查询算法</strong></p>
+<p>全部的查询客户端单次查询都在 0.x 毫秒级别，内置了三种查询算法</p>
+<ul>
+<li><p>memory 算法：整个数据库全部载入内存，单次查询都在0.1x毫秒内，C语言的客户端单次查询在0.00x毫秒级别。</p>
+</li>
+<li><p>binary 算法：基于二分查找，基于ip2region.db文件，不需要载入内存，单次查询在0.x毫秒级别。</p>
+</li>
+<li><p>b-tree 算法：基于btree算法，基于ip2region.db文件，不需要载入内存，单词查询在0.x毫秒级别，比binary算法更快。</p>
+</li>
+</ul>
+<p><strong>ip2region安装</strong><br>下面，就让我们给项目引入 ip2region，进行 ip 信息转换吧</p>
+<p>首先引入 <strong>maven</strong> 依赖<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.lionsoul&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;ip2region&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;<span class="number">1.7</span><span class="number">.2</span>&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure><br>然后编写一个工具类 <strong>IpUtils</strong> ，首先需要加载 <strong>ip2region.db</strong> 文件<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    dbPath = createFtlFileByFtlArray() + <span class="string">&quot;ip2region.db&quot;</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        config = <span class="keyword">new</span> <span class="title class_">DbConfig</span>();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (DbMakerConfigException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        searcher = <span class="keyword">new</span> <span class="title class_">DbSearcher</span>(config, dbPath);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在加载的时候，需要下载仓库中的 <strong>ip2region.db</strong> 文件，然后放到 <strong>resource</strong> 目录下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getCityInfo</span><span class="params">(String ip)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(dbPath)) &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Error: Invalid ip2region.db file&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(config == <span class="literal">null</span> || searcher == <span class="literal">null</span>)&#123;</span><br><span class="line">            log.error(<span class="string">&quot;Error: DbSearcher or DbConfig is null&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//查询算法</span></span><br><span class="line">        <span class="comment">//B-tree, B树搜索（更快）</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">algorithm</span> <span class="operator">=</span> DbSearcher.BTREE_ALGORITHM;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Binary,使用二分搜索</span></span><br><span class="line">        <span class="comment">//DbSearcher.BINARY_ALGORITHM</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Memory,加载内存（最快）</span></span><br><span class="line">        <span class="comment">//DbSearcher.MEMORY_ALGORITYM</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 使用静态代码块，减少文件读取操作</span></span><br><span class="line"><span class="comment">//            DbConfig config = new DbConfig();</span></span><br><span class="line"><span class="comment">//            DbSearcher searcher = new DbSearcher(config, dbPath);</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//define the method</span></span><br><span class="line">            <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">switch</span> (algorithm) &#123;</span><br><span class="line">                <span class="keyword">case</span> DbSearcher.BTREE_ALGORITHM:</span><br><span class="line">                    method = searcher.getClass().getMethod(<span class="string">&quot;btreeSearch&quot;</span>, String.class);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> DbSearcher.BINARY_ALGORITHM:</span><br><span class="line">                    method = searcher.getClass().getMethod(<span class="string">&quot;binarySearch&quot;</span>, String.class);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> DbSearcher.MEMORY_ALGORITYM:</span><br><span class="line">                    method = searcher.getClass().getMethod(<span class="string">&quot;memorySearch&quot;</span>, String.class);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">default</span>:</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="type">DataBlock</span> <span class="variable">dataBlock</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">if</span> (Util.isIpAddress(ip) == <span class="literal">false</span>) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;Error: Invalid ip address&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            dataBlock = (DataBlock) method.invoke(searcher, ip);</span><br><span class="line">            <span class="type">String</span> <span class="variable">ipInfo</span> <span class="operator">=</span> dataBlock.getRegion();</span><br><span class="line">            <span class="keyword">if</span> (!StringUtils.isEmpty(ipInfo)) &#123;</span><br><span class="line">                ipInfo = ipInfo.replace(<span class="string">&quot;|0&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">                ipInfo = ipInfo.replace(<span class="string">&quot;0|&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> ipInfo;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br>下面，我们编写 main 函数进行测试，发现可以正常的解析出 ip 信息</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/5a875816c0f56b11b7d0f097d66c7394.png" alt=""></p>
+<p>由于 ip 属地在国内的话，只会展示省份，而国外的话，只会展示国家。所以我们还需要对这个方法进行一下封装，得到获取 IP 属地的信息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取IP属地</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> ip</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">getIpPossession</span><span class="params">(String ip)</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">cityInfo</span> <span class="operator">=</span> getCityInfo(ip);</span><br><span class="line">    <span class="keyword">if</span> (!StringUtils.isEmpty(cityInfo)) &#123;</span><br><span class="line">        cityInfo = cityInfo.replace(<span class="string">&quot;|&quot;</span>, <span class="string">&quot; &quot;</span>);</span><br><span class="line">        String[] cityList = cityInfo.split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (cityList.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 国内的显示到具体的省</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;中国&quot;</span>.equals(cityList[<span class="number">0</span>])) &#123;</span><br><span class="line">                <span class="keyword">if</span> (cityList.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> cityList[<span class="number">1</span>];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 国外显示到国家</span></span><br><span class="line">            <span class="keyword">return</span> cityList[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;未知&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>下面，我们在找一个 国外的 IP 测试一下效果。可以看到已经能够正常的显示 IP 属地信息了~</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/d1dc0d45a08b8e676ad3dfd335d36e5f.png" alt=""></p>
+<p>到这里如果获取用户的 IP 属地已经完成啦，如果想要了解关于更多 <strong>ip2region</strong> 的功能，欢迎访问其 <strong>Github</strong> 地址进行学习。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/lionsoul2014/ip2region">项目地址</a></p>
+</article><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="post-reward" onclick="AddRewardMask()"><div class="reward-button button--animated"><i class="fa-solid fa-burger-lettuce"></i> 打赏作者</div><div class="reward-main"><ul class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/wechat.png" target="_blank"><img class="post-qr-code-img" src="/img/wechat.png" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.png" target="_blank"><img class="post-qr-code-img" src="/img/alipay.png" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul><a class="reward-main-btn" href="/about/" target="_blank" title="赞赏作者"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></ul></div></div><div class="reward-link mode"><a class="reward-link-button" href="/wechat/"><i class="fa-solid fa-seedling"></i>运营模式与责任</a></div><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="fas fa-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=Java 中是如何获取 IP 归属地的&amp;url=https://blog.lovelu.top/posts/f660/&amp;pic=https://img.lovelu.top/2022/08/ip.jpg" title="分享到微博" rel="noopener external nofollow noreferrer noopener"><i class="fab fa-weibo" style="font-size:22px"></i></a></div><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="rm.copyPageUrl()"><i class="fas fa-link"></i></div></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%BD%AC%E8%BD%BD%E5%86%85%E5%AE%B9/"><span class="tags-punctuation">#</span>转载内容<span class="tagsPageCount">17</span></a><a class="post-meta__tags" href="/tags/JAVA/"><span class="tags-punctuation">#</span>JAVA<span class="tagsPageCount">8</span></a></div></div></div></div><div class="post-copyright"><div class="post-copyright__author"><a class="post-copyright__original" title="本文为转载文章，版权归原作者所有" href="/cc/">转载</a><a class="post-copyright-title" href="#"><span>Java 中是如何获取 IP 归属地的</span></a></div><div class="post-copyright__type"><span class="post-copyright-info" id="post-copyright-url"><a href="https://blog.lovelu.top/posts/f660/">https://blog.lovelu.top/posts/f660/</a></span><button class="post-copyright-copybtn" onclick="rm.copyPageUrl()"><i class="fas fa-paste copy-btn"></i></button></div><div class="post-copyright__notice"><span class="post-copyright-info">本文是转载文章，版权归原作者所有。建议访问原文，转载本文请联系作者</span></div></div><nav class="pagination-post show-window" id="pagination"><div class="prev-post pull-left"><a href="/posts/fe80/"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">NodeJs搭建web服务器</div></div></a></div><div class="next-post pull-right"><a href="/posts/a9c7/"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">介绍一款开源好用的api管理工具-YAPI</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fa-solid fa-robot fa-fw"></i><span> 阅读建议</span></div><div class="relatedPosts-list"><div><a href="/posts/57d3/" title="Redis 事务遇上 @Transactional 有大坑！记一次 Redis 生产事故！"><img class="cover entered loading" src="https://img.lovelu.top/2022/12/redis.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-20</div><div class="title">Redis 事务遇上 @Transactional 有大坑！记一次 Redis 生产事故！</div></div></a></div><div><a href="/posts/dbdb/" title="Spring Cloud原理详解"><img class="cover entered loading" src="https://img.lovelu.top/2022/08/springcloud.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-20</div><div class="title">Spring Cloud原理详解</div></div></a></div><div><a href="/posts/8c637907/" title="不要再用 if (obj !&#x3D; null)"><img class="cover entered loading" src="https://img.lovelu.top/2022/12/luoji_gaizao.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-09</div><div class="title">不要再用 if (obj !&#x3D; null)</div></div></a></div><div><a href="/posts/82c1/" title="求你别再用swagger了，给你推荐一个在线文档神器"><img class="cover entered loading" src="https://img.lovelu.top/2022/09/api.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-16</div><div class="title">求你别再用swagger了，给你推荐一个在线文档神器</div></div></a></div><div><a href="/posts/edb16c8e/" title="短链接java如何实现？"><img class="cover entered loading" src="https://img.lovelu.top/2022/12/duanlianjie.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-09</div><div class="title">短链接java如何实现？</div></div></a></div><div><a href="/posts/c7e1e4cb/" title="MySQL 上亿大表如何优化？"><img class="cover entered loading" src="https://img.lovelu.top/2022/12/database.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-26</div><div class="title">MySQL 上亿大表如何优化？</div></div></a></div><div><a href="/posts/7a59/" title="SpringBoot迷你天猫商城"><img class="cover entered loading" src="https://img.lovelu.top/2022/12/tianmao.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-01</div><div class="title">SpringBoot迷你天猫商城</div></div></a></div><div><a href="/posts/aab3/" title="Windows下端口占用及杀进程"><img class="cover entered loading" src="https://img.lovelu.top/2022/windows10.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-03</div><div class="title">Windows下端口占用及杀进程</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-privacy"><a href="/privacy/">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><div class="author-info__sayhi" id="author-info__sayhi"></div><div class="author-info__name">满心</div><div class="author-info__description">这里见证一个陌生人的<b>成长</b>，这有关于<b>学习</b>、<b>开发</b>相关的问题和看法，还有<b>生活</b>和<b>分享</b>。</div><div class="author-info__description2"><b>夏日有着迟暮的霞光正如晚来的你皆是笑意</b>。</div></div></div><div class="banner-button-group"><div class="banner-button" onclick="pjax.loadUrl(&quot;/about/&quot;)"><i class="fas fa-circle-chevron-right"></i><span class="banner-button-text">了解更多</span></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/helloqibin" target="_blank" title="Github"><i class="ri-github-line"></i></a><a class="social-icon" href="https://gitee.com/helloqibin_admin" target="_blank" title="Gitee"><i class="ri-git-branch-line"></i></a></div></div><div class="sticky_layout"><div class="card-widget jay-right-widget" id="card-wechat" onclick="pjax.loadUrl('/wechat/')"><div id="flip-wrapper"><div id="flip-content"><div class="face"></div><div class="back face"></div></div></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-list-ol"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/d6ce/" title="浏览器的标签网址迁移"><img src="https://img.lovelu.top/2022/11/chrome.webp" onerror="this.onerror=null;this.src='/img/404.png'" alt="浏览器的标签网址迁移"/></a><div class="content"><a class="title" href="/posts/d6ce/" title="浏览器的标签网址迁移">浏览器的标签网址迁移</a><time datetime="2023-01-11T02:15:51.000Z" title="发表于 2023-01-11 10:15:51">2023-01-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/c909/" title="轻量级权限框架之-SoToken"><img src="https://img.lovelu.top/2023/01/sotoken2.jpg" onerror="this.onerror=null;this.src='/img/404.png'" alt="轻量级权限框架之-SoToken"/></a><div class="content"><a class="title" href="/posts/c909/" title="轻量级权限框架之-SoToken">轻量级权限框架之-SoToken</a><time datetime="2023-01-09T11:54:23.000Z" title="发表于 2023-01-09 19:54:23">2023-01-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/a06e/" title="Tag Plugins Plus"><img src="https://img.lovelu.top/2023/01/tag_plus.png" onerror="this.onerror=null;this.src='/img/404.png'" alt="Tag Plugins Plus"/></a><div class="content"><a class="title" href="/posts/a06e/" title="Tag Plugins Plus">Tag Plugins Plus</a><time datetime="2023-01-06T06:13:41.000Z" title="发表于 2023-01-06 14:13:41">2023-01-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/64a8/" title="轻量级在线任务管理工具-DooTask"><img src="https://img.lovelu.top/2023/01/dootask_cover.webp" onerror="this.onerror=null;this.src='/img/404.png'" alt="轻量级在线任务管理工具-DooTask"/></a><div class="content"><a class="title" href="/posts/64a8/" title="轻量级在线任务管理工具-DooTask">轻量级在线任务管理工具-DooTask</a><time datetime="2023-01-02T23:28:56.000Z" title="发表于 2023-01-03 07:28:56">2023-01-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d84/" title="愿所有的美好和期待都在2023如约而至"><img src="https://img.lovelu.top/2023/01/WechatIMG36.jpeg" onerror="this.onerror=null;this.src='/img/404.png'" alt="愿所有的美好和期待都在2023如约而至"/></a><div class="content"><a class="title" href="/posts/d84/" title="愿所有的美好和期待都在2023如约而至">愿所有的美好和期待都在2023如约而至</a><time datetime="2023-01-01T06:31:00.000Z" title="发表于 2023-01-01 14:31:00">2023-01-01</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer_deal"><a class="deal_link" href="mailto:helloqibin@163.com" title="mail"><i class="fa-regular fa-envelope"></i></a><a class="deal_link" href="https://space.bilibili.com/1500727556" title="哔哩哔哩" target="_blank"><i class="fa-brands fa-bilibili"></i></a><a class="deal_link" href="https://weibo.com/u/6220311811" title="微博" target="_blank"><i class="fa-brands fa-weibo"></i></a><a class="deal_link" href="https://github.com/helloqibin" title="github" target="_blank"><i class="fa-brands fa-github"></i></a><img class="footer_mini_logo entered loading" style="border-radius:50%" src="https://img.lovelu.top/hexo-blog/1e0ad9d4fedc577513e97f2872201b56.gif" onclick="btf.scrollToDest(0,500)" title="返回顶部"/><a class="deal_link" target="_blank" rel="noopener" href="https://juejin.cn/user/3136282935429815" title="稀土掘金"><i class="fa-brands fa-xing"></i></a><a class="deal_link" href="https://www.zhihu.com/people/manXin" title="知乎" target="_blank"><i class="fa-brands fa-zhihu" style="font-size:1.1rem"></i></a><a class="deal_link" href="https://gitee.com/helloqibin_admin" title="gitee" target="_blank"><i class="fa-brands fa-google-plus"></i></a><a class="deal_link" href="https://www.douyin.com/user/MS4wLjABAAAAlqZWmVJwbWLK30Ah3rHJIK_vKhxMz3ndBPPB-8HC_Ms?showTab=post" title="tiktok" target="_blank"><i class="fa-brands fa-tiktok" style="font-size:1.1rem"></i></a></div><div id="Jay-footer"><div class="footer-group"><h3 class="footer-title">直达</h3><div class="footer-links"><a class="footer-item" href="https://lovelu.top" target="_blank">我的主页</a><a class="footer-item" href="/archives/">文章</a><a class="footer-item" href="/tags/">标签</a><a class="footer-item" onclick="toRandomFlink()">随机友链</a></div></div><div class="footer-group"><h3 class="footer-title">开发</h3><div class="footer-links"><a class="footer-item" href="/categories/DevOps/">DevOps</a><a class="footer-item" href="/categories/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/">经验分享</a><a class="footer-item" href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">后端开发</a><a class="footer-item" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/">前端开发</a></div></div><div class="footer-group"><h3 class="footer-title">生活</h3><div class="footer-links"><a class="footer-item" href="/music/">音乐分享</a><a class="footer-item" href="/movies/">电影推荐</a><a class="footer-item" href="/gallery/">宝藏相册</a></div></div><div class="footer-group"><h3 class="footer-title">导航</h3><div class="footer-links"><a class="footer-item" href="/essay/">即刻短文</a><a class="footer-item" href="/stars/">网址收藏</a><a class="footer-item" href="/moments/">友链文章</a><a class="footer-item" href="/update/">更新记录</a></div></div><div class="footer-group"><h3 class="footer-title">服务</h3><div class="footer-links"><a class="footer-item" href="https://v6.51.la/" target="_blank">51la统计</a><a class="footer-item" href="https://www.foreverblog.cn/treaty.html" target="_blank">十年之约</a><a class="footer-item" href="https://bf.zzxworld.com/s/714" target="_blank">BlogFinder</a></div></div><div class="footer-group"><h3 class="footer-title">协议</h3><div class="footer-links"><a class="footer-item" href="/privacy/">隐私协议</a><a class="footer-item" href="/cookies/">Cookie</a><a class="footer-item" href="/cc/">版权协议</a></div></div><div class="footer-group"><div class="footer-title-group"><h3 class="footer-title">友链</h3><a class="random-friends-btn" href="javascript:Jay.addFriendLinksInFooter();"><i class="fa-solid fa-arrow-rotate-right"></i></a></div><div class="footer-links" id="friend-links-in-footer"></div></div></div><div id="footer-banner"><div class="footer-banner-links"><div class="footer-banner-left"><div class="footer-banner-left"><div id="footer-banner-tips"></div><script src="https://img.lovelu.top/hexo-blog/js/typed.min.js"></script><script>var typed = new Typed("#footer-banner-tips", {
+  strings: ["追求让人充实，分享让人快乐", "Pursuing makes people full, sharing makes people happy"],
+  startDelay: 200,
+  backDelay: 2000,
+  typeSpeed: 100,
+  loop: true,
+  backSpeed: 20
+})
+</script></div></div><div class="footer-banner-right"><a class="footer-banner-link" href="/atom.xml" title="RSS">订阅</a><a class="footer-banner-link" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly" title="theme">主题</a><a class="footer-banner-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="备案">鄂ICP备2022011660号</a><a class="footer-banner-link cc" href="/cc/" title="cc协议"><i class="iconfont icon-occ"></i><i class="iconfont icon-occ-by"></i><i class="iconfont icon-onc"></i><i class="iconfont icon-ond"></i></a></div></div></div><div id="cookies-window"><div class="cookies-window-title">协议提醒助手</div><div class="cookies-window-content"><span class="cookies-tip">查看本站为你的个人隐私做出的努力</span><a class="cookies-link" href="/privacy/" title="本站如何保护你的隐私"><i class="fas fa-arrow-circle-right"></i></a></div></div><div id="quit-box" onclick="RemoveRewardMask()"></div><div class="comment-barrage"></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="显示模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search" style="zoom: 1;"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">搜索</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><div id="algolia-search-results"><div id="algolia-hits"><a class="tag-list" href="/categories/DevOps/">热门</a><a class="tag-list" href="/categories/后端开发/">后端</a><a class="tag-list" href="/tags/转载内容/">转载内容</a><a class="tag-list" href="/categories/前端开发/">前端</a><a class="tag-list" href="/categories/经验分享/">经验</a></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><div id="algolia-tips"><i class="fa-brands fa-algolia"></i><span class="algolia-tips-text">Algolia 提供搜索服务</span></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div class="js-pjax"><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="fa-solid fa-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="fa-solid fa-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="fa-solid fa-arrow-rotate-right"></i></div><div class="rightMenu-item" id="menu-top"><i class="fa-solid fa-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="fas fa-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="fas fa-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="fas fa-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="fas fa-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="fas fa-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="fas fa-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="fas fa-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-search"><i class="fa-solid fa-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="fa-solid fa-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="fas fa-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="fas fa-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="fas fa-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open('https://music.163.com/#/discover/toplist?id=3778678', '_blank');"><i class="fas fa-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="fas fa-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="fas fa-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/category/"><i class="fas fa-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="fas fa-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line"><a class="rightMenu-item menu-link" href="/privacy/"><i class="fa-solid fa-hand"></i><span>隐私协议</span></a><a class="rightMenu-item menu-link" href="/cc/"><i class="fa-solid fa-closed-captioning"></i><span>版权协议</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><div class="rightMenu-item" id="menu-copy"><i class="fas fa-copy"></i><span>复制地址</span></div><div class="rightMenu-item" id="menu-commentBarrage"><i class="fa-solid fa-message"></i><span class="menu-commentBarrage-text">关闭热评</span></div><div class="rightMenu-item" id="menu-darkmode"><i class="fa-solid fa-moon"></i><span class="menu-darkmode-text">显示模式</span></div><div class="rightMenu-item" id="menu-translate"><i class="fas fa-language"></i><span>轉為繁體</span></div></div></div><div id="rightmenu-mask"></div></div><div style="zoom: 1;"><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/rgbaster.min.js"></script><script charset="utf-8" data-pjax="" src="/jayhrn/blogex.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.staticfile.org/fancyapps-ui/4.0.31/fancybox.umd.min.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/vanilla-lazyload/17.3.1/lazyload.iife.min.js"></script><script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/node-snackbar/0.1.16/snackbar.min.js"></script><script src="https://cdn.staticfile.org/algoliasearch/4.14.2/algoliasearch-lite.umd.min.js"></script><script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/instantsearch.js/2.10.5/instantsearch.min.js"></script><script defer src="/js/search/algolia.js"></script><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=>{ preloader.endLoading() })
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete',() => { preloader.endLoading()})
+}</script><div class="js-pjax"><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.lovelu.top',
+      region: 'true',
+      onCommentLoaded: function () {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, {"placeholder":null}))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.lovelu.top',
+      region: 'true',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://cdn.staticfile.org/twikoo/1.6.7/twikoo.all.min.js').then(runFn)
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.lovelu.top',
+        region: 'true',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.staticfile.org/twikoo/1.6.7/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img class="entered loaded" ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick}</span></div></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${btf.diffDate(array[i].date, true)}</time></div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script src="https://img.lovelu.top/hexo-blog/js/waterfall.min.js"></script><link rel="stylesheet" href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/aplayer/1.10.1/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/aplayer/1.10.1/APlayer.min.js"></script><script src="https://img.lovelu.top/hexo-blog/js/Meting2.min.js"></script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script data-pjax="" src="https://img.lovelu.top/hexo-blog/js/qrcode.min.js"></script><script data-pjax="" src="https://img.lovelu.top/hexo-blog/js/rightmenu.js"></script><script data-pjax="" src="https://img.lovelu.top/hexo-blog/js/swiper-bundle.min.js"></script><script data-pjax="" src="/jayhrn/commentBarrage.js"></script></div><div class="js-pjax"><script>coverColor()
+addRightMenuClickEvent()
+navTitle()
+percent()
+Jay.topPostScroll()
+Jay.topCategoriesBarScroll()
+Jay.sayhi()
+Jay.addTag()
+Jay.stopImgRightDrag()
+Jay.addFriendLinksInFooter()
+Jay.qrcodeCreate()
+Jay.hidecookie()
+Jay.onlyHome()
+Jay.addNavBackgroundInit()
+Jay.initIndexEssay()
+Jay.changeTimeInEssay()
+Jay.refreshEssayWaterFall()
+Jay.darkModeStatus()
+Jay.categoriesBarActive()
+Jay.initThemeColor()
+Jay.hideLoading()
+Jay.tagPageActive()</script></div><!-- hexo injector body_end start --><script async src="https://img.lovelu.top/hexo-blog/js/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --></body></html><script>var posts=["posts/d4c2f93a/","posts/68e5d18f/","posts/207c/","posts/f660/","posts/67b2/","posts/10d3/","posts/c7e1e4cb/","posts/a0e8/","posts/fe80/","posts/57d3/","posts/dbdb/","posts/7a59/","posts/c8df/","posts/aab3/","posts/a06e/","posts/6b3ac260/","posts/bf07/","posts/6c6f/","posts/bc7f/","posts/8c637907/","posts/10621433/","posts/a9c7/","posts/9599ca6d/","posts/7f1/","posts/6075/","posts/cbec/","posts/91889fc9/","posts/116f/","posts/5635/","posts/1383/","posts/b19d9d82/","posts/d84/","posts/9a72f70b/","posts/13d7ab12/","posts/1d9b/","posts/82c1/","posts/d6ce/","posts/edb16c8e/","posts/e838/","posts/96aa/","posts/ddcb1723/","posts/1e49/","posts/c909/","posts/64a8/"];function toRandomPost(){ window.pjax ? pjax.loadUrl('/'+posts[Math.floor(Math.random()*posts.length)]) : window.open('/'+posts[Math.floor(Math.random()*posts.length)], "_self"); };</script><script>var flinks=["https://blog.lovelu.top","https://blog.jayhrn.com","https://blog.zhheo.com/","https://akilar.top/","https://anzhiy.cn/","https://zfe.one","https://www.antmoe.com/","https://www.imaegoo.com","https://blog.eurkon.com","https://www.thyuu.com/","https://noionion.top/","https://www.yyyzyyyz.cn/","https://blog.gmcj0816.top/","https://dusays.com","https://www.fit2cloud.com/jumpserver/index.html","https://www.gjcloak.top/","https://www.xccx.cc/","https://zhinianboke.com/","https://blog.tryrun.top/","https://dhjdd.cn/","https://www.czfq99.cn","https://b.925i.cn","https://bbchin.com","https://halo.run/","https://www.codeui.top","https://www.randycout.com","https://www.halo.icu/","https://www.fish9.cn","https://yeas.fun","https://blog.trfox.ml","https://www.haoba.cc","https://cat.dorcandy.cn","https://www.manction.com/","https://chenjunan.top/","https://macapp.org.cn/","https://pomac.cc/","https://www.cappuccinoj.cn"];function toRandomFlink(){window.open(flinks[Math.floor(Math.random()*flinks.length)]);};</script>
