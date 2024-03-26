@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>满心记</title>
+  
+  <subtitle>分享技术与生活</subtitle>
+  <link href="https://blog.lovelu.top/atom.xml" rel="self"/>
+  
+  <link href="https://blog.lovelu.top/"/>
+  <updated>2024-03-26T02:05:04.688Z</updated>
+  <id>https://blog.lovelu.top/</id>
+  
+  <author>
+    <name>满心记</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>好用的书签导航工具-Mtab</title>
+    <link href="https://blog.lovelu.top/p/31993464.html"/>
+    <id>https://blog.lovelu.top/p/31993464.html</id>
+    <published>2024-03-26T01:45:48.000Z</published>
+    <updated>2024-03-26T02:05:04.688Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://img.lovelu.top/2024/03/mtab_cover.png" alt=""></p><blockquote><p>在这个信息爆炸的时代，难道你不希望有一个能够轻松解决你多端、多浏览器的收藏和笔记同步问题的神奇工具吗？别再纠结了！Mtab书签是一款集成基础导航、记事本、在线小工具和多端同步于一身的web应用。它不仅可以简化你的网络浏览体验，还能提供更多功能，解决你的多端同步之忧</p></blockquote><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>跨设备同步：不再为了在不同设备上找不到书签或笔记而苦恼。Mtab书签让你的收藏网址和重要笔记在所有设备上同步。</p><p>跨浏览器支持：Mtab书签支持所有主流浏览器。Chrome、Firefox、Edge、Safari，无论你的选择是什么，都能在一应俱全的工具箱中找到你的书签和笔记。</p><p>多功能一体：Mtab书签不仅仅是一个书签工具，它还提供了一个实用的记事本功能，让你随时随地记录想法、灵感和待办事项。此外，它还内置了一些在线小工具，解决您的日常工作问题。</p><p>私有部署：如果部你对数据安全性有更高要求，Mtab书签也支持私有部署。你可以将它部署在自己的服务器上，完全掌控你的数据，不受任何干扰。</p><p>免费无广告：Mtab书签坚守“免费无广告”的原则，为用户提供清爽的使用体验，没有任何干扰。</p><p>Mtab书签的界面设计美观简洁，操作简单直观，让你可以专注于你的网络活动，而不是应用本身。它是你高效、无忧的网络生活的理想伴侣。 高效流畅的操作体验：超级简约却强大的操作逻辑，没有繁琐的操作流程即可处理复杂的事情。</p><h3 id="私有部署"><a href="#私有部署" class="headerlink" title="私有部署"></a>私有部署</h3><h4 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h4><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -itd --name mtab -p 9200:80 -v /opt/mtab:/app itushan/mtab</span></span><br></pre></td></tr></table></figure><p>命令解释： 其中 <code>9200</code> 可改为你服务器的其他端口。 <code>/opt/mtab</code> 可改为是你服务器的目录挂载路径，<code>容器内目录和端口必须是 80 和 /app</code>，—name为自定义容器名称。</p><p>可视化部署： 群晖等其他管理面板请拉取 itushan/mtab 镜像。服务器端口请自己填写，容器请填写 80 ，服务器目录请填写自己想挂载的目录，容器部分请填写 /app。</p><p>程序数据库安装： 部署完docker后访问您设置的端口，然后填写一些数据库和redis等基础配置后点击 安装 按钮即可等待安装完成， 注意的是容器部署下数据库和redis地址请不要填写127.0.0.1,因为容器内127.0.0.1不指向宿主机网络。程序安装后选择的redis库是0，可以在程序根目录.env文件修改SELECT的值（0-16范围）改为你想使用的db。</p><p>最后事项： 最后如果要使用外网访问，为了安全请使用Nginx反向代理或者CDN来代理您创建时填写的端口，并且配置SSL证书启用HTTPS，纯内网环境请随意啦。</p><h4 id="源码部署"><a href="#源码部署" class="headerlink" title="源码部署"></a>源码部署</h4><p>准备环境 Linux系统+php7.4+mysql8(mysql5.7也行，支持json就行)+Nginx+Redis;</p><p>php请安装redis,fileinfo,zip,curl,mysqli,json,json等常用的扩展，然后并且解除一些禁用函数（宝塔默认禁用了一些函数） 需要去php.ini去解除</p><p>需要解除的函数具体如下,或者全部解除也可以</p><p>shell_exec,putenv</p><ol><li>首先将代码下载到服务器网站目录下并且解压。</li><li>然后将解压出来的程序目录以及子目录全部授权&gt;=755以上的权限。</li><li>将Nginx的网站目录设置为程序目录下的 public 目录。一定要配置伪静态规则</li></ol><p>nginx的伪静态配置代码</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location ~^/ &#123;</span><br><span class="line">    <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">        rewrite  ^(.*)$  /index.php?s=<span class="variable">$1</span>  last;   <span class="built_in">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ol><li>然后配置好域名或者通过你自己的服务器的ip访问网站，不出意外会出现安装 页面，填写好一些基础的配置信息安装即可。（填写配置信息的是后请确保数据库账户和redis相关信息正确）</li><li>安装完成后即可访问网站，可通过登录安装时填写的账户登录网站进入后台</li></ol><h3 id="官网及演示地址"><a href="#官网及演示地址" class="headerlink" title="官网及演示地址"></a>官网及演示地址</h3><p><a href="https://demo.mtab.cc/">官网demo</a>，admin/123456<br><a href="https://gitee.com/jhjd/mtab#https://gitee.com/link">gitee源码</a></p>]]></content>
+    
+    
+    <summary type="html">在这个信息爆炸的时代，难道你不希望有一个能够轻松解决你多端、多浏览器的收藏和笔记同步问题的神奇工具吗？别再纠结了！Mtab书签是一款集成基础导航、记事本、在线小工具和多端同步于一身的web应用。它不仅可以简化你的网络浏览体验，还能提供更多功能，解决你的多端同步之忧</summary>
+    
+    
+    
+    <category term="工具分享" scheme="https://blog.lovelu.top/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/"/>
+    
+    
+    <category term="网页前端" scheme="https://blog.lovelu.top/tags/%E7%BD%91%E9%A1%B5%E5%89%8D%E7%AB%AF/"/>
+    
+    <category term="办公" scheme="https://blog.lovelu.top/tags/%E5%8A%9E%E5%85%AC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在忙碌的生活中，别忘了停下脚步</title>
+    <link href="https://blog.lovelu.top/p/cbdc1289.html"/>
+    <id>https://blog.lovelu.top/p/cbdc1289.html</id>
+    <published>2024-03-25T02:25:01.000Z</published>
+    <updated>2024-03-25T05:39:15.791Z</updated>
+    
+    <content type="html"><![CDATA[<p>有了小孩的生活，感觉每天都很忙，虽然不知道自己到底在忙啥，上班就不谈，放假的时候</p><blockquote><p>亲戚朋友问：在干嘛，出来玩啊<br>我答：没时间，在带娃</p></blockquote><p>这似乎是在我有孩子之前，约有孩子的朋友出来玩，遇到最多的回答了，没想到我也到了这么一天</p><p>不过，虽然如此，但躁动的心无法抑制，必须得出去转转</p><p>早就听说洪山江滩已经预开放了，由于没住那边，所以一直也没去，不知道是个啥样子，这不，今天就抽空先过去踩踩点</p><p>先来几张图吧，然后谈谈想法，其实也没啥想法，好尴尬~</p><div class="img-list">  <div class="list-inner">    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt1.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt1.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt1.jpg" data-lazy-src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt1.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt2.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt2.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt2.jpg" data-lazy-src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt2.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt3.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt3.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt3.jpg" data-lazy-src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt3.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt4.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt4.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt4.jpg" data-lazy-src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt4.jpg"></img>    </a>  </div></div><p>因为是季节问题，所以长江水位并不高，感觉如果是汛期的话，水位会覆盖到提上来，下面这些位置都会被水覆盖，等水推下去了，可能会有些水坑，然后可以抓鱼</p><p>因为江滩很大，我今的这个入口比较偏江滩开头的位置，所以玩的东西也少，几乎是周边小区的人，带上帐篷，一些户外设备来这里玩，大部分还是带着孩子来，毕竟有沙子、滑滑梯、还可以放风筝，或者是沿江大道走走，阵阵风吹着还是蛮舒服的</p><p>当然路两边的樱花树也开花了，还挺不错，不是很热情况下，搭个帐篷，吃点副食，消遣下时光还是蛮不错的</p><p>娱乐放松身心之后，嘴巴和肚子肯定也要照顾好了，这次吃的是 <strong>鱼你在一起</strong> ，口味还不错，很下饭</p><div class="img-list">  <div class="list-inner">    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni8.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni8.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni8.jpg" ></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni9.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni9.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni9.jpg"></img>    </a>  </div></div>]]></content>
+    
+    
+    <summary type="html">在忙碌的生活中，随着孩子的到来，时间仿佛变得更加紧迫。即便不知道自己究竟在忙些什么，放假时也常常被问及出来玩的邀约，却只能回答“没时间，正在带娃”。然而，即便如此，内心的躁动仍无法抑制，迫使自己外出转转。一次抽空前往洪山江滩踩点，发现水位不高，季节问题导致部分位置被水覆盖，但这也为未来抓鱼留下了伏笔。江滩宽广，入口处聚集了周边小区的人群，他们带着孩子来玩耍，享受沙滩、滑滑梯、放风筝等乐趣。樱花树盛开，清风拂面，搭帐篷、品副食，消遣时光，尽显惬意。娱乐放松后，一顿美食也是必不可少，这次品尝了口味不错的“鱼你在一起”，美食下饭，满足身心。</summary>
+    
+    
+    
+    <category term="心情" scheme="https://blog.lovelu.top/categories/%E5%BF%83%E6%83%85/"/>
+    
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="美食" scheme="https://blog.lovelu.top/tags/%E7%BE%8E%E9%A3%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>给博客添加一个时钟效果</title>
+    <link href="https://blog.lovelu.top/p/752f6b2.html"/>
+    <id>https://blog.lovelu.top/p/752f6b2.html</id>
+    <published>2024-03-22T01:41:34.000Z</published>
+    <updated>2024-03-22T01:55:25.445Z</updated>
+    
+    <content type="html"><![CDATA[<p>折腾博客脚步永不停止，一切折腾从魔改开始！</p><p>由于我准备把侧边栏时钟功能移除掉了，但是之前魔改的代码还是想留着，所以有了本文，爱折腾，有兴趣的可以尝试一下！</p><h2 id="效果预览"><a href="#效果预览" class="headerlink" title="效果预览"></a>效果预览</h2><details class="folding-tag" green open><summary> 效果预览 </summary>              <div class='content'>              <p><img src="https://img.lovelu.top/2024/03/clock.png" alt="预览"></p>              </div>            </details><h2 id="魔改步骤"><a href="#魔改步骤" class="headerlink" title="魔改步骤"></a>魔改步骤</h2><details class="folding-tag" green close><summary> 魔改步骤 </summary>              <div class='content'>              <ol><li>新建 <strong>card_clock.pug</strong>，添加如下内容<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line">if theme.aside.card_clock.enable</span><br><span class="line">  style.</span><br><span class="line">    .clock_frame &#123;</span><br><span class="line">      background: var(--Jay-main);</span><br><span class="line">      display: flex;</span><br><span class="line">      justify-content: center;</span><br><span class="line">      align-content: center;</span><br><span class="line">      box-shadow: var(--Jay-shadow-border);</span><br><span class="line">      background: var(--Jay-card-bg);</span><br><span class="line">      border: var(--style-border);</span><br><span class="line">      border-radius: 12px;</span><br><span class="line">      transition: .3s;</span><br><span class="line">      position: relative;</span><br><span class="line">      overflow: hidden;</span><br><span class="line">      margin-top: 1rem;</span><br><span class="line">    &#125;      </span><br><span class="line">    .clock &#123;</span><br><span class="line">      width: 256px;</span><br><span class="line">      height: 256px;</span><br><span class="line">      border-radius: 50%;</span><br><span class="line">      background-color: #fff;</span><br><span class="line">      position: relative;</span><br><span class="line">      overflow: hidden;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock::after &#123;</span><br><span class="line">      content: &quot;&quot;;</span><br><span class="line">      width: calc(256px - 80px);</span><br><span class="line">      height: calc(256px - 80px);</span><br><span class="line">      background-color: inherit;</span><br><span class="line">      border-radius: 50%;</span><br><span class="line">      display: block;</span><br><span class="line">      position: absolute;</span><br><span class="line">      top: 0;</span><br><span class="line">      right: 0;</span><br><span class="line">      bottom: 0;</span><br><span class="line">      left: 0;</span><br><span class="line">      margin: auto;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker &#123;</span><br><span class="line">      height: calc(100% - 25px);</span><br><span class="line">      width: 3.2px;</span><br><span class="line">      background-color: rgb(52 73 94 / 40%);</span><br><span class="line">      position: absolute;</span><br><span class="line">      top: 0;</span><br><span class="line">      right: 0;</span><br><span class="line">      bottom: 0;</span><br><span class="line">      left: 0;</span><br><span class="line">      margin: auto;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(3n + 1) &#123;</span><br><span class="line">      background: rgb(52 73 94);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(2) &#123;</span><br><span class="line">      transform: rotate(30deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(3) &#123;</span><br><span class="line">      transform: rotate(60deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(4) &#123;</span><br><span class="line">      transform: rotate(90deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(5) &#123;</span><br><span class="line">      transform: rotate(120deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(6) &#123;</span><br><span class="line">      transform: rotate(150deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand &#123;</span><br><span class="line">      transform-origin: center bottom;</span><br><span class="line">      position: absolute;</span><br><span class="line">      z-index: 3;</span><br><span class="line">      bottom: 50%;</span><br><span class="line">      left: 50%;</span><br><span class="line">      width: 5.12px;</span><br><span class="line">      transition: transform 1s linear;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.second &#123;</span><br><span class="line">      height: 85.3333333333px;</span><br><span class="line">      width: 1.3837837838px;</span><br><span class="line">      left: calc(50% - 1.5px);</span><br><span class="line">      border-radius: 1.5px;</span><br><span class="line">      background-color: #ec231e;</span><br><span class="line">      box-shadow: 4px 6px 0 0 rgba(0, 0, 0, 0.15);</span><br><span class="line">      transform: rotate(40deg);</span><br><span class="line">      z-index: 9;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.second::before,</span><br><span class="line">    .clock .hand.second::after &#123;</span><br><span class="line">      content: &quot;&quot;;</span><br><span class="line">      background-color: inherit;</span><br><span class="line">      position: absolute;</span><br><span class="line">      border-radius: 50%;</span><br><span class="line">      left: 50%;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.second::before &#123;</span><br><span class="line">      width: 12.8px;</span><br><span class="line">      height: 12.8px;</span><br><span class="line">      bottom: 0;</span><br><span class="line">      transform: translate(-50%, 50%);</span><br><span class="line">      box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.15);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.second::after &#123;</span><br><span class="line">      width: 7.1111111111px;</span><br><span class="line">      height: 7.1111111111px;</span><br><span class="line">      top: 17.0666666667px;</span><br><span class="line">      transform: translate(-50%, 0);</span><br><span class="line">      box-shadow: 4px 6px 2px 0 rgba(0, 0, 0, 0.15);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.minute &#123;</span><br><span class="line">      height: 85.3333333333px;</span><br><span class="line">      left: calc(50% - 3px);</span><br><span class="line">      border-radius: 3px;</span><br><span class="line">      background-color: rgb(52 73 94);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.hour &#123;</span><br><span class="line">      height: 64px;</span><br><span class="line">      left: calc(50% - 3px);</span><br><span class="line">      border-radius: 3px;</span><br><span class="line">      background-color: rgb(52 73 94);</span><br><span class="line">    &#125;</span><br><span class="line">    @media screen and (max-width: 768px) &#123;</span><br><span class="line">      .clock_frame &#123;</span><br><span class="line">          display: none;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    @-webkit-keyframes rotateArms &#123;</span><br><span class="line">      from &#123;</span><br><span class="line">        transform: rotate(0);</span><br><span class="line">      &#125;</span><br><span class="line">      to &#123;</span><br><span class="line">        transform: rotate(360deg);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    @keyframes rotateArms &#123;</span><br><span class="line">      from &#123;</span><br><span class="line">        transform: rotate(0);</span><br><span class="line">      &#125;</span><br><span class="line">      to &#123;</span><br><span class="line">        transform: rotate(360deg);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  .cat_block.clock_frame</span><br><span class="line">    .clock</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .hand.second</span><br><span class="line">      .hand.minute</span><br><span class="line">      .hand.hour</span><br><span class="line">  script.</span><br><span class="line">    let secondPlus = 0;</span><br><span class="line">      function getTime() &#123;</span><br><span class="line">        let date = new Date(),</span><br><span class="line">          seconds = date.getSeconds() * 6,</span><br><span class="line">          minutes = date.getMinutes() * 6,</span><br><span class="line">          hours = (date.getHours() % 12) * 30 + minutes / 15;</span><br><span class="line">        if (seconds == 0) &#123;</span><br><span class="line">          secondPlus += 360;</span><br><span class="line">        &#125;</span><br><span class="line">        document.querySelector(&quot;.hand.second&quot;).style.transform = &quot;rotate( &quot; + (seconds + secondPlus) + &quot;deg)&quot;;</span><br><span class="line">        document.querySelector(&quot;.hand.minute&quot;).style.transform = &quot;rotate( &quot; + minutes + &quot;deg)&quot;;</span><br><span class="line">        document.querySelector(&quot;.hand.hour&quot;).style.transform = &quot;rotate( &quot; + hours + &quot;deg)&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">      setInterval(function() &#123;</span><br><span class="line">        getTime();</span><br><span class="line">      &#125;, 1000);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li><li>在 theme\layout\includes\widget\index.pug 中的侧边栏引入<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//- 时钟</span><br><span class="line">    !=partial(&#x27;includes/widget/card_clock&#x27;, &#123;&#125;, &#123;cache: true&#125;)</span><br></pre></td></tr></table></figure></li><li>主题配置文件 <strong>_config.mxblog.yml</strong> 添加开关<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">aside:</span></span><br><span class="line">  <span class="attr">card_clock:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># 时钟</span></span><br></pre></td></tr></table></figure></li></ol>              </div>            </details><blockquote><p>至此，你的侧边栏将多了一个时钟，快去试试吧！</p></blockquote>]]></content>
+    
+    
+    <summary type="html">折腾博客脚步永不停止，一切折腾从魔改开始！由于我准备把侧边栏时钟功能移除掉了，但是之前魔改的代码还是想留着，所以有了本文，爱折腾，有兴趣的可以尝试一下！</summary>
+    
+    
+    
+    <category term="经验分享" scheme="https://blog.lovelu.top/categories/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/"/>
+    
+    
+    <category term="Butterfly" scheme="https://blog.lovelu.top/tags/Butterfly/"/>
+    
+    <category term="Hexo" scheme="https://blog.lovelu.top/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>恶心的电脑清理软件，永不再用</title>
+    <link href="https://blog.lovelu.top/p/3ad1ce11.html"/>
+    <id>https://blog.lovelu.top/p/3ad1ce11.html</id>
+    <published>2024-03-21T01:55:11.000Z</published>
+    <updated>2024-03-21T02:19:49.354Z</updated>
+    
+    <content type="html"><![CDATA[<p>如果是关于MAC电脑没啥好说，似乎没为电脑卡顿、清理这方面操过心，但是windows确实会存在。</p><p>为什么说恶心呢，其实主要是针对办公的台式电脑，联想i5、16G、1T硬盘，window10系统，当时系统默认安装的360卫士，我第一时间把它卸载了</p><p>至于为什么，那就是它容易偷摸删东西，因为从事IT行业，所以前后端开发环境是必须的，每过一段时间，会发现jdk8的一个文件会被360标记成病毒文件，而且会直接删除，导致jdk无法使用，这种情况出现过几次，即使将jdk设置为安全文件，它仍然会删除，这就很令人恼火，另外，360会推送广告，怎么都关不掉，过一段时间就蹦出来，360被称为流氓软件，不是没有道理，果断卸载。。。</p><p>卸载掉了360后，电脑就处于裸奔状态(电脑本身的防火墙已关)，这种情况持续了1年的样子，感觉电脑的垃圾文件比较多了，感觉需要清理(我也懒得去c盘清理)，想着直接找个清理软件完事儿，然后找到了 <strong>腾讯管家</strong> ，感觉当时用感觉还可以，但是现在用感觉非常慢，扫描病毒、清理c盘变得非常慢，而且清理过程中的电脑也很卡，不知道什么原因，我现在已经把它卸载，感觉还是得靠手动清理，靠！这软件真是不靠谱，谁知道背后干了些啥。</p><p>感觉现在似乎没啥好用的电脑清理软件了，安装之后除了广告就是广告，太烦人了。</p>]]></content>
+    
+    
+    <summary type="html">在处理Windows系统电脑清理时，选择适合的软件变得困难吗？曾遇360卫士误删文件、广告推送问题？腾讯管家清理速度慢、卸载后电脑卡顿？本文分享解决方案，探讨手动清理与软件选择的利弊，助您有效管理垃圾文件，提升电脑性能</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="办公" scheme="https://blog.lovelu.top/tags/%E5%8A%9E%E5%85%AC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>生病了，难受中，给满心推荐下有效果的感冒药吧</title>
+    <link href="https://blog.lovelu.top/p/bddc67f8.html"/>
+    <id>https://blog.lovelu.top/p/bddc67f8.html</id>
+    <published>2024-03-15T00:33:37.000Z</published>
+    <updated>2024-03-20T00:52:36.775Z</updated>
+    
+    <content type="html"><![CDATA[<p>前天晚上不知道怎么回事儿，突然就感觉嗓子极为不舒服，也能隐隐猜到可能着凉了，要感冒</p><p>第二天，果然，开始头晕、头疼、鼻塞、流鼻涕，记得以前感冒就流个鼻涕，没有嗓子上的不适，这现在随着岁数增长，症状咋还严重了</p><p>感觉最恐怖的还是晚上，鼻塞了，一点儿不通气儿，只能用嘴巴呼吸，然后嗓子干的厉害，身上总感觉很热，直到凌晨四点的时候才睡着，而且还浑身酸痛</p><p>早上起床也很艰难，看样子要加强锻炼了呀</p><p>本来早上也是想请假来着，奈何舍不得请假，不想被扣工资，虽然有年假，但年假也不能这样浪费掉了，平时杂事儿蛮多，几天年假都分批次请了去办正事了</p><p>以前小时候感冒了，一般都是吃的感康，或者白加黑，现在这两种药比较少见了，而且似乎效果也不太好，我目前吃的是快克，以前吃了能缓解鼻塞，现在吃了除了人难受外，似乎一点效果都没有</p><p>大伙们，给推荐下你们用的感觉不错的感冒药，我主要症状是：<strong>嗓子疼、鼻塞、头晕乎乎的，流鼻涕，不咳嗽也不发烧</strong></p><p><img src="https://img.lovelu.top/2024/03/xiexie.webp" alt=""></p>]]></content>
+    
+    
+    <summary type="html">寻找适合缓解嗓子疼、鼻塞、头晕、流鼻涕等感冒症状的感冒药？在病症困扰下，如何选择适合自己的感冒药物？本文分享了感冒药推荐和症状缓解方法。</summary>
+    
+    
+    
+    <category term="心情" scheme="https://blog.lovelu.top/categories/%E5%BF%83%E6%83%85/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的十年问卷</title>
+    <link href="https://blog.lovelu.top/p/2b0a6698.html"/>
+    <id>https://blog.lovelu.top/p/2b0a6698.html</id>
+    <published>2024-03-04T06:19:19.000Z</published>
+    <updated>2024-03-04T06:50:44.617Z</updated>
+    
+    <content type="html"><![CDATA[<p>看到了不少人都写了<a href="https://cosmo-polite.com/%e4%b8%aa%e4%ba%ba%e5%b0%8f%e5%ae%9e%e9%aa%8c%ef%bc%9a%e7%bb%99%e4%bc%99%e4%bc%b4%e4%bb%ac%e7%9a%84%e5%8d%81%e5%b9%b4%e9%97%ae%e5%8d%b7/">十年问卷</a>，感觉还蛮有意思的，我也来思考一下，也算是个小总结吧。</p><h2 id="用三句话介绍一下近期的状况？"><a href="#用三句话介绍一下近期的状况？" class="headerlink" title="用三句话介绍一下近期的状况？"></a>用三句话介绍一下近期的状况？</h2><ol><li>大环境对公司影响还蛮大，对于工作有些忧心忡忡；</li><li>房贷在身，存钱很慢，但处处要花钱，感觉日子有点看不到头；</li><li>值得欣喜的是，家庭美满，父母身体健康；</li></ol><h2 id="分享一件这十年里印象最深的事（时刻）？"><a href="#分享一件这十年里印象最深的事（时刻）？" class="headerlink" title="分享一件这十年里印象最深的事（时刻）？"></a>分享一件这十年里印象最深的事（时刻）？</h2><p>买房子后，在交房的时候看到房子才做一半，而且还停工了，心里哇凉哇凉的；</p><h2 id="感觉与十年前的自己相比变化大吗？"><a href="#感觉与十年前的自己相比变化大吗？" class="headerlink" title="感觉与十年前的自己相比变化大吗？"></a>感觉与十年前的自己相比变化大吗？</h2><p>非常大，现在的自己更懂得感恩，也不那么冲动，多了几分当下年纪该有的稳重，做事之前会考虑后果，更多的是能为别人着想了，当然附带着的烦恼和责任更重了几分；</p><h2 id="十年前身边的那些人还经常保有联系的多吗？朋友还能进行深度交流吗？"><a href="#十年前身边的那些人还经常保有联系的多吗？朋友还能进行深度交流吗？" class="headerlink" title="十年前身边的那些人还经常保有联系的多吗？朋友还能进行深度交流吗？"></a>十年前身边的那些人还经常保有联系的多吗？朋友还能进行深度交流吗？</h2><p>都没有联系了，但朋友结婚通知我了，我还是会去的，大多人从出了校园后，都是曾今熟悉的陌生人。当然，更多时候，我喜欢一个人独处；</p><h2 id="职场上选择的道路跟最初有变化么？是什么让你选择了现在的行业和专业？业余爱好之于你是什么意义？"><a href="#职场上选择的道路跟最初有变化么？是什么让你选择了现在的行业和专业？业余爱好之于你是什么意义？" class="headerlink" title="职场上选择的道路跟最初有变化么？是什么让你选择了现在的行业和专业？业余爱好之于你是什么意义？"></a>职场上选择的道路跟最初有变化么？是什么让你选择了现在的行业和专业？业余爱好之于你是什么意义？</h2><ol><li>有挺大变化的，以前准备做土木工程的，后来阴差阳错的进入互联网行业；</li><li>应该是生活所迫吧，毕竟土木没有背景，很难得起来，而且工资也不高；</li><li>应该是游戏了吧，每天都玩，但是花费时间很短，毕竟相比之下，家庭更重要；</li></ol><h2 id="与父母之间的相处与十年前相比有怎样的变化？"><a href="#与父母之间的相处与十年前相比有怎样的变化？" class="headerlink" title="与父母之间的相处与十年前相比有怎样的变化？"></a>与父母之间的相处与十年前相比有怎样的变化？</h2><p>除了各自脸上留下了岁月痕迹外，也没其它变化，所不同的是，现在一家人在一起；</p><h2 id="打算养小孩吗？"><a href="#打算养小孩吗？" class="headerlink" title="打算养小孩吗？"></a>打算养小孩吗？</h2><p>以前不想，感觉一个人更舒服，但后来结婚了，周围的人都有孩子，感觉自己和他们不是一个圈子，再加上亲戚朋友催，后来也想通了；</p><h2 id="想不想回到十年前？"><a href="#想不想回到十年前？" class="headerlink" title="想不想回到十年前？"></a>想不想回到十年前？</h2><p>说心里话，并不想，感觉回到十年前，自己还是会走老路的吧？；</p><h2 id="害怕变老吗？"><a href="#害怕变老吗？" class="headerlink" title="害怕变老吗？"></a>害怕变老吗？</h2><p>很害怕，感觉自己还有很多事情没有做；</p><h2 id="你觉得一生中最核心（最重要）的事（物-要解决的问题）是什么？"><a href="#你觉得一生中最核心（最重要）的事（物-要解决的问题）是什么？" class="headerlink" title="你觉得一生中最核心（最重要）的事（物/要解决的问题）是什么？"></a>你觉得一生中最核心（最重要）的事（物/要解决的问题）是什么？</h2><p>人的一辈子真的很短，我觉得在有限的时间里，经营好自己的小家，不求大富大贵，但求平安喜乐；</p>]]></content>
+    
+    
+    <summary type="html">通过十年问卷，深度回顾过去十年的生活变化与成长经历，分享工作、家庭、人际关系等方面的感悟与体会。从面对大环境挑战到家庭幸福美满，探讨个人成长与生活态度。反思职场选择、人际交往，以及对未来的期许与挑战。在忙碌的生活中，如何平衡工作与生活，珍惜家庭时光，追求内心真正的幸福与满足。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="我的看法" scheme="https://blog.lovelu.top/tags/%E6%88%91%E7%9A%84%E7%9C%8B%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>立春后，武汉下了一场白砂糖</title>
+    <link href="https://blog.lovelu.top/p/d29f23e9.html"/>
+    <id>https://blog.lovelu.top/p/d29f23e9.html</id>
+    <published>2024-02-22T00:42:07.000Z</published>
+    <updated>2024-02-22T01:39:57.034Z</updated>
+    
+    <content type="html"><![CDATA[<p>复工前，武汉开启了<strong>冬日炙烤模式</strong>，让人只想穿短袖，太阳似乎来自于夏天，这不，继立春之后，又迎来了一波冻雨，我们的城市已经做好了准备(提前撒盐、砍树、炙烤车)相应手段，没想到冻雨没等到，反而一直在下雪籽</p><p>很难想象，就这雪籽竟然下了两天，而且是很大的那种，目前还在下，丝毫没有要停的意思</p><p>武汉位置不可谓不大，同在武汉，不同区域，都能看到不一样的场景，有的下雪、有的下雪籽、有的下冻雨、还有的下大冰雹，此处只能用<strong>😅😅</strong>来表达了</p><p>为啥说下的是<strong>“白砂糖”</strong>，你看我拍的视频就知道了</p><div class="video"><video controls preload style="border-radius: 12px;max-width: 90%;max-height: 450px;"><source src='https://img.lovelu.top/2024/02/xuezi3.mp4' type='video/mp4'>Your browser does not support the video tag.</video></div><p>其实我并不关注下了什么，主要是担心车子冻住，无法出行，这个很头疼，不敢停车库去，一是怕没位置，二是怕上不来</p><p>这不，早上端了一盆温水来清理，车子上，特别是前挡风厚厚的一层”白砂糖”，而且冻住了，纯靠手完全搞不动，只能浇水清理</p><p><img src="https://img.lovelu.top/2024/02/xuezi2.jpg" alt=""></p><p>清理过程中，还在不停下，而且有大风，人简直要被吹傻了，地上的雪籽没结冰，可能是一直在下的原因，都是干的，并没有水，目测了一下，地面的雪籽最少有5cm厚，感觉像是踩在沙地上一样，一滑一滑的，感觉像是喝醉酒走路一样</p><p>即使这么恶劣条件，但班还是得上，路上车子最起码少了一半，但路上电动车和行人还是不少，全程只敢开20 ~ 30迈，即使这样，也明显感觉车子在轻微滑动，看这路上电动车也难，车子雨刮器下面都是冰，清理不了，所以也用不了，心里冒出一个想法：”这逼班，非上不可吗”</p><p><img src="https://img.lovelu.top/2024/02/xuezi1.jpg" alt=""></p><p>说了这么多，生活还是要继续，希望路上的朋友们注意安全</p>]]></content>
+    
+    
+    <summary type="html">武汉突然下起了大雪，城市一片银装素裹。车辆被冻住，不得不清理车身上的厚雪。尽管恶劣的天气条件，仍然要勇敢上班，小心翼翼地驾驶。希望路上的朋友们注意安全，共同度过这场突如其来的雪季。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ShareX：高效而强大的 Windows 截图工具</title>
+    <link href="https://blog.lovelu.top/p/ff279933.html"/>
+    <id>https://blog.lovelu.top/p/ff279933.html</id>
+    <published>2024-02-18T08:22:50.000Z</published>
+    <updated>2024-02-18T08:39:43.988Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>今天是复工后的第一天，过年期间没有写博客，感觉不是在吃吃喝喝，就是在赶路(走亲戚、拜年等等)，感觉大家也都差不多，就不写这部分了。那今天就分享一款我正在使用的截图工具吧。</p></blockquote><p>在数字时代，截图已成为我们日常工作中不可或缺的一部分。无论是为了展示信息、撰写教程还是进行创意设计，一款优秀的截图工具都是必不可少的。 </p><p>今天给大家推荐一款免费开源的 Windows 截图工具 —— ShareX，凭借其强大的功能和出色的用户体验，已经成为了许多用户的选择。</p><p><img src="https://img.lovelu.top/2024/02/sharex1.png" alt=""></p><p>ShareX 的安装包仅有 7MB，轻巧而高效。但它的功能却非常全面，能够满足各种复杂的截图需求。从全屏截取到活动窗口，从自定义区域到无缝滚动截图，它都能轻松应对。</p><p><img src="https://img.lovelu.top/2024/02/sharex2.png" alt=""></p><p>除了基本的截图功能，ShareX 还提供了屏幕录制、文件共享等功能。更为难得的是，它还集成了各种实用的图像处理工具，如拾色器、尺子、图像编辑器等，使截图后的编辑和优化变得简单而高效。</p><p><img src="https://img.lovelu.top/2024/02/sharex3.png" alt=""></p><p>ShareX 支持自动添加水印和阴影，使截图更具美观度。同时，它还提供了自定义快捷键的功能，大大提高了用户的工作效率。新版本更是增加了 OCR 文字识别功能，将截图中的文字转化为可编辑的文本，进一步提升了其功能性。</p><p><img src="https://img.lovelu.top/2024/02/sharex4.gif" alt=""></p><p>ShareX 的截图功能不仅强大，而且使用起来非常简单。安装完成后，用户可以在主界面上看到各种截图的快捷键，根据自己的习惯进行修改或直接使用，与微信自带截图工县相比，ShareX更加高效。完成截图后，图片会保存在 ShareX 的图片列表中，方便用户进行管理或编辑。</p><p><img src="https://img.lovelu.top/2024/02/sharex5.png" alt=""></p><p>如果你是一名软件应用类的自媒体创作者，ShareX 会是你的得力助手。通过局域网服务器，你可以轻松将截图从一台 Windows 电脑传送到另一台 Mac 电脑上。这无疑为跨平台的工作流提供了极大的便利。 </p><p>ShareX 配合 ffmpeg 可以完成屏幕录制功能，这对于制作软件操作步骤视频非常有用。同时，OCR 功能可以直接识别截图中的文字，为处理视频素材提供了极大的便利。 </p><p>除了上述主要功能外，ShareX 还提供了众多实用的小工具，如拾色器、屏幕拾色器、尺子、图像编辑器等。这些小工具虽然看似微不足道，但在实际工作中却能发挥出大作用。它们使 ShareX 的功能性更为完善，满足用户的各种需求。</p><p>最值得一提的是，ShareX 是基于 GPL 3.0 开源协议完全开源的免费软件。这不仅意味着你可以免费使用它，还意味着你可以学习和修改其源代码。这种开放和透明的态度让用户可以放心使用 ShareX，无需担心任何潜在的安全风险或隐私问题。</p><p><img src="https://img.lovelu.top/2024/02/sharex6.png" alt=""></p><p>总的来说，ShareX 是一款不可多得的 Windows 截图工具。它轻巧、强大、高效且美观，无论是初学者还是专业用户都能从中受益。如果你正在寻找一款功能全面、易于使用的截图工具，ShareX 绝对值得一试。</p>]]></content>
+    
+    
+    <summary type="html">ShareX 是一款免费开源的 Windows 截图工具，轻巧高效且功能全面。支持截图、屏幕录制、图像处理等多种功能，提供自定义快捷键、OCR 文字识别等实用功能，适用于软件应用类自媒体创作者和专业用户。</summary>
+    
+    
+    
+    <category term="工具分享" scheme="https://blog.lovelu.top/categories/%E5%B7%A5%E5%85%B7%E5%88%86%E4%BA%AB/"/>
+    
+    
+    <category term="办公" scheme="https://blog.lovelu.top/tags/%E5%8A%9E%E5%85%AC/"/>
+    
+    <category term="软件" scheme="https://blog.lovelu.top/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于武汉这一场冻雨和雪</title>
+    <link href="https://blog.lovelu.top/p/8755594c.html"/>
+    <id>https://blog.lovelu.top/p/8755594c.html</id>
+    <published>2024-02-04T08:41:36.000Z</published>
+    <updated>2024-02-04T09:15:45.767Z</updated>
+    
+    <content type="html"><![CDATA[<p>个人感觉武汉一直在扮演一个很魔幻的角色，这不，又开始了<strong>冻雨 + 雪</strong>的组合，并不是说下雪有多么新奇，而是来的让人措手不及</p><p>其实回忆中，武汉很少下雪，给我印象最深刻的还得是<strong>08年那场大雪</strong>，那场雪可真是大，那会儿我们还要上课</p><p>这不武汉这两天又开始了，显示气温骤降，然后开始<strong>冻雨</strong>，到今天直接开始下雪，到此刻我都不敢相信下这么大雪，小区里，公司园区里全部是被压断的树枝，路都没法走，再结合着冻雨，简直太厉害</p><p>第一天下冻雨的时候，车子整个被冻住了，全是冰，不过并不厚，上去弄了些热水，很快把前挡风、门把手、后视镜的冰都去除了，不过也废了一番功夫，那时候还在下类似雪籽的冻雨，而且伴随着大风，手放在外面几秒就冻僵了</p><p>这不，昨儿晚上天气预报说有暴雪，我还不信，结果今儿早上就给我上了一课，早上上班准备去开车，车上有一个压断的树枝，以及一堆树叶，而且全部是冰，整个前挡风全是冰和雪，后来足足用了两桶热水，才勉强清除了下，能够正常开，太冷了，感觉手已经不属于自己了</p><p>不过虽然说，天气恶劣，但是冻雨过后的一些植物，还挺好看的，分享一张吧</p><p><img src="https://img.lovelu.top/2024/02/微信图片_20240204170621.jpg" alt=""></p><p>希望明天早上结冰不要太严重！</p>]]></content>
+    
+    
+    <summary type="html">武汉近日遭遇罕见的冻雨和大雪天气，导致树木折断、道路结冰，给人们的生活带来了诸多不便。作者回忆起08年的大雪，对此次天气感到震惊，描述了清除车辆冰雪的艰难经历。尽管天气恶劣，但作者也发现冻雨过后的植物别有一番美丽。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于春节放假那些事儿</title>
+    <link href="https://blog.lovelu.top/p/cb79cb9f.html"/>
+    <id>https://blog.lovelu.top/p/cb79cb9f.html</id>
+    <published>2024-01-25T07:05:47.000Z</published>
+    <updated>2024-01-25T09:04:07.232Z</updated>
+    
+    <content type="html"><![CDATA[<p>虽然法定节假日规定：大年初一的放假，让各企业根据情况自行安排，这话确实有深意啊，作为大部分老板来说，巴不得不放假，也有部分良心老板，不过也是凤毛菱角。</p><p>在当下社会来看，春节已经不是80、90后那种无忧无虑的时候，曾几何时，同村的或是同年级的小伙伴们，大家都早早的放假了，相约着一起玩属于那个年代产物的游戏(打玻璃珠、贴画、橡皮筋以及游戏机)。那个时候没有繁重的作业(只有语数两本暑/寒假作业，没有附加作业)，也没有补习班，同时还有父母准备的新衣裳和压岁钱，想想都觉得开心。</p><p>现在的过年给我感觉就是到处跑，7、8天假根本奔波不完，因为一年到头回家也少，爷爷奶奶、外公外婆、丈人丈母、拜年都得要跑，而且还不能说坐一会儿立马就走，虽说现在都有车了，但依然感觉过年不是在奔波，就是在即将要奔波的路上。</p><p>感觉自从参加毕业后，似乎我不再是我了，更多的是身不由己，再也不曾有过童年时的快乐。</p><p>感慨万千，还是得收回思绪。牢骚也说了这么多，说说稍微值得开心的事儿吧。</p><p>公司年会已经结束了，庆幸的是自己抽到了<strong>二等奖-折叠热菜板</strong>，虽然家里有，但是白嫖的东西绝对香。</p><p>昨天公司通知了春节假期安排，腊月二十九和三十值班，然后剩下和法定节假日假期一致，其实我们这里的值班，也相当于放假了，只不过远程办公这种，时间你自己安排，不打卡不考勤，个人感觉已经很不错了。</p><p>既然过年奔波在所难免，何不从另一个角度来考虑，就当是到处走亲访友，散散心了</p><p><strong>提前预祝自己一路平安，心想事成吧！</strong></p>]]></content>
+    
+    
+    <summary type="html">这段文字主要表达了对过年和节假日的感慨，包括对童年时代的美好回忆以及对现代春节的疲惫和忙碌感受。作者还分享了在公司年会中抽到奖品的喜悦和对假期安排的一些看法。整体而言，文章表达了对过去和现在春节体验的对比，以及对假期安排的一些感慨和看法。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>人生最大的成熟，接纳不完美的自己-《被讨厌的勇气》</title>
+    <link href="https://blog.lovelu.top/p/2a897ea0.html"/>
+    <id>https://blog.lovelu.top/p/2a897ea0.html</id>
+    <published>2024-01-15T02:45:50.000Z</published>
+    <updated>2024-01-15T03:36:30.999Z</updated>
+    
+    <content type="html"><![CDATA[<p>年底了，繁琐事儿不少，心情也比较浮躁，我还是想让自己保持冷静的心态 - <strong>何以戒躁，唯有读书</strong></p><p>《被讨厌的勇气》，其实这本书是无意中在豆瓣读书看到的，我也不知道为何这本书就被我注意到了，本着相遇是缘的宗旨，果断选择了这本书</p><p>我以前还是比较喜欢读书的，特别是念高中、大学的时候，但大多数读的都是小说(玄幻、武侠、言情等等)，不管书有多厚，只要情节上我喜欢，就一定能看完，而且还能将整本书的故事情节一五一十的复述清楚，这就是我读书那会儿，身边几个朋友喜欢听我讲书的缘故，其实读书也很考验耐心，我感觉其实和钓鱼有相似之处，奈何后面参加工作，再加上有数码产品的出现，能静下心来读书的机会就越发的少了(PS：其实是给自己懒找借口)。</p><p>儿时看电影要写<strong>观后感</strong>，读书要写<strong>读后感</strong>，听故事要写<strong>听后感</strong>，当然中间还会穿插一些：<strong>春游、野炊、名人馆</strong>等等，其本质还是放松的一种方式，但要写东西总感觉像完成任务一样，所以对学校此类行为甚是抵触，不知道大家有没有这样的想法。</p><p>现在读书纯粹就是兴趣了，读了这本书，心里还是有些想法，也就和大家分享分享吧</p><p>怎么做才能摆脱讨好型人格，活出真正的自我？相信这本书能够给你答案。</p><p>周国平曾说：<br>“人生中大多数痛苦，其实都源于盲目较劲。”<br>较劲于过去的“不幸”，就过不好当下的生活；<br>较劲于别人的“关注”，就活不出真实的自我；<br>较劲于自己的“平凡”，就看不见改变的意义。<br>有多少人，终其一生都在以自己的不完美对抗完美幻象，以有限的生命对抗无限的烦恼。<br>我们为此投入过多时间和精力，到最后才惊觉，其实都是在自寻烦恼。</p><p><strong>有多少人，终其一生都在以自己的不完美对抗完美幻象，以有限的生命对抗无限的烦恼。</strong></p><h2 id="关于烦恼"><a href="#关于烦恼" class="headerlink" title="关于烦恼"></a>关于烦恼</h2><p>人的一切烦恼都来自于人际烦恼，我最开始一听觉得很不靠谱，但看了解释就明白了，如果这个世界上只剩下自己一个人，就不会存在任何烦恼，因为已经没有了任何比较，什么躺平、内卷，都不复存在。</p><h2 id="关于过去"><a href="#关于过去" class="headerlink" title="关于过去"></a>关于过去</h2><p>过去之事实已形成，永不可改变，但把过去当成路障还是路标，却在人的自主把握中。</p><p>所以，想要治愈过去的最好方法，就是设定好想要的目标，并下定改变的决心，一往无前。</p><h2 id="关于活法"><a href="#关于活法" class="headerlink" title="关于活法"></a>关于活法</h2><p>不活成别人，生而为人本各有不同。</p><p>你越在意什么，什么就越折磨你；你越比较，就越痛苦，永远都有人比你更好。</p><p>而避免烦恼的最好办法是课题分离，即回归本源“我是我，他是他”。</p><p><strong>最聪明的活法，就是在自己的节奏里过好一生。</strong></p><h2 id="接纳自己"><a href="#接纳自己" class="headerlink" title="接纳自己"></a>接纳自己</h2><p>哲人反驳了青年，你只是你，不如悦纳自己，再看要不要改变。</p><p>我们常自造“完美自我”的幻象，以此对抗不完美的现实，却不知人生因为不完美，才会真正完美。</p><p>承认和接纳不完美的自己，拥有完整的人生，才是最值得的事情。</p><p><strong>这一生，我们既要努力追求更好，又不过分苛求完美；</strong></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>心理学家徐秋秋说：“每个人的生命，都是一场传奇。在这个世界上得到的最好礼物，就是自己和自己的人生。”</p><p><strong>你自己的人生，应该由自己主导，并自负全责。</strong></p><p>不必羡慕谁，也不讨好谁；不必活给别人看，也不怕被讨厌。<br>我们本该成为最真实的自己，过最真实的人生。<br>即便平凡、不完美，你都是独一无二的限量版！<br>我们终其一生，也是为了成为那个最独特的自己，而不是伪装成一个完美的别人。<br>愿你我都拥有被讨厌的勇气，自由真实地成长为更好的自己。</p>]]></content>
+    
+    
+    <summary type="html">这篇文章充满了对读书的热爱和对生活的深刻思考，作者分享了自己对《被讨厌的勇气》这本书的理解和感悟。文章涉及了关于烦恼、过去、活法和接纳自己的观点，以及对自己人生态度的思考，充满了积极的生活智慧和对真实自我的追求。通过对书中观点的深入解读，作者提出了对自己人生态度的思考，并表达了对真实自我的追求。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="读书笔记" scheme="https://blog.lovelu.top/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="我的看法" scheme="https://blog.lovelu.top/tags/%E6%88%91%E7%9A%84%E7%9C%8B%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于房贷，商转公我经历的那些事儿</title>
+    <link href="https://blog.lovelu.top/p/f326b6ab.html"/>
+    <id>https://blog.lovelu.top/p/f326b6ab.html</id>
+    <published>2024-01-04T00:58:29.000Z</published>
+    <updated>2024-01-15T03:37:25.918Z</updated>
+    
+    <content type="html"><![CDATA[<p>购房可以说是，继结婚、买车之后的又一重大事情，当然如果家里资产浑厚，那就另当别论啦</p><p>这篇文章主要分享下，<strong>商贷转公积金贷款</strong>的一些事情，希望对有次需求的朋友有帮助</p><p>下面聊聊我买房时候的那些事儿，当然如果对装修有兴趣的朋友，可以看看<a href="https://blog.lovelu.top/p/37ed.html">我分享的装修经历</a></p><h2 id="看房选房"><a href="#看房选房" class="headerlink" title="看房选房"></a>看房选房</h2><p>买房一般也是为了结婚，我也不例外，毕竟也想有个自己的家，我是在2022年10月买的，当时正值买房热潮，所以房价也不低</p><p>当时身上钱也不多，只能走贷款，而且公积金额度也不多，所以就直接走的商贷，那时候商贷利率几乎是顶峰，是5.8，不过也没办法，谁让咱钱不够呢</p><p>其实买房中间也挺折腾的，各种看房，了解房源，房价、地段、配套等等，折腾说到底还是资金有限，如果财大气粗，直接拍板多好</p><p>当时房子也是预售，所以只能看到一栋样品间，其它都还在地基阶段，也看了很多房子，最后还是被绿地置业画的大饼给忽悠住了，然后交了意向金</p><h2 id="房子交付"><a href="#房子交付" class="headerlink" title="房子交付"></a>房子交付</h2><p>其实买这个房子也是一波三折，这个一波三折指的是房子交付问题，感觉房子在”烂尾”的边缘了，毕竟全国各地都有先例，谁都不愿意这种事情发生在自己身上，毕竟买房不容易。</p><p>再说说在房子停工到最后交付我都做了哪些事儿，有些信息比较敏感，没法附图，只能委婉的用文字表达了</p><p>首先，房子交付还剩三个月的时候，工地已经半停工，只有几个人在磨洋工，业主进去看，几乎就是没啥动静，当时就去找开发商沟通，开发商一直说，还没到交付日期，如果无法按期交付，自然会有赔偿，巴拉巴拉说一堆，其实傻子都能看得出来，及时这三个月不停工的情况，也无法按期交付，业主们如何能不担心，毕竟花了这么多钱，买的刚需用房，都着急装修入住<br>然后，房子交付还剩一个月的时候，工地完全停工了，当时恒大已经暴雷了，业主也彻底慌了，几乎在动用各种关系，找当地的政府人员帮忙协调问题，也约谈了绿地武汉区负责人以及项目建设的负责人，最后依然没用，开发商就是一句话：没钱，这话说得也很气人，业主买房前一分不少都给你们了，你现在房子搞一半说没钱，最后街道办和区政府都派人协调，还是没啥用<br>最后，我们就去更高级别的地方去沟通，结果就被强行驱散，有的人直接被关起来，或者压公交车上拖走，整个场面比较尴尬，普通人想要一个公平很难，当时在武汉这边交房问题，闹得很严重，相信有的人在抖音上都看到过</p><p>其实呢，说这么多，感觉对于我们普通人来说，就一句话：<strong>如果无法解决问题，那么就解决提出问题的人(普通人)</strong></p><blockquote><p>开放商说的最恶心的话：”烂尾”是肯定不会的，只不过什么时候交付就不清楚了</p></blockquote><p>说了这么多，现在想想真的是不容易，实际比我说出来的情况要严重的多，说心力交瘁一点不为过</p><p>好了，说了这么多不开心的事儿，下面说说比较开心的事儿吧，就是公积金的申请批复下来了</p><h2 id="公积金申请"><a href="#公积金申请" class="headerlink" title="公积金申请"></a>公积金申请</h2><p>虽然商贷利率调整了两次，最终现在降到了4.3，拿贷款70w来说，月供4300，这个利率是5.8，现在调整到了4.3，大概是少了500块，总体上还是不错的，不过公积金的利率是3.1，在这个基础上又能少了500，还是很香的，所以转公积金这一步也是必须要走的</p><p>关于公积金的计算，其实我到现在还没计算明白，只知道这个和月缴纳系数和余额有关系，具体的大家自己了解</p><p><strong>分享一下我的：月缴纳系数：1600，余额：5.5w，可以贷满70w</strong></p><p>商转公的流程(不同银行可能有所不同)</p><p><img src="https://img.lovelu.top/2024/01/gongjijin3.jpg" alt=""></p><p>所有流程都走完之后，那就等着，大概是2 ~ 3个月吧，我是2个月就下来了</p><p>如果大家有什么这方面的疑问，也可以一起交流</p>]]></content>
+    
+    
+    <summary type="html">这篇文章分享了作者购房时的一些经历，包括看房选房、房子交付和公积金申请等方面的事情。作者还提到了商贷转公积金贷款的流程，并分享了自己的公积金贷款情况。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="经验" scheme="https://blog.lovelu.top/tags/%E7%BB%8F%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2023再见，2024你好</title>
+    <link href="https://blog.lovelu.top/p/ff752fdc.html"/>
+    <id>https://blog.lovelu.top/p/ff752fdc.html</id>
+    <published>2024-01-02T09:11:36.000Z</published>
+    <updated>2024-01-02T09:49:42.565Z</updated>
+    
+    <content type="html"><![CDATA[<p>说实话，文章元旦写了，但是一直没法，因为我想把元旦的一些素材也放进来，感觉一年一记，还挺有纪念价值的</p><p>给我的感觉，出了校园之后，感觉时间一年过得比一年快，感觉黄土齐腰，真的要到了</p><p>其实要说总结，也没啥总结的，这一年既没出去旅游，也没咋出去看电影，出去吃饭次数也很少，所以也简单说说吧，毕竟生活还得是平淡为主</p><h2 id="关于满心记"><a href="#关于满心记" class="headerlink" title="关于满心记"></a>关于满心记</h2><p>首先，在2023年改动还是很大的，从功能设计，到布局样式，再到页面流畅度，以及bug，都处理了不少，同时在技术层面上，也有了一些提升，这是个值得庆幸的事情</p><p>其次，在博客层面，有哪些值得高兴的事情</p><ul><li>共同学习交流的好友有146</li></ul><p><img src="https://img.lovelu.top/2024/01/202301.png" alt="部分截图"></p><ul><li>一共发布了92篇文章</li></ul><p><img src="https://img.lovelu.top/2024/01/202302.png" alt=""></p><ul><li>观看电影16部(手机上)</li></ul><p><img src="https://img.lovelu.top/2024/01/202303.png" alt=""></p><p>博客搭建初期，想法蛮多，什么都想搞，到最后还是得聚焦，慢慢会将无用的一些东西废弃掉，用心写写博客就可以了</p><h2 id="关于元旦"><a href="#关于元旦" class="headerlink" title="关于元旦"></a>关于元旦</h2><p>元旦庆祝不可少，一桌子菜，我就贡献了皮蛋和鸭蛋(切两半)，然后贡献了嘴巴，全部消灭</p><p><img src="https://img.lovelu.top/wordpress/tiezi/2024/tiqianyuandan4.jpg" alt=""></p><p>喝杯茶，看看日落，感觉一天过得如此快</p><p><img src="https://img.lovelu.top/wordpress/tiezi/2024/tiqianyuandan10.jpg" alt=""></p><h2 id="2024计划及想法"><a href="#2024计划及想法" class="headerlink" title="2024计划及想法"></a>2024计划及想法</h2><p>1、博客上：不会有大变动，但会用心写文章<br>2、工作上：继续努力，为财富自由奋斗<br>3、生活上：好吃好喝，要多出去看看<br>4、爱情上：老夫老妻了，仍然要好好经营<br>5、孩子上：以身作则，做好榜样</p><p><img src="https://img.lovelu.top/2024/01/202304.jpg" alt=""></p>]]></content>
+    
+    
+    <summary type="html">本文是作者对2023年的回顾和对2024年的展望。文章首先介绍了博客平台的改进和成就，包括功能设计、布局样式和技术提升。然后，作者分享了博客的发展情况，包括与好友的学习交流、发布的文章数量和观看的电影数量。接下来，作者提到了自己对博客的思考和调整。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="新年祝愿" scheme="https://blog.lovelu.top/tags/%E6%96%B0%E5%B9%B4%E7%A5%9D%E6%84%BF/"/>
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>全面禁放烟花爆竹是时候终结了</title>
+    <link href="https://blog.lovelu.top/p/2283405.html"/>
+    <id>https://blog.lovelu.top/p/2283405.html</id>
+    <published>2023-12-28T07:46:53.000Z</published>
+    <updated>2023-12-28T08:19:57.966Z</updated>
+    
+    <content type="html"><![CDATA[<p>前段时间出现的除夕不放假，春节再放假的话题吵的很热，不过最终归于平静了，无法反抗，只能接收</p><p>这不，最近又出现的<strong>关于禁放烟花爆竹的话题</strong>也火热了起来，感觉今年确实是一个躁动的年份</p><p>对于这个话题，我也想谈谈我个人的想法</p><p>我本身从事的是环保行业，多少对环保也有一定了解，近些年来国家对于环保也是下了很大力度，重视程度可见一般，但说实话，其实真正的污染并非来自于烟花爆竹，其实更多的是来自于工业污染，比说如：<strong>废水、废气、污染物</strong>等等，因为这些东西要么直接排入空气中，要么排入地下水，而且是一年到头都在排放(如果不整治的话)，全国有这么多企业，如果不下力度整治，那环境污染肯定更加严重，当然各部门也在加大监察和处罚力度，这是好事儿，但也有漏网之鱼。这是我的个人看法。</p><p>因为我本身来自于农村，从小就在乡村长大，各种风土人情也都经历过，再结合这方面简答聊聊：</p><p>首先：在传统节日放烟花鞭炮，是非常常见的事情了，其实本身这也是中华名族的一种文化遗产吧，基本上在节日、婚庆、寿宴、过年这些场合必不可少，如果不放鞭的话，总感觉有些单调和冷清，感觉还是热闹，有点节日氛围要好些</p><p>其次：烟花爆竹也算是个历史悠久的产业，某种层面上来说，也带动地方经济，也算是作出了贡献，感觉如果禁鞭了，多少对就业人员、经济等等都会有点儿影响，原本生产烟花爆竹的企业商贩，可能也得转行了</p><p>此外：感觉是否禁鞭这个事情，不应该搞一刀切，更多的应该是尊重民众的意思，但肯定是众口难调，那么就需要作出一些限制和引导，从而让这个传统延续下去，感觉更应该广泛征求意见，来制定更加合理的规定</p><p>当然了，我的想法主要是针对乡村，城里因为小区人员众多，更应该慎重考量才对</p><p>最后，我想说，烟花爆竹的燃放也并不是毫无限制的，只是为了能在节日气氛下热闹热闹，仅此而已！</p>]]></content>
+    
+    
+    <summary type="html">本文讨论了关于禁放烟花爆竹的话题，作者结合自身从事环保行业的经验和对农村传统习俗的理解，提出了个人观点。作者认为，烟花爆竹并非主要环境污染源，而且在传统节日和地方经济方面都具有重要意义。他主张应该尊重民众意愿，限制和引导烟花爆竹的使用，特别是在城市地区。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="我的看法" scheme="https://blog.lovelu.top/tags/%E6%88%91%E7%9A%84%E7%9C%8B%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分享我正在使用的广电流量卡-福兔卡，畅享流量</title>
+    <link href="https://blog.lovelu.top/p/5842951e.html"/>
+    <id>https://blog.lovelu.top/p/5842951e.html</id>
+    <published>2023-12-22T03:32:46.000Z</published>
+    <updated>2023-12-22T04:03:26.100Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>郑重申明：这不是广告，不是广告，不是广告！！！</strong></p><p><img src="https://img.lovelu.top/2023/12/guangdian1.jpg" alt=""></p><p><img src="https://img.lovelu.top/2023/12/guangdian2.jpg" alt=""></p><p>我只是单纯的分享下我正在使用的流量卡，与大家交流。毕竟互联网时代，手机没有网络，就等于砖头。</p><p>我截止到目前，应该是只换过一次手机号，现在手机号绑定了太多东西，基本上无法更换，但是本身手机卡的流量非常有限，就拿我的卡来说，129套餐，每个月只有20G流量，稍微玩玩网游，看看短视频，或者有时候想看看爱奇艺，会发现每月没过半，就已经收到运营商短信，说是流量还剩余1G，1G够干嘛的，连每天看看微信消息都不够，购买流量也不便宜，怎么整都不划算</p><p>所以考虑整个流量卡来使用，然后网上了解了一番，各大运营商都有相应的流量卡，其实也叫物联网卡，也可以打电话、发短信等，几乎和正常手机卡是一样的，只不过流量很多而已，网上各种广告太多了，也不敢随便申请，怕有合约，还担心虚假月租，以后不想用了，注销麻烦等等</p><p>在抖音上看了好多视频，看了很多网友分享的踏坑经历，最终选择了29元月租的<strong>广电5G福兔卡</strong>，这个是直接提交实名资料，然后京东送货上门，整体上比较方便</p><p>我的套餐分享下(每月)：</p><ul><li>定向流量：30G</li><li>通用流量：162G</li></ul><p>然后每月没用完的流量会自动转到下个月，打电话、发短信和普通手机卡一样，我用了差不多一年多吧，没有其它问题，没有合约，套餐不变，我觉得还不错</p><p>至于网络上哪些：9.9元/100G，19元/198G等等，感觉都是套路，不靠谱，但是我没尝试啊</p><p>唯一美中不足的就是：<strong>信号问题</strong></p><p>由于广电并未自建基站，使用的是其它运营商的基站，所以信号上会差一点</p><p>但主要针对的是稍微偏一些的位置，一般位置信号都不错，只要信号没问题，网络没话说，很快</p><p>这下可以随便造了，无线网都用不着连</p>]]></content>
+    
+    
+    <summary type="html">在如今的互联网时代，手机流量对于人们来说至关重要。然而，传统手机卡的流量套餐往往有限，无法满足需求。为了解决这一问题，许多人开始寻找替代方案。在众多流量卡选择中，广电5G福兔卡以其大容量的流量套餐和无合约限制的特点受到关注。该卡每月提供30GB的定向流量和162GB的通用流量，并支持打电话和发短信等功能。尽管信号可能稍差一些，但在大多数地区仍能获得快速的网络连接。对于流量需求较大的用户来说，广电5G福兔卡是一种值得考虑的选择。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="评测" scheme="https://blog.lovelu.top/tags/%E8%AF%84%E6%B5%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>关于facebook被无故封禁问题</title>
+    <link href="https://blog.lovelu.top/p/64616ee4.html"/>
+    <id>https://blog.lovelu.top/p/64616ee4.html</id>
+    <published>2023-12-18T01:58:20.000Z</published>
+    <updated>2023-12-18T03:06:27.776Z</updated>
+    
+    <content type="html"><![CDATA[<p>上周登录 <a href="https://www.facebook.com">FaceBook</a> 突然提示，感觉有点莫名其妙，因为我都没有发布过动态，实属莫名其妙</p><p><img src="https://img.lovelu.top/2023/12/facebook1.png" alt=""></p><p>遇到这种情况，肯定是果断申诉，然后提示一个工作日给处理，结果硬是两个工作日才处理，然后依然是这个结果，还是要封禁，结果再次申诉</p><p>最让人郁闷的是，根本不知道是哪里违反了规定，你说我实名信息有问题，那你应该截图给我，如果是动态违反了规定，那应该是把违反动态信息发出来才对，不至于说只把规范守则发出来，让用户去看</p><p>期间申诉了好几次，最后在周六的时候，才解封，说是误封，尴尬</p><p><img src="https://img.lovelu.top/2023/12/facebook2.png" alt=""></p>]]></content>
+    
+    
+    <summary type="html">遭遇Facebook封禁账号的莫名其妙经历，申诉多次才解封。Facebook账号封禁处理不当，导致用户困扰。解封后称为误封，用户体验受影响。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>大厨修炼记之卷芯大杂烩-3</title>
+    <link href="https://blog.lovelu.top/p/f02c71f8.html"/>
+    <id>https://blog.lovelu.top/p/f02c71f8.html</id>
+    <published>2023-12-15T01:10:43.000Z</published>
+    <updated>2023-12-15T01:08:55.456Z</updated>
+    
+    <content type="html"><![CDATA[<p>说来惭愧，翻阅上次的<a href="https://blog.lovelu.top/p/afe498a2.html">大厨修炼记</a>，已经过去3个月了，中间暂无学习新的菜系，都是些小打小闹</p><h2 id="为什么做？"><a href="#为什么做？" class="headerlink" title="为什么做？"></a>为什么做？</h2><p>那当然是爱吃啦！</p><p>说实话，<a href="https://blog.lovelu.top">满心</a>还是比较爱做饼一类的，要说原因呢？一个是自己本身爱吃，另一个是对象也爱吃，爱吃面粉类食物，感觉和自己在北方呆过一段时间有关系，那会儿早餐主要是：<strong>鸡蛋灌饼、煎饼果子、千层饼、酱香饼、馅儿饼</strong>等等</p><h2 id="做的是什么？"><a href="#做的是什么？" class="headerlink" title="做的是什么？"></a>做的是什么？</h2><p>要说它是什么，我也不好定论，因为起初的想法来源与<a href="https://www.douyin.com/">抖音</a>，无意中刷到的，然后就地取材，所以就有了这个饼，姑且叫<strong>卷芯大杂烩</strong>吧！</p><h2 id="原材料有什么？"><a href="#原材料有什么？" class="headerlink" title="原材料有什么？"></a>原材料有什么？</h2><p>原材料就比较简单了：<strong>整张豆皮、西红柿片、煎鸡蛋、火腿肠、生菜、鸡柳或培根</strong></p><p>其实人家视频中用的是薄饼，类似于<strong>京酱肉丝</strong>中的那种薄饼，由于我没有，然后自己也做不了那么薄的，怕太厚影响口感，就用豆皮儿了，哈哈</p><p>其它原材料自己也可以搭配啦，除了我上面用的那些，还可以加上：<strong>大葱、薄脆、辣条</strong>，当然条件允许的情况下，配上各类酱，效果更佳，比如：<strong>黄豆酱、甜面酱、西红柿酱、辣椒酱</strong>等等</p><h2 id="具体怎么做？"><a href="#具体怎么做？" class="headerlink" title="具体怎么做？"></a>具体怎么做？</h2><p>要说到怎么做，那也比较容易，因为生菜、西红柿这些都是直接生吃，所以不建议冬天尝试，如果家中有暖气的，可以忽略</p><ol><li>起锅烧油，不用太多，将<strong>鸡蛋、火腿肠、鸡柳或培根</strong>轻煎好，备用；</li><li>烧水，水开后加点儿<strong>食盐</strong>，将<strong>豆皮</strong>放入水中，20秒后捞出，备用；</li><li>如果不喜欢生菜原味的，可以将生菜放入开水中5到10秒捞出；</li><li>开始将各类配菜放入豆皮中开始包装了</li></ol><ul><li>豆皮儿展开铺好</li></ul><p><img src="https://img.lovelu.top/2023/12/juanbing1.jpg" alt=""></p><ul><li>放入西红柿，各类配菜</li></ul><p><img src="https://img.lovelu.top/2023/12/juanbing3.jpg" alt=""></p><p><img src="https://img.lovelu.top/2023/12/juanbing4.jpg" alt=""></p><ul><li>切口，然后下面覆盖上去，然后左右一包，齐活儿</li></ul><p><img src="https://img.lovelu.top/2023/12/juanbing5.jpg" alt=""></p><h2 id="口感如何？"><a href="#口感如何？" class="headerlink" title="口感如何？"></a>口感如何？</h2><p>说实话还不错，主要指的是配菜：烤肠、鸡柳一类的，和外面口味一样</p><p>美中不足的是：豆皮缺少饼的那种味道，再加上缺少酱(家里没有)，吃起来味道有点儿淡</p><p>建议尝试的时候，不要用豆皮儿，最好用饼，自己不会做的，那就现成那种手抓饼来做，味道上升好几个档次！</p>]]></content>
+    
+    
+    <summary type="html">这篇博客分享了大厨的创意料理——卷芯大杂烩的制作过程和口感体验。文章中详细介绍了原材料的搭配和烹饪步骤，以及作者对口感的评价和建议。如果你喜欢尝试新的家常美食，或者对饼类食谱感兴趣，不妨来了解一下这个创意的烹饪分享。</summary>
+    
+    
+    
+    <category term="厨艺锻造" scheme="https://blog.lovelu.top/categories/%E5%8E%A8%E8%89%BA%E9%94%BB%E9%80%A0/"/>
+    
+    
+    <category term="美食" scheme="https://blog.lovelu.top/tags/%E7%BE%8E%E9%A3%9F/"/>
+    
+    <category term="厨艺" scheme="https://blog.lovelu.top/tags/%E5%8E%A8%E8%89%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>博客转型计划：从技术到生活的新篇章</title>
+    <link href="https://blog.lovelu.top/p/350b967d.html"/>
+    <id>https://blog.lovelu.top/p/350b967d.html</id>
+    <published>2023-12-12T07:11:17.000Z</published>
+    <updated>2023-12-15T01:27:40.325Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近我在翻阅我的博客时，发现整体上有些混乱，尤其是在内容方面。我博客里涉及的主题包括技术、生活、好物等等，种类很多，但却没有一个明确的方向。我意识到这样的情况并不理想。</p><p>一度我考虑再搭建一个专门的生活类博客，将技术和生活内容分开来写。我试了一段时间，但发现这样做太麻烦了。我意识到写博客也需要有所取舍，不可能将所有的内容都放在博客上。这样不仅会给其他人造成困惑，也会让我自己感到乱。</p><h2 id="建站初衷"><a href="#建站初衷" class="headerlink" title="建站初衷"></a>建站初衷</h2><p>建站初衷是记录技术脚步并分享相关知识，主要以技术为主题的文章为主。</p><p>建站时，我的想法是将遇到的疑难问题和解决方案记录下来，以便日后查阅。然而，事实是再也没有看过技术文章</p><p>因为现在更多地是借助AI来解决问题，使用百度等搜索引擎的频率也减少了</p><p>AI能够解决我遇到的问题的比例已经超过90%</p><h2 id="我的想法"><a href="#我的想法" class="headerlink" title="我的想法"></a>我的想法</h2><p>随着正式建站已经过去了一年多的时间，我认识了很多志同道合的朋友。大家都怀着建站的热情开始，但是随着时间的推移，大部分站点最终都关闭了。关闭的原因无外乎以下几点：</p><ul><li>服务器续费贵</li><li>域名到期或更换了</li><li>转移到开源社区</li></ul><p>每天我都会抽出一些时间来浏览友链更新的文章，看看有没有一些新奇的东西吸引我。一般来说，我会直接忽略技术类的文章，而对<strong>生活、美食、工作</strong>等方面的文章感兴趣。</p><p>这并不是因为我对技术文章有抵触，而是因为技术类文章往往互相摘抄、借鉴，内容上显得枯燥乏味，有时甚至不完整。我更喜欢直接找到我感兴趣的技术文章，而不是被动地等待它们出现在我的视野中。我相信大部分人也是如此</p><h2 id="转变思路"><a href="#转变思路" class="headerlink" title="转变思路"></a>转变思路</h2><p>自今日起，<a href="https://blog.lovelu.top">满心记</a>主类型为生活类，不再大量撰写技术类文章。</p><p><a href="https://blog.lovelu.top">满心记</a>这里是一个捕捉时光的倾心之笔，记录生活中美好瞬间、铭刻感动的地方。在这个闲暇之余的角落，我将用文字练练笔杆子，宣泄自己的情感</p><p>在这个博客中，我将分享各种生活见闻、美食体验、工作感悟以及其他引人入胜的话题。我希望通过文字表达，留存那些让我心动和感动的瞬间，与读者们一同分享生活的点滴。</p><p>无论是一次美妙的旅行，一道令人垂涎的美食，还是一段令人难忘的故事，我都将用真挚的笔触将它们记录下来。</p><p>我欢迎您的参与和互动，无论是留言、评论还是私信，都能够让我感到欣喜。</p><h2 id="关于技术文章"><a href="#关于技术文章" class="headerlink" title="关于技术文章"></a>关于技术文章</h2><p>原来的技术文章不会删除，还是会留存，毕竟也花了不少经历，后面内容重点会写生活经历、旅游、美食、秀恩爱等方面，当然如果有好用的工具软件也会分享</p><p><img src="https://img.lovelu.top/2023/12/jianchi1.jpeg" alt=""></p>]]></content>
+    
+    
+    <summary type="html">《满心记》是一个捕捉时光的倾心之笔，记录生活中美好瞬间、铭刻感动的生活类博客。作者分享生活见闻、美食体验、工作感悟等各种有趣的话题，用真挚的笔触记录那些让他心动和感动的瞬间。欢迎您加入这个温暖而有意义的社区，一起分享生活的喜悦和情感。</summary>
+    
+    
+    
+    <category term="网站公告" scheme="https://blog.lovelu.top/categories/%E7%BD%91%E7%AB%99%E5%85%AC%E5%91%8A/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一场冬雨一场寒，武汉的暖冷冻</title>
+    <link href="https://blog.lovelu.top/p/52d3c29d.html"/>
+    <id>https://blog.lovelu.top/p/52d3c29d.html</id>
+    <published>2023-12-11T02:29:54.000Z</published>
+    <updated>2023-12-11T03:24:24.633Z</updated>
+    
+    <content type="html"><![CDATA[<p>请允许在繁忙的周一，小小的感叹一下！！！</p><p>武汉经历了三天的“暖冷冻”三连降，这确实需要极强的适应能力。</p><p>冬天是一个让人心生感慨的季节，它的到来似乎总是那么突然而又无情。尽管武汉的冬天并不像北方那样严寒，但它有着自己独特的风味。</p><p>当大风呼啸而过，寒意袭来时，园区里的树叶仿佛在为这个季节做最后的告别。它们摇曳着，似乎带着一丝不舍。一片片枯黄的叶子随风飘落，与大地相融，形成了一幅凄美的画面。走在园区的小径上，脚下落叶沙沙作响，仿佛带着一种别样的风味。</p><p><img src="https://img.lovelu.top/2023/12/luoye1.webp" alt=""></p><p>周一，作为一周的开始，总是让人感受到一种特殊的疲惫感。结束了愉快的周末，我们不得不面对新的工作和挑战，寒冷的冬天更增添了一份沉重。</p><p>哪有那么多感叹，好好搬砖吧，打工人！</p>]]></content>
+    
+    
+    <summary type="html">在冬日的凄美中，枯黄落叶的景象引发了人们的思考和疲惫。探索武汉冬天下雨变凉的景象，感受雨水带来的内心宁静，以及在寒冷早晨中寻找安慰的人们的勇气和力量。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面对近期生活中的槽点，我有话说</title>
+    <link href="https://blog.lovelu.top/p/dce31480.html"/>
+    <id>https://blog.lovelu.top/p/dce31480.html</id>
+    <published>2023-12-04T02:05:15.000Z</published>
+    <updated>2023-12-28T08:14:27.180Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近的生活非常忙碌而充实，我感觉自己总是被工作、生活或者自己的计划所安排着。</p><p>说说最近遇到的些槽点事件吧！</p><p>首先：上班儿，当然这是再正常不过的了，由于最近也比较忙，接手了不少屎山代码，不得不说，到底是何种水平的人为省事写出这种程度代码，真的是让后接手的人，血压飙升，代码错落无致，我忍了，命名规则乱七八糟，我也忍了，最受不了的是，所有代码放一个页面里，整个页面七八千行，鼠标拖动都费劲，对此代码开发者的眼力劲儿表示震惊，此处绝对有：<strong>赞赞赞！</strong></p><p>俗话说得好，前人栽树后人乘凉，这个还不错，如果是：前人挖坑后人填，那可就是有些麻烦了。</p><p>当然，吐槽归吐槽，自己刚入行，何曾不是这样，只能慢慢改了。。。</p><p>然后：现在住的小区，有人去世了，这两天都是敲锣打鼓，放鞭炮，而且还就在我隔壁单元，那脑劲儿别提了，把人整的整个一神经衰弱了</p><p><strong>首先声明一点，并未对逝世者有任何的不尊重，只是单纯的就事论事</strong></p><p>大概上周五的晚上十点左右，刚迷糊睡觉来着，由于是晚上，本身也还算安静，突然鞭炮声从楼下传来(我住的楼层不高)，被吓了一跳，我闺女也是，直接吓哭了</p><p>心里当时就凉了半截，这大半夜突然放鞭炮，肯定是有人去世了，因为知道有人去世了，最少会吵 2 天或以上，然后晚上还在陆陆续续放鞭炮，一直放到凌晨二三点的样子，才稍微好点儿</p><p>那第二天就别说了，放了一整天，那敲锣打鼓的也是闹一天，哎，家里是待不了了，只能出去找地方避避了</p><p>然后再就是今天早上，本来周一人也是感觉格外累，早上三点多出殡，鞭炮加礼炮一直搞到五点，真是一言难尽。</p><p>最后：没休息好，顶着一肚子气，小区里又被人车拦着过不去了</p><p>本来早上时间有点赶，因为上班路上到处修路，避不开，所以本身也堵车，想着早点出发，结果被小区里面一个人随便停的车堵住了，过不去，车里还没人，真的是素质低，马路也不是他自己家的，想停就停，根本不管别人。</p><p>我自己停车首选都是停车位里，如果实在没有，停旁边，最起码预留出足够的位置，让别人能通过，我感觉这事情完全是个人素质问题，你为了方便说停几分钟上楼拿个东西，别人凭什么要等你。</p><p>感觉这事儿怎么说呢，感觉还是：与人方便，与己方便吧。</p><p>然后早上上班路上也是，我正常直行，在红绿灯处，一个拐弯的车硬插进来，这个也很平常，大不了我往左躲开就是了，结果这个司机更过分，直接一下子拐到最内侧车道，这可是单向四车道，逼得我不得不急刹车，要不是嫌事故处理麻烦，早一脚油门冲上去了，干他丫的！！！</p><p>感觉现在开车也是任重道远，随处都充满着凶险。</p><p>我也是开了 5 年车的人了，从来没有过剐蹭和事故，感觉在路上，要想不撞别人很简单，但是要保证不撞别人的同时，还能让别人也撞不到你，这其中还是有待思考的。</p><p>怎么说呢，还是开车要小心吧，不要把自己的生命交给别人，都想让别人让你。</p><p>感觉当今社会，槽点确实很多，无论是工作、生活、路上等等，还是需要我们多留心，同时心态的调整也异常重要！</p>]]></content>
+    
+    
+    <summary type="html">在现代社会中，我们面临着各种挑战和槽点事件，包括工作中糟糕的代码、噪音扰人的追悼活动，以及不文明停车和危险驾驶等问题。本文探讨了这些挑战，并强调了调整心态以应对这些问题的重要性。无论是在工作、生活还是在道路上，我们需要留心并适应这些挑战，以保持良好的心态和健康的生活方式。</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="我的看法" scheme="https://blog.lovelu.top/tags/%E6%88%91%E7%9A%84%E7%9C%8B%E6%B3%95/"/>
+    
+  </entry>
+  
+</feed>
