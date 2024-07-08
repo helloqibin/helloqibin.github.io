@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>满心记</title>
+  
+  <subtitle>分享技术与生活</subtitle>
+  <link href="https://blog.lovelu.top/atom.xml" rel="self"/>
+  
+  <link href="https://blog.lovelu.top/"/>
+  <updated>2024-07-04T04:01:50.875Z</updated>
+  <id>https://blog.lovelu.top/</id>
+  
+  <author>
+    <name>满心记</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>彗星云跑路了</title>
+    <link href="https://blog.lovelu.top/p/e23ab292.html"/>
+    <id>https://blog.lovelu.top/p/e23ab292.html</id>
+    <published>2024-07-04T03:45:15.000Z</published>
+    <updated>2024-07-04T04:01:50.875Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>买服务器认准大厂，一定要认准大厂</p></blockquote><p><img src="https://img.lovelu.top/2024/07/Cache_-3b3b9ec9915304b5.jpg" alt=""></p><p>看到群友分享的图，才实锤，彗星已跑路。</p><p>可能很多人不知道这个彗星云，其实也只是众多小服务器商中的一个，我很早就入群了，我看它稳定经营了不短的时间，看着也有几百号人，经常有活动，正好有香港服务器购买需求，所以就买了一个。</p><p>下面是事件始末：</p><ul><li>06-05日购买香港二区服务器(一年)</li><li>06-22日关闭了群聊，期间发布三区主机中毒通知</li><li>06-30日发现我网站无法访问，登录官网准备重启，发现重启失败，开始联系客服，无人应答</li><li>07-04日登录官网显示CDN已过期(实则已跑路)</li></ul><p>服务器倒是小事儿，主要是辛辛苦苦录入的数据全部丢失了，还是想当然了，把数据就备份在服务器上，没有存到本地，比较可惜，吃一堑长一智吧，以后坚决不能用小厂的服务器，也不能贪小便宜，一分价钱一分货。</p><p>其实也能想到，价格便宜了，量少了，基本上就没钱挣了，自然就坚持不下去了，彗星云跑路了，无非过几天冒出来个 <strong>流星云、恒星云</strong> 之辈，以后得注意了。</p>]]></content>
+    
+    
+    <summary type="html">这篇文章主要讨论了购买服务器时选择大厂商的重要性，以及对小型服务器提供商彗星云倒闭事件进行了分享和反思。作者强调了大厂商的稳定可靠性，并警告读者在购买服务器时要慎重选择，避免贪图小便宜。文章最后还提到因未备份数据而导致全部丢失的教训，强调了数据备份的重要性。</summary>
+    
+    
+    
+    <category term="经验分享" scheme="https://blog.lovelu.top/categories/%E7%BB%8F%E9%AA%8C%E5%88%86%E4%BA%AB/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Aspose.Words将word转PDF并添加公章</title>
+    <link href="https://blog.lovelu.top/p/596c9ceb.html"/>
+    <id>https://blog.lovelu.top/p/596c9ceb.html</id>
+    <published>2024-07-01T02:43:10.000Z</published>
+    <updated>2024-07-01T03:23:23.226Z</updated>
+    
+    <content type="html"><![CDATA[<p>很久没写技术文章了，前段时间在研究word转pdf，以及加盖印章这部分，已经实现了，当然网络上也有很多文章，但是有的要么依赖导入不成功，要么逻辑有问题，总的来说，可能还是文章太老了，有些东西都不适用了，我这里正好也分享一下，希望能帮得上大家。</p><p>代码可直接测试运行，我这里<strong>JDK17，Maven3.5，IDEA2023</strong></p><h2 id="业务需求"><a href="#业务需求" class="headerlink" title="业务需求"></a>业务需求</h2><p>我们现有业务是通过poi来实现内容转word，以及各类电子签名和图片，平时相关人员是将word下载下来，然后盖章扫描，再传回平台。<br>现在需求是在特殊情况下，需要特殊处理，不走这个流程了，因为太麻烦，所以想再平台上直接生成盖章后的pdf，直接使用。</p><p>其实需求很简单，就是要最终盖好章的pdf，发给客户，好，那我们就开始吧。</p><h2 id="选用技术"><a href="#选用技术" class="headerlink" title="选用技术"></a>选用技术</h2><p>我大概了解了下，常用的主要就是下面几种方式</p><ul><li>使用<strong>Aspose.Words</strong>库：Aspose.Words是一个功能强大的库，支持将Word文档转换为PDF格式。你需要将Aspose.Words的许可证字符串设置到你的程序中，然后使用相应的API进行转换。</li><li>使用<strong>documents4j</strong>库：对于Windows环境，documents4j库可以在有Microsoft Office服务的情况下将Word文档转换为PDF。这需要安装Microsoft Office，并且可能需要在程序中配置Office的路径。</li><li>使用<strong>LibreOffice</strong>服务：在Linux环境下，可以利用LibreOffice服务将Word文档转换为PDF。这需要在服务器上安装LibreOffice，并且可能需要在程序中配置LibreOffice的路径。</li><li>使用<strong>Apache POI和iText</strong>库：这种方法适用于处理.doc和.docx格式的Word文档。首先使用Apache POI读取Word文档的内容，然后使用iText库将内容转换为PDF格式。这种方法可能需要处理Word文档中的复杂格式和布局。<br>使用其他第三方库：例如Spire.Doc库，它提供了一个简单的API来将Word文档转换为PDF格式。你可以通过下载jar包或使用Maven仓库安装导入这个库。</li><li>使用<strong>OpenOffice</strong>服务：如果你的环境中安装了OpenOffice，你可以使用Java调用OpenOffice的服务来将Word文档转换为PDF。这需要在Java程序中配置OpenOffice的路径和服务设置。</li></ul><p>权衡之下，我选择了<strong>Aspose.Words</strong>，其实选择<strong>OpenOffice</strong>效果最好，以后等我有空了，会选择这种方式实现，到时候再分享。</p><h2 id="实现逻辑"><a href="#实现逻辑" class="headerlink" title="实现逻辑"></a>实现逻辑</h2><p>导入依赖，由于Aspose.Words在私服仓库，所以直接pom是无法导入的，需要将jar包手动传到maven仓库，然后在pom引入</p><p><a href="https://releases.aspose.com/cells/java/">去官网下载jar包</a>，<code>记得选择21.6的jar包</code></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.aspose&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;aspose-words&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;<span class="number">21.6</span>&lt;/version&gt;</span><br><span class="line">  &lt;classifier&gt;jdk17&lt;/classifier&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.itextpdf&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;itext-asian&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;<span class="number">5.2</span><span class="number">.0</span>&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.itextpdf&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;itextpdf&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;<span class="number">5.5</span><span class="number">.13</span>&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;com.itextpdf.tool&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;xmlworker&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;<span class="number">5.5</span><span class="number">.13</span>&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure><p>建议使用<code>21.6</code>版本，这个版本我去了水印(正版需要购买证书)，相当于破解了吧，其它版本暂未尝试。</p><p>其实就是两个文件，<strong>WordPdfUtil.java和ImageUtil</strong></p><p><strong>WordPdfUtil.java</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.manxin.ltd.datacenter.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.aspose.words.Document;</span><br><span class="line"><span class="keyword">import</span> com.aspose.words.SaveFormat;</span><br><span class="line"><span class="keyword">import</span> com.itextpdf.text.Image;</span><br><span class="line"><span class="keyword">import</span> com.itextpdf.text.pdf.PdfReader;</span><br><span class="line"><span class="keyword">import</span> com.itextpdf.text.pdf.PdfStamper;</span><br><span class="line"><span class="keyword">import</span> javax.imageio.ImageIO;</span><br><span class="line"><span class="keyword">import</span> java.awt.image.BufferedImage;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Modifier;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WordToPdfUtils</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span><span class="keyword">throws</span> Exception &#123;</span><br><span class="line">       <span class="type">Document</span> <span class="variable">doc</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//去水印</span></span><br><span class="line">       Class&lt;?&gt; aClass = Class.forName(<span class="string">&quot;com.aspose.words.zzXyu&quot;</span>);</span><br><span class="line">       java.lang.reflect.<span class="type">Field</span> <span class="variable">zzZXG</span> <span class="operator">=</span> aClass.getDeclaredField(<span class="string">&quot;zzZXG&quot;</span>);</span><br><span class="line">       zzZXG.setAccessible(<span class="literal">true</span>);</span><br><span class="line">       java.lang.reflect.<span class="type">Field</span> <span class="variable">modifiersField</span> <span class="operator">=</span> zzZXG.getClass().getDeclaredField(<span class="string">&quot;modifiers&quot;</span>);</span><br><span class="line">       modifiersField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">       modifiersField.setInt(zzZXG, zzZXG.getModifiers() &amp; ~Modifier.FINAL);</span><br><span class="line">       zzZXG.set(<span class="literal">null</span>, <span class="keyword">new</span> <span class="title class_">byte</span>[]&#123;<span class="number">76</span>, <span class="number">73</span>, <span class="number">67</span>, <span class="number">69</span>, <span class="number">78</span>, <span class="number">83</span>, <span class="number">69</span>, <span class="number">68</span>&#125;);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           <span class="type">String</span> <span class="variable">resultPath</span> <span class="operator">=</span> <span class="string">&quot;E:\\download\\test\\test&quot;</span> + <span class="string">&quot;.pdf&quot;</span>;</span><br><span class="line">           <span class="type">FileOutputStream</span> <span class="variable">os</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(resultPath);</span><br><span class="line">           doc = <span class="keyword">new</span> <span class="title class_">Document</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(<span class="string">&quot;E:\\download\\test\\test.docx&quot;</span>));</span><br><span class="line">           doc.save(os, SaveFormat.PDF);</span><br><span class="line"></span><br><span class="line">           <span class="comment">//添加印章</span></span><br><span class="line">           <span class="type">FileInputStream</span> <span class="variable">pdfIs</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(<span class="string">&quot;E:\\download\\test\\test.pdf&quot;</span>);</span><br><span class="line">           <span class="comment">// 1.1 读取模板文件</span></span><br><span class="line">           <span class="type">PdfReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PdfReader</span>(pdfIs);</span><br><span class="line">           <span class="comment">// 1.2 创建文件输出流</span></span><br><span class="line">           <span class="type">FileOutputStream</span> <span class="variable">out</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;E:\\download\\test\\testnew.pdf&quot;</span>);</span><br><span class="line">           <span class="comment">// 2、创建PdfStamper对象</span></span><br><span class="line">           <span class="type">PdfStamper</span> <span class="variable">stamper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PdfStamper</span>(reader, out);</span><br><span class="line">           <span class="comment">// 4、读取公章</span></span><br><span class="line">           <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> <span class="string">&quot;E:\\download\\test\\baogao.png&quot;</span>;</span><br><span class="line">           <span class="type">BufferedImage</span> <span class="variable">bufferedImage</span> <span class="operator">=</span> ImageIO.read(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(path));</span><br><span class="line">           BufferedImage[] imgs = ImageUtil.splitImage(bufferedImage, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">           <span class="comment">// 5、读公章图片</span></span><br><span class="line">           <span class="type">Image</span> <span class="variable">image</span> <span class="operator">=</span> Image.getInstance(ImageUtil.imageToBytes(bufferedImage));</span><br><span class="line">           <span class="comment">// 公章大小，x轴</span></span><br><span class="line">           <span class="type">int</span> <span class="variable">chunkWidth</span> <span class="operator">=</span> <span class="number">150</span>;</span><br><span class="line">           <span class="comment">// 公章大小，y轴</span></span><br><span class="line">           <span class="type">int</span> <span class="variable">chunkHeight</span> <span class="operator">=</span> <span class="number">150</span>;</span><br><span class="line">           <span class="comment">// pdf页面页码</span></span><br><span class="line">           <span class="type">int</span> <span class="variable">pdfPages</span> <span class="operator">=</span> reader.getNumberOfPages();</span><br><span class="line"></span><br><span class="line">           <span class="comment">// 6.3 最后一页盖公章</span></span><br><span class="line">           image.scaleToFit(chunkWidth, chunkHeight);</span><br><span class="line">           <span class="comment">//得到的位置有些许偏差，自行调节</span></span><br><span class="line">           image.setAbsolutePosition(<span class="number">380</span>, <span class="number">310</span>);</span><br><span class="line">           stamper.getOverContent(pdfPages).addImage(image);</span><br><span class="line">           stamper.close();</span><br><span class="line">           out.close();</span><br><span class="line">           reader.close();</span><br><span class="line">           pdfIs.close();</span><br><span class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>ImageUtil.java</strong></p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.whohs.smartmsp.opscenter.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.imageio.ImageIO;</span><br><span class="line"><span class="keyword">import</span> java.awt.*;</span><br><span class="line"><span class="keyword">import</span> java.awt.image.BufferedImage;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ImageUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@Description</span>:分割图片</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@Date</span>: 2021/12/9  8:34</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@Param</span> image: 图片BufferedImage流</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@Param</span> rows: 分割行</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@Param</span> cols: 分割列</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span>: java.awt.image.BufferedImage[]  返回分割后的图片流</span></span><br><span class="line"><span class="comment">    **/</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> BufferedImage[] splitImage(BufferedImage image, <span class="type">int</span> rows, <span class="type">int</span> cols) &#123;</span><br><span class="line">       <span class="comment">// 分割成4*4(16)个小图</span></span><br><span class="line">       <span class="type">int</span> <span class="variable">chunks</span> <span class="operator">=</span> rows * cols;</span><br><span class="line">       <span class="comment">// 计算每个小图的宽度和高度</span></span><br><span class="line">       <span class="type">int</span> <span class="variable">chunkWidth</span> <span class="operator">=</span> image.getWidth() / cols + <span class="number">3</span>;<span class="comment">// 向右移动3</span></span><br><span class="line">       <span class="type">int</span> <span class="variable">chunkHeight</span> <span class="operator">=</span> image.getHeight() / rows;</span><br><span class="line">       <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">       BufferedImage[] imgs = <span class="keyword">new</span> <span class="title class_">BufferedImage</span>[chunks];</span><br><span class="line">       <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">0</span>; x &lt; rows; x++) &#123;</span><br><span class="line">           <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">y</span> <span class="operator">=</span> <span class="number">0</span>; y &lt; cols; y++) &#123;</span><br><span class="line">               <span class="comment">//设置小图的大小和类型</span></span><br><span class="line">               imgs[count] = <span class="keyword">new</span> <span class="title class_">BufferedImage</span>(chunkWidth, chunkHeight, BufferedImage.TYPE_INT_RGB);</span><br><span class="line">               <span class="comment">//写入图像内容</span></span><br><span class="line">               <span class="type">Graphics2D</span> <span class="variable">gr</span> <span class="operator">=</span> imgs[count].createGraphics();</span><br><span class="line">               <span class="comment">// 增加下面代码使得背景透明</span></span><br><span class="line">               imgs[count] = gr.getDeviceConfiguration().createCompatibleImage(chunkWidth, chunkHeight, Transparency.TRANSLUCENT);</span><br><span class="line">               gr.dispose();</span><br><span class="line">               gr = imgs[count].createGraphics();</span><br><span class="line">               gr.drawImage(image, <span class="number">0</span>, <span class="number">0</span>,</span><br><span class="line">                       chunkWidth, chunkHeight,</span><br><span class="line">                       chunkWidth * y, chunkHeight * x,</span><br><span class="line">                       chunkWidth * y + chunkWidth,</span><br><span class="line">                       chunkHeight * x + chunkHeight, <span class="literal">null</span>);</span><br><span class="line">               gr.dispose();</span><br><span class="line">               count++;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> imgs;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@Description</span>:  将BufferedImage转换成字节数组</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@Date</span>: 2021/12/6  17:31</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@Param</span> bufferedImage:</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span>: byte[]</span></span><br><span class="line"><span class="comment">    **/</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span>   <span class="type">byte</span>[] imageToBytes(BufferedImage bufferedImage) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line"></span><br><span class="line">       <span class="type">ByteArrayOutputStream</span> <span class="variable">baos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">       ImageIO.write( bufferedImage, <span class="string">&quot;png&quot;</span>, baos );</span><br><span class="line">       baos.flush();</span><br><span class="line">       <span class="type">byte</span>[] imageInByte = baos.toByteArray();</span><br><span class="line">       baos.close();</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> imageInByte;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>代码就不解释了，几乎都有注释，大家一看就清楚了，有此类需求的可以做为参考。</p>]]></content>
+    
+    
+    <summary type="html">这篇文章主要介绍了使用Aspose.Words将Word文档转换为PDF，并在PDF上添加电子印章的实现辑。作者选择了Aspose.Words库来实现这个需求提供了相关代码和依赖的配置。希望这篇文章能对有类似需求的读者提供帮助。</summary>
+    
+    
+    
+    <category term="网络技术" scheme="https://blog.lovelu.top/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/"/>
+    
+    
+    <category term="知识" scheme="https://blog.lovelu.top/tags/%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="开发" scheme="https://blog.lovelu.top/tags/%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>重新启用我的小米手环5</title>
+    <link href="https://blog.lovelu.top/p/146ebd6.html"/>
+    <id>https://blog.lovelu.top/p/146ebd6.html</id>
+    <published>2024-07-01T02:14:53.000Z</published>
+    <updated>2024-07-01T02:37:54.184Z</updated>
+    
+    <content type="html"><![CDATA[<p>说起这个手环，应该是前年送我对象的生日礼物，当时就带了几次，然后就不知道放哪儿去了，中间也搬过家，也没想着这事儿，这不最近无意中翻出来，然后充上电了，感觉也还不错，就重新启用了。</p><h2 id="外观"><a href="#外观" class="headerlink" title="外观"></a>外观</h2><p><img src="https://img.lovelu.top/2024/07/mihuan1.jpg" alt=""></p><p>有一说一，外观还是很耐看的，带着也很轻(11.9克)，屏幕(1.1英寸)也很精致小巧，性价比也不错，适合户外或办公室人员携带。</p><h2 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h2><ul><li>运行内存：512KB</li><li>机身存储：16MB</li><li>防护级别：50米防水</li><li>传感器：高精度六轴传感器，PPG心率传感器</li><li>电池容量：125mAh</li><li>电池类型：锂离子聚合物安全电池</li><li>充电方式：磁吸式充电</li><li>充电时间：2小时</li><li>续航时间：14天</li></ul><p>比较满意的就是防水和续航能力了，基本上20多天都不需要充电。</p><h2 id="功能特点"><a href="#功能特点" class="headerlink" title="功能特点"></a>功能特点</h2><ul><li>11种运动模式<br>小米手环5支持瑜伽、塑形与减脂兼顾的划船机、跳绳等，精准监测分析每种运动姿势。 </li><li>个人活力指数<br>小米手环5基于性别、年龄和心率等数据，评估个人活力指数，并提供活力改善运动指导。 </li><li>压力监测<br>小米手环5支持压力检测功能，时刻了解个人压力状态，当压力过高引导及时舒压、恢复。</li><li>呼吸训练<br>通过小米手环5可以释放身心压力，可随手环显示节奏进行1~5分钟呼吸训练。</li><li>女性健康记录<br>小米手环5支持记录生理期、排卵期，还会在生理期来临前提供振动提醒，让用户提前做好准备。</li><li>小爱同学<br>小米手环5NFC版支持爱同学语音功能，通过小爱同学的功能，小米手环5NFC版可以开灯、关灯，控制米家空调、扫地机器人、电饭煲、净化器等家中电器。</li><li>遥控拍照<br>通过小米手环5可以实现与手机拍照功能联动，自拍、合影通过小米手环5可以操控手机完成。</li></ul><p>还有支付功能，这个我觉得还蛮好的，以后再换一个，估计就追求通话、微信功能了，户外运动必备啊，手机确实带着不方便。</p><h2 id="配套的APP"><a href="#配套的APP" class="headerlink" title="配套的APP"></a>配套的APP</h2><p>我下载了配套的苹果APP-Zepp Life，配置一些东西还是很方便。</p><p><img src="https://img.lovelu.top/2024/07/mihuan2.jpg" alt=""></p>]]></content>
+    
+    
+    <summary type="html">这篇文章介绍了一款手环的外观和功能特点，包括防水能力、续航时间、运动模式、个人活力指数评估、压力监测、呼吸训练、女性健康记录、小爱同学语音功能、遥控拍照等。作者对手环的外观和功能都表示满意，并提到了配套的APP-Zepp Life的便利性。</summary>
+    
+    
+    
+    <category term="好物推荐" scheme="https://blog.lovelu.top/categories/%E5%A5%BD%E7%89%A9%E6%8E%A8%E8%8D%90/"/>
+    
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="评测" scheme="https://blog.lovelu.top/tags/%E8%AF%84%E6%B5%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>端午抽空去东湖磨山风景区走了一圈</title>
+    <link href="https://blog.lovelu.top/p/85560c4e.html"/>
+    <id>https://blog.lovelu.top/p/85560c4e.html</id>
+    <published>2024-06-11T06:12:25.000Z</published>
+    <updated>2024-06-13T05:52:09.715Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个端午的三天假，几乎都在外面，很忙碌，但不知道忙了些啥。好在网络上有赛龙舟，抖音里有端午氛围，让自己的端午增添些许色彩。</p><p>端午没有吃粽子，感觉对端午的粽子，中秋的月饼，实在是难有兴趣。因为想吃，随时都可以，似乎任何时候都不想吃。</p><p>早上八点的时候看了下东湖那条路，发现不堵车，天气阴，温度26左右，很适宜，果断决定去看看。</p><h2 id="东湖风景区"><a href="#东湖风景区" class="headerlink" title="东湖风景区"></a>东湖风景区</h2><p>上次去东湖磨山，好像还是前年的事情了，不是不想去，主要是那片太堵了，距离并不远，开车顺利的话，最多20分钟就到了，但堵车3个小时到不了是常有的事儿，所以每次计划要去的时候，会事先看看导航，不出意外，90%以上都是在堵车，主要是 <strong>东湖风景区、东湖磨山、武汉植物园</strong> ，这几个景区都在那边，当然可能不止这几个，这是我所知道的，而且那边就两条道，一条道行车，另一条道停车，最恶心的就是，人一旦多了，红绿灯就格外恶心，几乎是5秒的绿灯(过一两辆车)，200多秒的红灯(有时候还要来两轮)，可想而知多恶心，那么多车，这样的搞法，不堵几个小时才怪。</p><p>车流量大完全可以搞限行策略，而不是把红绿灯弄的这么恶心，毕竟现在出行大部分都开车，限行还是很有必要的。</p><h2 id="有哪些玩的"><a href="#有哪些玩的" class="headerlink" title="有哪些玩的"></a>有哪些玩的</h2><p>东湖片区还是很大的，目前好像还在开发新的景区，不知道会不会是玩水一类的，毕竟靠近东湖肯定不缺水，而且绿道、摩天轮、游乐园都有了。</p><p>要说玩的大概想了想：</p><ul><li>东湖风景区：挨着湖边搭一个帐篷，或者铺一个垫子，弄一个吊床，躺下，吹吹风还是不错的；</li><li>东湖绿道：骑车、散步都是不错的选择；</li><li>穿越丛林：碰碰车、射击、摆锤、挖掘机、旋转木马等，可玩性高;</li><li>东湖之眼：摩天轮，据说一圈下来13分14秒，我坐过几次，感觉最多10分钟;</li><li>盆景园：都是一些盆装的植物，空气清新；</li></ul><p>除了以上这些，偶尔会做些活动，比如摩天轮下有的情侣会表白、求婚(要花钱的)，正好碰上的话，可以沾沾喜庆，再就是我们这次去碰到了 <strong>樱花主题乐园</strong>，带着小孩儿的花，可玩性还比较高。</p><p>下面分享下，东湖拍的些照片吧，随手拍的，主打一个随意</p><p><img src="https://img.lovelu.top/2024/06/donghu1.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu2.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu3.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu4.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu5.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu6.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu7.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu8.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu9.jpg" alt=""><br><img src="https://img.lovelu.top/2024/06/donghu10.jpg" alt=""></p>]]></content>
+    
+    
+    <summary type="html">端午节期间去了东湖风景区，描述了一些关于那里的交通情况和可以玩的项目。提到了东湖风景区、东湖磨山、武汉植物园等景点，以及一些可以做的活动，比如在东湖风景区搭帐篷、骑车或散步在东湖绿道、玩摩天轮等。还分享了一些在那里拍的照片。</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://blog.lovelu.top/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="游玩" scheme="https://blog.lovelu.top/tags/%E6%B8%B8%E7%8E%A9/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>今天去看了部电影 - 维和部队</title>
+    <link href="https://blog.lovelu.top/p/db10a71.html"/>
+    <id>https://blog.lovelu.top/p/db10a71.html</id>
+    <published>2024-06-07T07:19:15.000Z</published>
+    <updated>2024-06-11T06:13:43.410Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://img.lovelu.top/2024/06/weihebudui.jpg" alt=""></p><p>说实话，已经记不清上次去电影院是什么时候的事儿了，可能是去年，也可能是前年吧，本来是想去的，不过要么是没碰到有喜欢的片子，要么就是忘记了，等想看的时候，发现其它网站上已经可以看了，总感觉已经过时了，所以就没有去电影院看的欲望了</p><p>今天心血来潮，想看一部电影，结果在对象的内定下，我们选择了《维和部队》这个片子，其实选择它主要还是有熟知的演员在吧，毕竟对于电影内容我是没有了解过的，不过通过电影名字，隐约能感觉到是什么类型的片子</p><p>其实看完这个片子之后，我还去看了下维和部队的背景，毕竟大部分片子都是现实的缩影，不论片子故事情节如何，不得不说作为维和部队的人员，真的是不容易</p><h2 id="电影评价"><a href="#电影评价" class="headerlink" title="电影评价"></a>电影评价</h2><p>说实话，要不是有喜欢的演员在，可能不一定能坚持看完，不说片子拍的好坏，主要还是情节太过扯淡，这要搁现实中，根本不可能的事儿</p><p>不能理解的情节挑两个说说：</p><p>情节一：最后台风中小木屋的战斗，我也是服了，护送证人去法庭，明明知道恐怖分子会袭击，就搞两三辆车护送，也就是维和部队那些人，当地竟然一个人都没参与，反倒是最后有队员牺牲了，请求支援，然后大部队来了，还有武装直升机，我真是醉了，早干嘛去了，直接让直升机护送不完事儿了嘛，竟折腾，说实话要不是有主角光环，这些个人早死光了。。。</p><p>情节二：证人走向法庭的时候，周围到处都是人，不排除有恐怖分子混在其中，这一家子证人竟然慢悠悠的走着，跟国家领导人视察一样，周边也没人保护，要不是最后那个狙击手良心发现了，早一枪把他干掉了，实在过于侮辱我的智商了。。。</p><p>当然肯定不止这么两个情节，还有不少，只是这两个情节，属实忍不了，吐槽吐槽。。。</p><blockquote><p>这部片子是前段时间看的，一直忙，就没来得及写，正好今天有点儿时间，就写写啦！</p></blockquote>]]></content>
+    
+    
+    <summary type="html">长时间未去电影院观影的经历，以及最近观看电影《维和部队》的感受和评价。作者选择观看该片主要是因为有熟知的演员出演，对电影内容并不了解。在观影后，作者对电影情节提出了一些批评，认为部分情节过于扯淡，不符合现实逻辑，特别是在护送证人和台风中小木屋的战斗情节中。作者对电影中的情节进行了吐槽，认为某些情节过于不合理，甚至侮辱了智商。</summary>
+    
+    
+    
+    <category term="观影历程" scheme="https://blog.lovelu.top/categories/%E8%A7%82%E5%BD%B1%E5%8E%86%E7%A8%8B/"/>
+    
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="观影" scheme="https://blog.lovelu.top/tags/%E8%A7%82%E5%BD%B1/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>给办公电脑换两根16G内存条</title>
+    <link href="https://blog.lovelu.top/p/69c1c6c4.html"/>
+    <id>https://blog.lovelu.top/p/69c1c6c4.html</id>
+    <published>2024-06-07T06:56:56.000Z</published>
+    <updated>2024-06-07T07:12:40.292Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>搞软件的，以前觉得16G内存挺够用的，现在随着公司业务系统越来越多，每次启动的服务也很多，导致内存动不动就满了，只能换两根16G的了，自己动手吧，电脑当时采购的时候，选了i5的，性能方面还是弱一些</p></blockquote><p>原装的是两根8G 2400MHz的，现在已经不够用了，该退位了</p><p><img src="https://img.lovelu.top/2024/06/neicuntiao1.png" alt=""></p><p>公司给采购了两根16G戴尔的内存条，自己从家里带的螺丝刀，准备动手</p><p><img src="https://img.lovelu.top/2024/06/neicuntiao2.jpg" alt=""></p><p>有一说一，联想的主机挺好拆的，就两个螺丝卸了，就可以把侧板拿下来了，也可以直接看到原装内存条和硬盘了，不过硬盘很碍事儿，手挡住了，只能把硬盘也拆了，反正觉得这个内存条放最里面，都不好下手，最终换完了，手也被划了好多印子</p><p><img src="https://img.lovelu.top/2024/06/neicuntiao3.jpg" alt=""></p><p>要说换内存和硬盘比较方便的，还得是塔式服务器，几乎都是直插式的，很方便</p><p>换下来的两根8G的，还挺新，有少许灰尘</p><p><img src="https://img.lovelu.top/2024/06/neicuntiao4.jpg" alt=""></p>]]></content>
+    
+    
+    <summary type="html">给电脑换一个内存条，原来的不够用了，自己动手还是挺好的，过程不复杂，就是内存条的位置感觉不太好，手都被划了好多印子</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://blog.lovelu.top/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="办公" scheme="https://blog.lovelu.top/tags/%E5%8A%9E%E5%85%AC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一个好用的批量下载图片脚本</title>
+    <link href="https://blog.lovelu.top/p/e3ed06ed.html"/>
+    <id>https://blog.lovelu.top/p/e3ed06ed.html</id>
+    <published>2024-06-03T00:50:11.000Z</published>
+    <updated>2024-06-03T01:33:35.505Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="为什么用这个脚本"><a href="#为什么用这个脚本" class="headerlink" title="为什么用这个脚本"></a>为什么用这个脚本</h2><p>分享一个批量通过图片链接下载图片的python脚本，个人感觉还挺好用，就分享一下</p><p>当然也有很多第三方工具，不过我找了几个，要么就是很难用，要么就是有广告，或者收费等等，太麻烦，我喜欢直来直去，简单点儿</p><h2 id="使用门槛"><a href="#使用门槛" class="headerlink" title="使用门槛"></a>使用门槛</h2><p>执行python脚本，肯定是要python环境的，可以参考这篇文章<a href="https://blog.csdn.net/qq_36292543/article/details/114277015">Python 超级详细安装教程（Windows）</a>，也不复杂</p><p>有些依赖自行百度安装下即可</p><h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><p>先分享下python源码</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, as_completed</span><br><span class="line"></span><br><span class="line"><span class="comment"># 壁纸文件夹路径</span></span><br><span class="line">wallpaper_folder = <span class="string">r&quot;E:\download\testimg&quot;</span></span><br><span class="line">os.makedirs(wallpaper_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 失败图片链接存储文件路径</span></span><br><span class="line">failed_urls_file = <span class="string">r&quot;E:\download\testimg\shibai.txt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取img.txt文件中的图片链接</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">r&quot;E:\download\testimg\img.txt&quot;</span>, <span class="string">&quot;r&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    image_urls = file.readlines()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download_image</span>(<span class="params">url</span>):</span><br><span class="line">    url = url.strip()  <span class="comment"># 去除首尾空白字符</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = requests.get(url, timeout=<span class="number">120</span>)</span><br><span class="line">        response.raise_for_status()</span><br><span class="line">        <span class="comment"># 提取图片文件名</span></span><br><span class="line">        filename = os.path.basename(url)</span><br><span class="line">        <span class="comment"># 保存图片至壁纸文件夹</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(os.path.join(wallpaper_folder, filename), <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> img_file:</span><br><span class="line">            img_file.write(response.content)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;已下载图片: <span class="subst">&#123;filename&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> requests.exceptions.RequestException <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;图片下载失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(failed_urls_file, <span class="string">&quot;a&quot;</span>) <span class="keyword">as</span> failed_urls:</span><br><span class="line">            failed_urls.write(url + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清空失败图片链接文件</span></span><br><span class="line"><span class="built_in">open</span>(failed_urls_file, <span class="string">&quot;w&quot;</span>).close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 批量下载图片（多线程异步）</span></span><br><span class="line"><span class="keyword">with</span> ThreadPoolExecutor() <span class="keyword">as</span> executor:</span><br><span class="line">    futures = [executor.submit(download_image, url) <span class="keyword">for</span> url <span class="keyword">in</span> image_urls]</span><br><span class="line">    <span class="keyword">for</span> future <span class="keyword">in</span> as_completed(futures):</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            future.result()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;图片下载失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;图片下载完成！&quot;</span>)</span><br></pre></td></tr></table></figure><p>大部分看了这个脚本就知道要修改哪几个地方了吧</p><ul><li>壁纸文件夹路径(下载后，文件的存放路径)</li><li>失败图片链接存储文件路径</li><li>读取img.txt文件中的图片链接(文件链接，一行一个)</li></ul><h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><p>以上都弄好了，直接执行 <strong>python batchImg.py</strong> 即可</p>]]></content>
+    
+    
+    <summary type="html">这个Python脚本是一个简单而实用的工具，可以通过图片链接批量下载图片。与其他第三方工具相比，它直接、简单，无需复杂的学习过程或面对繁琐的广告和收费问题。执行该脚本需要Python环境，但安装过程并不复杂。如果您需要一个直接、简单的图片下载工具，这个脚本可能正是您需要的</summary>
+    
+    
+    
+    <category term="网络技术" scheme="https://blog.lovelu.top/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/"/>
+    
+    
+    <category term="知识" scheme="https://blog.lovelu.top/tags/%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="教程" scheme="https://blog.lovelu.top/tags/%E6%95%99%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>祝我生日快乐</title>
+    <link href="https://blog.lovelu.top/p/7218d2cf.html"/>
+    <id>https://blog.lovelu.top/p/7218d2cf.html</id>
+    <published>2024-05-22T01:23:02.000Z</published>
+    <updated>2024-05-22T08:07:01.517Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://img.lovelu.top/2024/05/shengri.webp" alt=""></p><p>祝我生日快乐，祝我生日快乐哦！生日快乐歌唱完，该许愿啦！</p><p>记得以前一直在外漂着，一年也就过年回一次，虽然也就呆那么几天，但妈妈顿顿饭菜做的都很丰盛，我让妈妈也一起吃，她说看着你爱吃就觉得很幸福，但是那会儿这样的机会真的少之又少，辛酸之感油然而生。</p><p>后来我下定决心回武汉发展，离家就近了，开车也就一个小时左右，平时双休的功夫就回去了，感觉还是挺好的。虽然就业机会和环境稍弱一些，好在运气绝佳，结识了一些好的领导，基本上没有为找工作烦恼过，都是领导们给我内推，还是挺幸运的。</p><p>虽然朋友的祝福不多，也可以理解，毕竟大家都忙，压力也大，都有各自的烦心事儿，不过好在有家人的陪伴和祝福，还是很开心的。</p><p>我平时没什么爱好，就喜欢折腾些程序之类的东西，偶尔还养养小乌龟，我比较健忘，有时总是忘了换水和喂食，好在小龟龟能扛得住，每次想起来的时候，都会边给龟龟换水，边给龟龟道歉，说下次给改善下伙食，不过龟龟看到我还是很活跃的。。。</p><p>生日了，又长大一岁。不知该感慨呢，还是该苦笑呢。小时候总是盼着过生日，期望能吃到蛋糕，或者收获心意的礼物。可是长大了，又害怕过生日，害怕年岁带来的各种压力。人总是在矛盾和无知中度过，再回首看这段日子，貌似以前的自己像另外一个人。</p><p>说生日的事儿，感觉有点扯远了，感觉每一岁都是一个坎，只不过是或大或小的问题，感觉每次都会回顾一下过往，总有无限的感慨!</p><p>感谢身边我爱和爱我的人，希望大家一切安好！</p><p>感觉这句话说的蛮好，分享一下：<strong>「 爱不是人类发明出来的东西，它是唯一可以穿越时间和空间被感知的存在。 」</strong></p>]]></content>
+    
+    
+    <summary type="html">在这个特别的生日时刻，回忆起成长的点点滴滴，感慨岁月的变迁。家人的陪伴和祝福，友情的温暖，让人感到幸福和感激。每一岁都是一个坎，带来或大或小的挑战，但有爱的陪伴和祝福，一切都变得美好而温馨。愿所有人都能感受到爱的力量，享受幸福的时刻。</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://blog.lovelu.top/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>向日葵开机插座C2Ble上手</title>
+    <link href="https://blog.lovelu.top/p/6e5cf553.html"/>
+    <id>https://blog.lovelu.top/p/6e5cf553.html</id>
+    <published>2024-05-16T00:44:47.000Z</published>
+    <updated>2024-05-16T01:28:14.363Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近刚上手了一个花生壳插座，感觉还不错，借此机会分享一下</p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>大概22年的时候，我分享了一篇<a href="https://blog.lovelu.top/p/91889fc9.html">办公必备，远程公司电脑之向日葵</a>，其主要还是针对于远程办公电脑，当然市面上远程软件很多，但我一直选用向日葵，原因无它，就是很稳定。</p><p>关于已经有了向日葵，为啥还要再买个智能插座，这不多此一举吗？其实不然，由于要保持随时能远程，那么被远程电脑就要一直保持开机状态，电费这都是小时，主要还是散热问题，特别是夏天，下班了办公室窗户关了，空调关了，温度就上来了，长期保持待机状态(不是休眠状态)，电脑就发热，你远程过来就会卡，如果远程启动一些占内存应用，就可以想象多难受。</p><p>我就在想，能不能搞一个什么东西，我想远程的时候，开机就可以了，不想远程的时候，关机就完了，没必要一直开着，远程主要还是处理一些特殊事件，所以今天就上了-花生壳的智能插座。</p><p>其实关于智能插座，相信大家也不陌生，智能插座更多的出现在智能家居中，其实我新房设计的时候，本来也想整一套全屋智能生态的，后来还是有点儿怕麻烦，就放弃了，但是还是花费了不少时间去了解，当然今天就不说这个了，主要我远程软件用的花生壳的，所以插座也选用他们家的，省心。。。</p><h2 id="关于C2"><a href="#关于C2" class="headerlink" title="关于C2"></a>关于C2</h2><p>也不细说它了，说白了就是个智能插座，简单总结下优点吧：</p><ul><li>使用简单，价格便宜(50元)</li><li>小巧方便，颜值在线</li><li>功能强大，兼容性强</li><li>最高支持2500W</li><li>智能控制用电设备</li></ul><p>上几张图看看吧</p><p><img src="https://img.lovelu.top/2024/05/chazuo1.jpg" alt=""></p><p><img src="https://img.lovelu.top/2024/05/chazuo2.jpg" alt=""></p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>配置和使用也简单，总体上来说就一下几点：</p><ol><li>下载控制端：下载向日葵控制端</li><li>添加设备联网：插座接入电源并开启，手机连接2.4GWiFi，添加智能设备<br><img src="https://img.lovelu.top/2024/05/chazuo3.png" alt=""></li><li>绑定主机：找到已添加的设备中绑定主机(绑定前，先将主机添加进去)<br><img src="https://img.lovelu.top/2024/05/chazuo4.png" alt=""></li><li>电脑开启<a href="https://service.oray.com/question/6178.html">AC recovery设置</a></li></ol><h2 id="功能使用"><a href="#功能使用" class="headerlink" title="功能使用"></a>功能使用</h2><h3 id="远程开机"><a href="#远程开机" class="headerlink" title="远程开机"></a>远程开机</h3><p>主机在关机状态下，进入App在【设备】列表页面，找到向日葵开机插座绑定的主机，并点击，可以实现远程开机。</p><p><img src="https://img.lovelu.top/2024/05/chazuo5.png" alt=""></p><h3 id="远程关机-重启"><a href="#远程关机-重启" class="headerlink" title="远程关机/重启"></a>远程关机/重启</h3><p>远端主机在开机状态下，在手机控制端APP【设备】列表页面，找到该主机设备，在功能列表点击”关机/重启”，可以远程关闭主机或对重启主机。<br>通过设备列表对主机远程关机，向日葵会发送指令先远程关闭主机，并在5分钟后无声息关闭电源，温柔关机不伤主机。</p><p><img src="https://img.lovelu.top/2024/05/chazuo6.png" alt=""></p><h3 id="倒计时"><a href="#倒计时" class="headerlink" title="倒计时"></a>倒计时</h3><p>选择【倒计时】可在控制面板设置插座在设定的倒计时后开启或关闭。</p><p><img src="https://img.lovelu.top/2024/05/chazuo7.png" alt=""></p><h3 id="定时功能插座"><a href="#定时功能插座" class="headerlink" title="定时功能插座"></a>定时功能插座</h3><p>设置开机插座在指定的时间开启或关闭电源，如设置开机插座在下班后指定时间关闭电源，节约能耗。</p><p><img src="https://img.lovelu.top/2024/05/chazuo8.png" alt=""></p><h3 id="电量统计"><a href="#电量统计" class="headerlink" title="电量统计"></a>电量统计</h3><p>通过查看电量统计，可以监控电脑每日/月/周的用量情况。</p><p><img src="https://img.lovelu.top/2024/05/chazuo9.png" alt=""></p><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>总的来说，没有使用门槛，简单易用，分享给大家，有兴趣可以去看看</p>]]></content>
+    
+    
+    <summary type="html">花生壳智能插座是一款功能强大且易于使用的智能插座。它可以通过远程控制和定时功能，帮助您方便地管理和控制电器设备的开关。您可以使用手机应用程序远程开启、关闭或重启插座绑定的主机，实现远程开机和关机。倒计时功能可以让您在设定的时间后自动开启或关闭插座。此外，插座还提供了电量统计功能，让您可以监控电器的用电情况。花生壳智能插座小巧方便，外观时尚，兼容性强，最高支持2500W的电器设备。无论是在办公室还是家庭环境中，花生壳智能插座都是一个实用而便捷的选择。</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://blog.lovelu.top/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    
+    <category term="办公" scheme="https://blog.lovelu.top/tags/%E5%8A%9E%E5%85%AC/"/>
+    
+    <category term="评测" scheme="https://blog.lovelu.top/tags/%E8%AF%84%E6%B5%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>这个世界我们只来一次</title>
+    <link href="https://blog.lovelu.top/p/773c4640.html"/>
+    <id>https://blog.lovelu.top/p/773c4640.html</id>
+    <published>2024-04-24T00:41:39.000Z</published>
+    <updated>2024-04-24T02:07:06.278Z</updated>
+    
+    <content type="html"><![CDATA[<div><p style="display: flex;justify-content: center;text-align: center;font-weight: 700;">这个世界我们只来一次<br/>百年之后<br/>没你也没我<br/>我们拼搏一生<br/>带不走一砖一瓦<br/>我们执著一生<br/>带不走一丝爱恨情仇<br/>人生苦短<br/>所以<br/>吃你想吃的饭<br/>见你想见的人<br/>看你喜欢的风景<br/>做你喜欢的事<br/>人生<br/>本来就是一次减法<br/>来日并不方长<br/>有钱把日子过好<br/>没钱把心情过好<br/>时间扑面而来<br/>我们终将释怀<br/>平静的过<br/>健康的活着<br/>开心的笑着<br/>适当的忙着<br/>就很好</p></div>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;div&gt;
+&lt;p style=&quot;display: flex;justify-content: center;text-align: center;font-weight: 700;&quot;&gt;
+这个世界我们只来一次&lt;br/&gt;
+百年之后&lt;br/&gt;
+没你也没我&lt;br/&gt;
+我们拼搏一生&lt;br/</summary>
+      
+    
+    
+    
+    <category term="随笔感想" scheme="https://blog.lovelu.top/categories/%E9%9A%8F%E7%AC%94%E6%84%9F%E6%83%B3/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="随笔" scheme="https://blog.lovelu.top/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>满心官网代码开源啦</title>
+    <link href="https://blog.lovelu.top/p/131d046c.html"/>
+    <id>https://blog.lovelu.top/p/131d046c.html</id>
+    <published>2024-04-23T02:19:03.000Z</published>
+    <updated>2024-04-23T02:31:05.775Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>满心官网的静态源码是满心开发的，但并非满心原创设计，应该是去年2、3月份的时候无意中看见的(具体哪里看到的，现在记不起来了，如有侵权，请留言，我会标注原创)，觉得不错，经过简单开发，就出来了，好多人问我要，我现在把它开源，有兴趣的自取吧，<strong>因为没花费太多时间，所以比较粗糙哈，有能力的自己二开吧</strong></p></blockquote><h2 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h2><p><img src="https://img.lovelu.top/2024/04/guanwang1.png" alt=""></p><p><img src="https://img.lovelu.top/2024/04/guanwang2.png" alt=""></p><p>很多关注满心的朋友都发现，满心好早前就做了一个 <a href="https://lovelu.top">满心官网</a>，这个静态网址，也算是个导航站，属于耐看型的，比较适合长期使用，该项目使用<strong>html + js</strong>，修改和部署都较为简单，有兴趣的可以试试</p><h2 id="源码地址"><a href="#源码地址" class="headerlink" title="源码地址"></a>源码地址</h2><p><a href="https://gitee.com/helloqibin_admin/manxin_site">gitee</a></p>]]></content>
+    
+    
+    <summary type="html">满心官网的静态源码是满心开发的，但并非满心原创设计，应该是去年2、3月份的时候无意中看见的(具体哪里看到的，现在记不起来了，如有侵权，请留言，我会标注原创)，觉得不错，经过简单开发，就出来了，好多人问我要，我现在把它开源，有兴趣的自取吧</summary>
+    
+    
+    
+    <category term="我的项目" scheme="https://blog.lovelu.top/categories/%E6%88%91%E7%9A%84%E9%A1%B9%E7%9B%AE/"/>
+    
+    
+    <category term="教程" scheme="https://blog.lovelu.top/tags/%E6%95%99%E7%A8%8B/"/>
+    
+    <category term="开发" scheme="https://blog.lovelu.top/tags/%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>上班就是演戏</title>
+    <link href="https://blog.lovelu.top/p/104df43e.html"/>
+    <id>https://blog.lovelu.top/p/104df43e.html</id>
+    <published>2024-04-15T05:50:53.000Z</published>
+    <updated>2024-04-23T00:52:10.785Z</updated>
+    
+    <content type="html"><![CDATA[<p>上班就是演戏，何必那么认真。你把工作排第一位，主动熬夜加班，渴望被领导同事认可，拼命的证明自己。<strong>所以，你活得很累、很压抑、很委屈</strong>。</p><p>你记住了，老板批评你，听听就好，同事议论你，一笑而过就好。<strong>不要因为这些声音而内耗自己的情绪。压垮你的往往不是工作量，而是你过剩的责任心。</strong></p><p>工作上的事再多，也不要忘了自己还有生活，灵活处理就好，<strong>工作只是谋生的手段，不是生活的全部，何必那么在意。工作要有边界感，分内之事，义不容辞，分外之事，一律不过问。</strong></p><p>不想要的东西果断拒绝，不必勉强自己。</p>]]></content>
+    
+    
+    <summary type="html">在工作中保持适当的工作边界和生活平衡，不要让工作压垮自己的情绪。工作只是生活的一部分，不要让其成为生活的全部。保持心态平和，灵活处理工作中的事务，不必勉强自己。拒绝不想要的压力，保持自我</summary>
+    
+    
+    
+    <category term="闲聊杂谈" scheme="https://blog.lovelu.top/categories/%E9%97%B2%E8%81%8A%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="读书笔记" scheme="https://blog.lovelu.top/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>大厨修炼记之饺子皮馅儿饼-4</title>
+    <link href="https://blog.lovelu.top/p/d23e7a42.html"/>
+    <id>https://blog.lovelu.top/p/d23e7a42.html</id>
+    <published>2024-04-07T01:47:17.000Z</published>
+    <updated>2024-04-23T01:16:14.991Z</updated>
+    
+    <content type="html"><![CDATA[<p>这几天清明节没回老家，留在武汉，小孩儿打了 <strong>麻腮风疫苗</strong> ，再加上天气也不好，阴雨连绵的，所以也没出门，计划在家搞点儿什么吃吃，后来决定还是搞饼吃吧</p><p>由于和面实在费劲，再加上薄厚不好均衡，所以干脆买点儿饺子皮儿来代替，好处是薄厚均匀，包馅儿容易，而且煎炸方便，说干就干</p><p>只吃一种馅儿，未免太过单调，馅儿太多，自己有累的慌，所以选择了两种：<strong>韭菜鸡蛋、香菇鲜肉</strong></p><p>由于使用饺子皮儿，本身皮儿比较薄，怕煎不熟里面的馅儿，再加上馅儿炒一下会比较香，所以果断先把馅儿炒个七八分熟，再薄，再煎，感觉效果会更好</p><div class="img-list">  <div class="list-inner">  <a class="fancybox" href="https://img.lovelu.top/2024/04/bing4.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/2024/04/bing4.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/2024/04/bing4.jpg" data-lazy-src="https://img.lovelu.top/2024/04/bing4.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/2024/04/bing1.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/2024/04/bing1.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/2024/04/bing1.jpg" data-lazy-src="https://img.lovelu.top/2024/04/bing1.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/2024/04/bing2.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/2024/04/bing2.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/2024/04/bing2.jpg" data-lazy-src="https://img.lovelu.top/2024/04/bing2.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/2024/04/bing3.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/2024/04/bing3.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/2024/04/bing3.jpg" data-lazy-src="https://img.lovelu.top/2024/04/bing3.jpg"></img>    </a>  </div></div><p>包的环节就比较枯燥了，由于饺子皮儿两边比较干，所以要抹水，把两边捏实，然后再塞馅儿，皮儿薄馅儿多，是我所追求的，不过我还是选择适中，有时候做的假一点儿还好吃一些，整个过程比较顺利，没有破损情况</p><p><img src="https://img.lovelu.top/2024/04/bing5.jpg" alt=""></p><p>只是后面皮儿多了，馅儿少了，正好还有多余的鲜肉，就弄了点芹菜，额外加了一种 <strong>芹菜鲜肉</strong></p><p><img src="https://img.lovelu.top/2024/04/bing7.jpg" alt=""></p><p>由于饺子皮儿本身就很干，所以最好是边包边煎，不然容易破，油一定不要放太多，不然会很腻</p><p><img src="https://img.lovelu.top/2024/04/bing6.jpg" alt=""></p><p>成品出锅啦，虽然不那么好看，但是过程简单，两个人配合还是挺快的</p><p>再加上新学的凉拌皮蛋，简约而不简单的一顿中餐，也算改善了下伙食吧</p><div class="img-list">  <div class="list-inner">    <a class="fancybox" href="https://img.lovelu.top/2024/04/bing8.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/2024/04/bing8.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/2024/04/bing8.jpg" ></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/2024/04/bing9.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/2024/04/bing9.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/2024/04/bing9.jpg"></img>    </a>  </div></div><p><strong>生活贵在折腾，有时间和兴趣的也去试试吧！</strong></p>]]></content>
+    
+    
+    <summary type="html">在清明节留在武汉，家中制作美味饼食，选择饺子皮代替传统面皮，馅料包括韭菜鸡蛋、香菇鲜肉和芹菜鲜肉，炒馅煎饼口感更佳。精心包馅，煎至金黄酥脆，搭配凉拌皮蛋，简约而不简单的一顿中餐，改善伙食体验。生活贵在折腾，有时间和兴趣的也去尝试吧！</summary>
+    
+    
+    
+    <category term="可口美食" scheme="https://blog.lovelu.top/categories/%E5%8F%AF%E5%8F%A3%E7%BE%8E%E9%A3%9F/"/>
+    
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="美食" scheme="https://blog.lovelu.top/tags/%E7%BE%8E%E9%A3%9F/"/>
+    
+    <category term="厨艺" scheme="https://blog.lovelu.top/tags/%E5%8E%A8%E8%89%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>不知不觉中，我们长大了，父亲变老了</title>
+    <link href="https://blog.lovelu.top/p/4d4beb5a.html"/>
+    <id>https://blog.lovelu.top/p/4d4beb5a.html</id>
+    <published>2024-03-29T07:40:37.000Z</published>
+    <updated>2024-04-23T00:52:22.665Z</updated>
+    
+    <content type="html"><![CDATA[<p>突然发现父亲头发白了不少，父亲是最不服老的人，无论是穿着还是言谈，尽量使自己年轻化，好逃避自己渐渐老去的的事实，同时与年轻人相处时，显得不那么突兀。</p><p>曾记何时，我最喜欢挂在父亲的胳膊上玩耍，也最喜欢边走路边勾着爸爸的肩膀，同时也最喜欢学着爸爸喜欢做的事儿，以及喜欢说的话。。。但这一切不知道从什么时候开始，都不复存在了</p><p>突然想起一句话：当父亲什么事情都会先询问你的时候，证明父亲已经已经老了，虽然人人都有这么一天，但内心还是很伤感！</p><p><img src="https://img.lovelu.top/2024/03/fuqin.jpeg" alt=""></p>]]></content>
+    
+    
+    <summary type="html">这段文字表达了对父亲年老的观察和感慨，以及对时光流逝的感伤和珍惜。父亲在努力保持年轻的外表和心态，但时间的痕迹还是不可避免地显现在他身上。作者回忆起和父亲共度的美好时光，以及随着时间推移，父子之间关系的变化和成长。最后提到了一句关于父亲询问一切事情的话语，暗示着父亲对子女的关心和依赖，也让人感受到岁月的无情和珍惜亲情的重要性。这段文字充满了对家庭、亲情和时光流逝的深刻思考和感慨。</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://blog.lovelu.top/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>万众瞩目，小米su7来了</title>
+    <link href="https://blog.lovelu.top/p/e7e53934.html"/>
+    <id>https://blog.lovelu.top/p/e7e53934.html</id>
+    <published>2024-03-29T06:37:46.000Z</published>
+    <updated>2024-04-23T00:51:52.313Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://img.lovelu.top/2024/03/su71.webp" alt=""></p><p>哈哈，为啥要写这么一篇文章，这不，小米SU7热度一直蛮高，从发布会，到现在正式公布价格，各大新闻媒体、短视频、广告等等铺天盖地，想不关注都难，主要是想谈谈自己的看法吧，毕竟也用过小米的不少产品，虽然汽车对于小米来说算是个新领域，但看到国产车越做越好，心里还是蛮欣慰的，我也一直开的是国产车，感觉各方面都不错。</p><h2 id="小米产品看法"><a href="#小米产品看法" class="headerlink" title="小米产品看法"></a>小米产品看法</h2><p>前前后后用过小米的各种家电，手机等等，家电没什么好说的，都是些小玩意儿，都是正常家用，质量方面也就那样，没有买过大的家电，所以不好评价。<br>主要说下手机吧，现在仍然记得小米手机的标语：<strong>为发烧而生</strong>，不知道是为了头脑发烧呢，还是手机发烧，当然开个玩笑。<br>记得应该是2018年的时候，当时用的红米，用了一年半吧，手机比较卡，然后有一次买东西，不小心掉地上了，屏幕碎了，也有手机套，但就是碎了，后来我的华为、苹果手机也经常摔，都没啥事儿，不过，可能也是运气不好吧。印象最深的，还得是夏天，手机待机状态下，就能感觉裤子里火热火热的，要是拿出来玩会儿，更烫，要等凉了些才敢放口袋里，真的一点儿都没夸张，所以从那以后，再没用过小米手机。</p><p>整体上来说，没有完美的产品，只要自己能接受就好，我觉得小米还是不错的。</p><h2 id="小米汽车的质疑"><a href="#小米汽车的质疑" class="headerlink" title="小米汽车的质疑"></a>小米汽车的质疑</h2><p>其实SU7刚出来的时候，网上就收到了很多质疑，说是抄袭，是某某某车的仿制，就是第二众泰等等</p><p>其实对于这方面，我觉得不能太片面，毕竟优秀的产品大家都会追捧，再者说汽车外观内饰本就大同小异，难不成还能造出花儿来？</p><p>SU7我没有实地去看过，看了很多试驾视频，感觉整体外观、内饰都还不错，虽然有些瑕疵，个人觉得无伤大雅。</p><h2 id="SU7价格"><a href="#SU7价格" class="headerlink" title="SU7价格"></a>SU7价格</h2><p>关于价格方面，20w出头到接近30w，对标的是Model 3，抛开市场占有率以及品牌效应而言，我觉得SU7还是有一定优势的，但小米在大众心中一直以 <strong>惠民</strong> 的形象而存在，所以价格方面，可能有不少人会嫌贵，这也在情理中，不过Model 3价位也差不多，而且新能源电池造价也不低，所以造车价格肯定水涨船高。</p><p>今天一开始，就公布了预定超5万台，数字真假没必要较真，只相信一句话：一款好的产品，是需要大众来评判的！我们拭目以待即可。</p><p>不过小米SU7的对手真的蛮多，要在这么大市场中占有一席之地，难度可想而知。</p><h2 id="我会考虑SU7嘛"><a href="#我会考虑SU7嘛" class="headerlink" title="我会考虑SU7嘛"></a>我会考虑SU7嘛</h2><p>先说结果吧：我不会选择它！</p><p>其实并不是说它不好，只是说跟我的用车环境不太匹配，首先，我不太喜欢开轿车，我喜欢车内空间宽阔，坐姿高，不喜欢窝在车子里，太难受，其次，我平时会回老家，老家有些路不好走，地盘低了怕托底，然后，家里有小孩儿，而且还有一家人，每次回家或者出去游玩都要带好多东西，后备箱必须要高大，最后，我对现在新能源续航方面还是比较担心，我容易续航焦虑，从我用手机上就能感受的到</p><p>当然以后新能源肯定是趋势，但最起码我不会轻易选纯电，会考虑混动、增程这种过渡一下，但绝对是买SUV</p><h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>成功的背后都有异于常人的付出，希望我们国产品牌能日益强大，越做越优秀</p>]]></content>
+    
+    
+    <summary type="html">小米SU7在市场上引起了广泛关注，从产品发布到价格公布，各大媒体都在报道。作者分享了对小米产品的使用经验和对小米汽车SU7的看法，认为小米在国产车领域的发展令人欣慰。文章还探讨了SU7的外观、内饰、价格等方面，并表达了对新能源汽车的担忧和对SUV的偏好。</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://blog.lovelu.top/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>好用的书签导航工具-Mtab</title>
+    <link href="https://blog.lovelu.top/p/31993464.html"/>
+    <id>https://blog.lovelu.top/p/31993464.html</id>
+    <published>2024-03-26T01:45:48.000Z</published>
+    <updated>2024-04-22T09:56:19.162Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://img.lovelu.top/2024/03/mtab_cover.png" alt=""></p><blockquote><p>在这个信息爆炸的时代，难道你不希望有一个能够轻松解决你多端、多浏览器的收藏和笔记同步问题的神奇工具吗？别再纠结了！Mtab书签是一款集成基础导航、记事本、在线小工具和多端同步于一身的web应用。它不仅可以简化你的网络浏览体验，还能提供更多功能，解决你的多端同步之忧</p></blockquote><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>跨设备同步：不再为了在不同设备上找不到书签或笔记而苦恼。Mtab书签让你的收藏网址和重要笔记在所有设备上同步。</p><p>跨浏览器支持：Mtab书签支持所有主流浏览器。Chrome、Firefox、Edge、Safari，无论你的选择是什么，都能在一应俱全的工具箱中找到你的书签和笔记。</p><p>多功能一体：Mtab书签不仅仅是一个书签工具，它还提供了一个实用的记事本功能，让你随时随地记录想法、灵感和待办事项。此外，它还内置了一些在线小工具，解决您的日常工作问题。</p><p>私有部署：如果部你对数据安全性有更高要求，Mtab书签也支持私有部署。你可以将它部署在自己的服务器上，完全掌控你的数据，不受任何干扰。</p><p>免费无广告：Mtab书签坚守“免费无广告”的原则，为用户提供清爽的使用体验，没有任何干扰。</p><p>Mtab书签的界面设计美观简洁，操作简单直观，让你可以专注于你的网络活动，而不是应用本身。它是你高效、无忧的网络生活的理想伴侣。 高效流畅的操作体验：超级简约却强大的操作逻辑，没有繁琐的操作流程即可处理复杂的事情。</p><h3 id="私有部署"><a href="#私有部署" class="headerlink" title="私有部署"></a>私有部署</h3><h4 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h4><figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="keyword">run</span><span class="language-bash"> -itd --name mtab -p 9200:80 -v /opt/mtab:/app itushan/mtab</span></span><br></pre></td></tr></table></figure><p>命令解释： 其中 <code>9200</code> 可改为你服务器的其他端口。 <code>/opt/mtab</code> 可改为是你服务器的目录挂载路径，<code>容器内目录和端口必须是 80 和 /app</code>，—name为自定义容器名称。</p><p>可视化部署： 群晖等其他管理面板请拉取 itushan/mtab 镜像。服务器端口请自己填写，容器请填写 80 ，服务器目录请填写自己想挂载的目录，容器部分请填写 /app。</p><p>程序数据库安装： 部署完docker后访问您设置的端口，然后填写一些数据库和redis等基础配置后点击 安装 按钮即可等待安装完成， 注意的是容器部署下数据库和redis地址请不要填写127.0.0.1,因为容器内127.0.0.1不指向宿主机网络。程序安装后选择的redis库是0，可以在程序根目录.env文件修改SELECT的值（0-16范围）改为你想使用的db。</p><p>最后事项： 最后如果要使用外网访问，为了安全请使用Nginx反向代理或者CDN来代理您创建时填写的端口，并且配置SSL证书启用HTTPS，纯内网环境请随意啦。</p><h4 id="源码部署"><a href="#源码部署" class="headerlink" title="源码部署"></a>源码部署</h4><p>准备环境 Linux系统+php7.4+mysql8(mysql5.7也行，支持json就行)+Nginx+Redis;</p><p>php请安装redis,fileinfo,zip,curl,mysqli,json,json等常用的扩展，然后并且解除一些禁用函数（宝塔默认禁用了一些函数） 需要去php.ini去解除</p><p>需要解除的函数具体如下,或者全部解除也可以</p><p>shell_exec,putenv</p><ol><li>首先将代码下载到服务器网站目录下并且解压。</li><li>然后将解压出来的程序目录以及子目录全部授权&gt;=755以上的权限。</li><li>将Nginx的网站目录设置为程序目录下的 public 目录。一定要配置伪静态规则</li></ol><p>nginx的伪静态配置代码</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location ~^/ &#123;</span><br><span class="line">    <span class="keyword">if</span> (!-e <span class="variable">$request_filename</span>)&#123;</span><br><span class="line">        rewrite  ^(.*)$  /index.php?s=<span class="variable">$1</span>  last;   <span class="built_in">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ol><li>然后配置好域名或者通过你自己的服务器的ip访问网站，不出意外会出现安装 页面，填写好一些基础的配置信息安装即可。（填写配置信息的是后请确保数据库账户和redis相关信息正确）</li><li>安装完成后即可访问网站，可通过登录安装时填写的账户登录网站进入后台</li></ol><h3 id="官网及演示地址"><a href="#官网及演示地址" class="headerlink" title="官网及演示地址"></a>官网及演示地址</h3><p><a href="https://demo.mtab.cc/">官网demo</a>，admin/123456<br><a href="https://gitee.com/jhjd/mtab#https://gitee.com/link">gitee源码</a></p>]]></content>
+    
+    
+    <summary type="html">在这个信息爆炸的时代，难道你不希望有一个能够轻松解决你多端、多浏览器的收藏和笔记同步问题的神奇工具吗？别再纠结了！Mtab书签是一款集成基础导航、记事本、在线小工具和多端同步于一身的web应用。它不仅可以简化你的网络浏览体验，还能提供更多功能，解决你的多端同步之忧</summary>
+    
+    
+    
+    <category term="优质软件" scheme="https://blog.lovelu.top/categories/%E4%BC%98%E8%B4%A8%E8%BD%AF%E4%BB%B6/"/>
+    
+    
+    <category term="办公" scheme="https://blog.lovelu.top/tags/%E5%8A%9E%E5%85%AC/"/>
+    
+    <category term="网页前端" scheme="https://blog.lovelu.top/tags/%E7%BD%91%E9%A1%B5%E5%89%8D%E7%AB%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在忙碌的生活中，别忘了停下脚步</title>
+    <link href="https://blog.lovelu.top/p/cbdc1289.html"/>
+    <id>https://blog.lovelu.top/p/cbdc1289.html</id>
+    <published>2024-03-25T02:25:01.000Z</published>
+    <updated>2024-04-23T01:16:00.968Z</updated>
+    
+    <content type="html"><![CDATA[<p>有了小孩的生活，感觉每天都很忙，虽然不知道自己到底在忙啥，上班就不谈，放假的时候</p><blockquote><p>亲戚朋友问：在干嘛，出来玩啊<br>我答：没时间，在带娃</p></blockquote><p>这似乎是在我有孩子之前，约有孩子的朋友出来玩，遇到最多的回答了，没想到我也到了这么一天</p><p>不过，虽然如此，但躁动的心无法抑制，必须得出去转转</p><p>早就听说洪山江滩已经预开放了，由于没住那边，所以一直也没去，不知道是个啥样子，这不，今天就抽空先过去踩踩点</p><p>先来几张图吧，然后谈谈想法，其实也没啥想法，好尴尬~</p><div class="img-list">  <div class="list-inner">    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt1.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt1.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt1.jpg" data-lazy-src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt1.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt2.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt2.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt2.jpg" data-lazy-src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt2.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt3.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt3.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt3.jpg" data-lazy-src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt3.jpg"></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt4.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt4.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt4.jpg" data-lazy-src="https://img.lovelu.top/wordpress/tiezi/2024/03/hsjt4.jpg"></img>    </a>  </div></div><p>因为是季节问题，所以长江水位并不高，感觉如果是汛期的话，水位会覆盖到提上来，下面这些位置都会被水覆盖，等水推下去了，可能会有些水坑，然后可以抓鱼</p><p>因为江滩很大，我今的这个入口比较偏江滩开头的位置，所以玩的东西也少，几乎是周边小区的人，带上帐篷，一些户外设备来这里玩，大部分还是带着孩子来，毕竟有沙子、滑滑梯、还可以放风筝，或者是沿江大道走走，阵阵风吹着还是蛮舒服的</p><p>当然路两边的樱花树也开花了，还挺不错，不是很热情况下，搭个帐篷，吃点副食，消遣下时光还是蛮不错的</p><p>娱乐放松身心之后，嘴巴和肚子肯定也要照顾好了，这次吃的是 <strong>鱼你在一起</strong> ，口味还不错，很下饭</p><div class="img-list">  <div class="list-inner">    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni8.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni8.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni8.jpg" ></img>    </a>    <a class="fancybox" href="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni9.jpg" data-fancybox="gallery" data-caption="预览" data-thumb="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni9.jpg">      <img class="lazy entered loaded" src="https://img.lovelu.top/wordpress/tiezi/2024/03/yuni9.jpg"></img>    </a>  </div></div>]]></content>
+    
+    
+    <summary type="html">在忙碌的生活中，随着孩子的到来，时间仿佛变得更加紧迫。即便不知道自己究竟在忙些什么，放假时也常常被问及出来玩的邀约，却只能回答“没时间，正在带娃”。然而，即便如此，内心的躁动仍无法抑制，迫使自己外出转转。一次抽空前往洪山江滩踩点，发现水位不高，季节问题导致部分位置被水覆盖，但这也为未来抓鱼留下了伏笔。江滩宽广，入口处聚集了周边小区的人群，他们带着孩子来玩耍，享受沙滩、滑滑梯、放风筝等乐趣。樱花树盛开，清风拂面，搭帐篷、品副食，消遣时光，尽显惬意。娱乐放松后，一顿美食也是必不可少，这次品尝了口味不错的“鱼你在一起”，美食下饭，满足身心。</summary>
+    
+    
+    
+    <category term="可口美食" scheme="https://blog.lovelu.top/categories/%E5%8F%AF%E5%8F%A3%E7%BE%8E%E9%A3%9F/"/>
+    
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+    <category term="美食" scheme="https://blog.lovelu.top/tags/%E7%BE%8E%E9%A3%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>给博客添加一个时钟效果</title>
+    <link href="https://blog.lovelu.top/p/752f6b2.html"/>
+    <id>https://blog.lovelu.top/p/752f6b2.html</id>
+    <published>2024-03-22T01:41:34.000Z</published>
+    <updated>2024-04-23T01:12:23.831Z</updated>
+    
+    <content type="html"><![CDATA[<p>折腾博客脚步永不停止，一切折腾从魔改开始！</p><p>由于我准备把侧边栏时钟功能移除掉了，但是之前魔改的代码还是想留着，所以有了本文，爱折腾，有兴趣的可以尝试一下！</p><h2 id="效果预览"><a href="#效果预览" class="headerlink" title="效果预览"></a>效果预览</h2><details class="folding-tag" green open><summary> 效果预览 </summary>              <div class='content'>              <p><img src="https://img.lovelu.top/2024/03/clock.png" alt="预览"></p>              </div>            </details><h2 id="魔改步骤"><a href="#魔改步骤" class="headerlink" title="魔改步骤"></a>魔改步骤</h2><details class="folding-tag" green close><summary> 魔改步骤 </summary>              <div class='content'>              <ol><li>新建 <strong>card_clock.pug</strong>，添加如下内容<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br></pre></td><td class="code"><pre><span class="line">if theme.aside.card_clock.enable</span><br><span class="line">  style.</span><br><span class="line">    .clock_frame &#123;</span><br><span class="line">      background: var(--Jay-main);</span><br><span class="line">      display: flex;</span><br><span class="line">      justify-content: center;</span><br><span class="line">      align-content: center;</span><br><span class="line">      box-shadow: var(--Jay-shadow-border);</span><br><span class="line">      background: var(--Jay-card-bg);</span><br><span class="line">      border: var(--style-border);</span><br><span class="line">      border-radius: 12px;</span><br><span class="line">      transition: .3s;</span><br><span class="line">      position: relative;</span><br><span class="line">      overflow: hidden;</span><br><span class="line">      margin-top: 1rem;</span><br><span class="line">    &#125;      </span><br><span class="line">    .clock &#123;</span><br><span class="line">      width: 256px;</span><br><span class="line">      height: 256px;</span><br><span class="line">      border-radius: 50%;</span><br><span class="line">      background-color: #fff;</span><br><span class="line">      position: relative;</span><br><span class="line">      overflow: hidden;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock::after &#123;</span><br><span class="line">      content: &quot;&quot;;</span><br><span class="line">      width: calc(256px - 80px);</span><br><span class="line">      height: calc(256px - 80px);</span><br><span class="line">      background-color: inherit;</span><br><span class="line">      border-radius: 50%;</span><br><span class="line">      display: block;</span><br><span class="line">      position: absolute;</span><br><span class="line">      top: 0;</span><br><span class="line">      right: 0;</span><br><span class="line">      bottom: 0;</span><br><span class="line">      left: 0;</span><br><span class="line">      margin: auto;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker &#123;</span><br><span class="line">      height: calc(100% - 25px);</span><br><span class="line">      width: 3.2px;</span><br><span class="line">      background-color: rgb(52 73 94 / 40%);</span><br><span class="line">      position: absolute;</span><br><span class="line">      top: 0;</span><br><span class="line">      right: 0;</span><br><span class="line">      bottom: 0;</span><br><span class="line">      left: 0;</span><br><span class="line">      margin: auto;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(3n + 1) &#123;</span><br><span class="line">      background: rgb(52 73 94);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(2) &#123;</span><br><span class="line">      transform: rotate(30deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(3) &#123;</span><br><span class="line">      transform: rotate(60deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(4) &#123;</span><br><span class="line">      transform: rotate(90deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(5) &#123;</span><br><span class="line">      transform: rotate(120deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .marker:nth-of-type(6) &#123;</span><br><span class="line">      transform: rotate(150deg);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand &#123;</span><br><span class="line">      transform-origin: center bottom;</span><br><span class="line">      position: absolute;</span><br><span class="line">      z-index: 3;</span><br><span class="line">      bottom: 50%;</span><br><span class="line">      left: 50%;</span><br><span class="line">      width: 5.12px;</span><br><span class="line">      transition: transform 1s linear;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.second &#123;</span><br><span class="line">      height: 85.3333333333px;</span><br><span class="line">      width: 1.3837837838px;</span><br><span class="line">      left: calc(50% - 1.5px);</span><br><span class="line">      border-radius: 1.5px;</span><br><span class="line">      background-color: #ec231e;</span><br><span class="line">      box-shadow: 4px 6px 0 0 rgba(0, 0, 0, 0.15);</span><br><span class="line">      transform: rotate(40deg);</span><br><span class="line">      z-index: 9;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.second::before,</span><br><span class="line">    .clock .hand.second::after &#123;</span><br><span class="line">      content: &quot;&quot;;</span><br><span class="line">      background-color: inherit;</span><br><span class="line">      position: absolute;</span><br><span class="line">      border-radius: 50%;</span><br><span class="line">      left: 50%;</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.second::before &#123;</span><br><span class="line">      width: 12.8px;</span><br><span class="line">      height: 12.8px;</span><br><span class="line">      bottom: 0;</span><br><span class="line">      transform: translate(-50%, 50%);</span><br><span class="line">      box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.15);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.second::after &#123;</span><br><span class="line">      width: 7.1111111111px;</span><br><span class="line">      height: 7.1111111111px;</span><br><span class="line">      top: 17.0666666667px;</span><br><span class="line">      transform: translate(-50%, 0);</span><br><span class="line">      box-shadow: 4px 6px 2px 0 rgba(0, 0, 0, 0.15);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.minute &#123;</span><br><span class="line">      height: 85.3333333333px;</span><br><span class="line">      left: calc(50% - 3px);</span><br><span class="line">      border-radius: 3px;</span><br><span class="line">      background-color: rgb(52 73 94);</span><br><span class="line">    &#125;</span><br><span class="line">    .clock .hand.hour &#123;</span><br><span class="line">      height: 64px;</span><br><span class="line">      left: calc(50% - 3px);</span><br><span class="line">      border-radius: 3px;</span><br><span class="line">      background-color: rgb(52 73 94);</span><br><span class="line">    &#125;</span><br><span class="line">    @media screen and (max-width: 768px) &#123;</span><br><span class="line">      .clock_frame &#123;</span><br><span class="line">          display: none;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    @-webkit-keyframes rotateArms &#123;</span><br><span class="line">      from &#123;</span><br><span class="line">        transform: rotate(0);</span><br><span class="line">      &#125;</span><br><span class="line">      to &#123;</span><br><span class="line">        transform: rotate(360deg);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    @keyframes rotateArms &#123;</span><br><span class="line">      from &#123;</span><br><span class="line">        transform: rotate(0);</span><br><span class="line">      &#125;</span><br><span class="line">      to &#123;</span><br><span class="line">        transform: rotate(360deg);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  .cat_block.clock_frame</span><br><span class="line">    .clock</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .marker</span><br><span class="line">      .hand.second</span><br><span class="line">      .hand.minute</span><br><span class="line">      .hand.hour</span><br><span class="line">  script.</span><br><span class="line">    let secondPlus = 0;</span><br><span class="line">      function getTime() &#123;</span><br><span class="line">        let date = new Date(),</span><br><span class="line">          seconds = date.getSeconds() * 6,</span><br><span class="line">          minutes = date.getMinutes() * 6,</span><br><span class="line">          hours = (date.getHours() % 12) * 30 + minutes / 15;</span><br><span class="line">        if (seconds == 0) &#123;</span><br><span class="line">          secondPlus += 360;</span><br><span class="line">        &#125;</span><br><span class="line">        document.querySelector(&quot;.hand.second&quot;).style.transform = &quot;rotate( &quot; + (seconds + secondPlus) + &quot;deg)&quot;;</span><br><span class="line">        document.querySelector(&quot;.hand.minute&quot;).style.transform = &quot;rotate( &quot; + minutes + &quot;deg)&quot;;</span><br><span class="line">        document.querySelector(&quot;.hand.hour&quot;).style.transform = &quot;rotate( &quot; + hours + &quot;deg)&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">      setInterval(function() &#123;</span><br><span class="line">        getTime();</span><br><span class="line">      &#125;, 1000);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li><li>在 theme\layout\includes\widget\index.pug 中的侧边栏引入<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//- 时钟</span><br><span class="line">    !=partial(&#x27;includes/widget/card_clock&#x27;, &#123;&#125;, &#123;cache: true&#125;)</span><br></pre></td></tr></table></figure></li><li>主题配置文件 <strong>_config.mxblog.yml</strong> 添加开关<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">aside:</span></span><br><span class="line">  <span class="attr">card_clock:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># 时钟</span></span><br></pre></td></tr></table></figure></li></ol>              </div>            </details><blockquote><p>至此，你的侧边栏将多了一个时钟，快去试试吧！</p></blockquote>]]></content>
+    
+    
+    <summary type="html">折腾博客脚步永不停止，一切折腾从魔改开始！由于我准备把侧边栏时钟功能移除掉了，但是之前魔改的代码还是想留着，所以有了本文，爱折腾，有兴趣的可以尝试一下！</summary>
+    
+    
+    
+    <category term="网络技术" scheme="https://blog.lovelu.top/categories/%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF/"/>
+    
+    
+    <category term="教程" scheme="https://blog.lovelu.top/tags/%E6%95%99%E7%A8%8B/"/>
+    
+    <category term="Hexo" scheme="https://blog.lovelu.top/tags/Hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>恶心的电脑清理软件，永不再用</title>
+    <link href="https://blog.lovelu.top/p/3ad1ce11.html"/>
+    <id>https://blog.lovelu.top/p/3ad1ce11.html</id>
+    <published>2024-03-21T01:55:11.000Z</published>
+    <updated>2024-04-23T01:03:58.680Z</updated>
+    
+    <content type="html"><![CDATA[<p>如果是关于MAC电脑没啥好说，似乎没为电脑卡顿、清理这方面操过心，但是windows确实会存在。</p><p>为什么说恶心呢，其实主要是针对办公的台式电脑，联想i5、16G、1T硬盘，window10系统，当时系统默认安装的360卫士，我第一时间把它卸载了</p><p>至于为什么，那就是它容易偷摸删东西，因为从事IT行业，所以前后端开发环境是必须的，每过一段时间，会发现jdk8的一个文件会被360标记成病毒文件，而且会直接删除，导致jdk无法使用，这种情况出现过几次，即使将jdk设置为安全文件，它仍然会删除，这就很令人恼火，另外，360会推送广告，怎么都关不掉，过一段时间就蹦出来，360被称为流氓软件，不是没有道理，果断卸载。。。</p><p>卸载掉了360后，电脑就处于裸奔状态(电脑本身的防火墙已关)，这种情况持续了1年的样子，感觉电脑的垃圾文件比较多了，感觉需要清理(我也懒得去c盘清理)，想着直接找个清理软件完事儿，然后找到了 <strong>腾讯管家</strong> ，感觉当时用感觉还可以，但是现在用感觉非常慢，扫描病毒、清理c盘变得非常慢，而且清理过程中的电脑也很卡，不知道什么原因，我现在已经把它卸载，感觉还是得靠手动清理，靠！这软件真是不靠谱，谁知道背后干了些啥。</p><p>感觉现在似乎没啥好用的电脑清理软件了，安装之后除了广告就是广告，太烦人了。</p>]]></content>
+    
+    
+    <summary type="html">在处理Windows系统电脑清理时，选择适合的软件变得困难吗？曾遇360卫士误删文件、广告推送问题？腾讯管家清理速度慢、卸载后电脑卡顿？本文分享解决方案，探讨手动清理与软件选择的利弊，助您有效管理垃圾文件，提升电脑性能</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://blog.lovelu.top/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    
+    <category term="软件" scheme="https://blog.lovelu.top/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+    <category term="办公" scheme="https://blog.lovelu.top/tags/%E5%8A%9E%E5%85%AC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>生病了，难受中，给满心推荐下有效果的感冒药吧</title>
+    <link href="https://blog.lovelu.top/p/bddc67f8.html"/>
+    <id>https://blog.lovelu.top/p/bddc67f8.html</id>
+    <published>2024-03-15T00:33:37.000Z</published>
+    <updated>2024-04-22T09:51:11.335Z</updated>
+    
+    <content type="html"><![CDATA[<p>前天晚上不知道怎么回事儿，突然就感觉嗓子极为不舒服，也能隐隐猜到可能着凉了，要感冒</p><p>第二天，果然，开始头晕、头疼、鼻塞、流鼻涕，记得以前感冒就流个鼻涕，没有嗓子上的不适，这现在随着岁数增长，症状咋还严重了</p><p>感觉最恐怖的还是晚上，鼻塞了，一点儿不通气儿，只能用嘴巴呼吸，然后嗓子干的厉害，身上总感觉很热，直到凌晨四点的时候才睡着，而且还浑身酸痛</p><p>早上起床也很艰难，看样子要加强锻炼了呀</p><p>本来早上也是想请假来着，奈何舍不得请假，不想被扣工资，虽然有年假，但年假也不能这样浪费掉了，平时杂事儿蛮多，几天年假都分批次请了去办正事了</p><p>以前小时候感冒了，一般都是吃的感康，或者白加黑，现在这两种药比较少见了，而且似乎效果也不太好，我目前吃的是快克，以前吃了能缓解鼻塞，现在吃了除了人难受外，似乎一点效果都没有</p><p>大伙们，给推荐下你们用的感觉不错的感冒药，我主要症状是：<strong>嗓子疼、鼻塞、头晕乎乎的，流鼻涕，不咳嗽也不发烧</strong></p><p><img src="https://img.lovelu.top/2024/03/xiexie.webp" alt=""></p>]]></content>
+    
+    
+    <summary type="html">寻找适合缓解嗓子疼、鼻塞、头晕、流鼻涕等感冒症状的感冒药？在病症困扰下，如何选择适合自己的感冒药物？本文分享了感冒药推荐和症状缓解方法。</summary>
+    
+    
+    
+    <category term="生活日常" scheme="https://blog.lovelu.top/categories/%E7%94%9F%E6%B4%BB%E6%97%A5%E5%B8%B8/"/>
+    
+    
+    <category term="闲聊" scheme="https://blog.lovelu.top/tags/%E9%97%B2%E8%81%8A/"/>
+    
+    <category term="日常" scheme="https://blog.lovelu.top/tags/%E6%97%A5%E5%B8%B8/"/>
+    
+  </entry>
+  
+</feed>

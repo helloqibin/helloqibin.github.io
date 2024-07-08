@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /p/
+Allow: /archives/
+Allow: /categories/
+Allow: /tags/ 
+Allow: /resources/ 
+
+Sitemap: https://blog.lovelu.top/baidusitemap.xml
